@@ -370,47 +370,22 @@
     "simple_auto_slider_PcXb6Q": {
       "type": "simple-auto-slider",
       "blocks": {
-        "product_jWhDUi": {
-          "type": "product",
+        "tab_qJpzY4": {
+          "type": "tab",
           "settings": {
-            "product": "test"
-          }
-        },
-        "product_rcLcyn": {
-          "type": "product",
-          "settings": {
-            "product": "test"
-          }
-        },
-        "product_rf7Qx8": {
-          "type": "product",
-          "settings": {
-            "product": "test"
-          }
-        },
-        "product_kxnHzj": {
-          "type": "product",
-          "settings": {
-            "product": "test"
-          }
-        },
-        "product_AdBtEY": {
-          "type": "product",
-          "settings": {
-            "product": "test"
+            "tab_title": "Tab 1",
+            "collection": "frontpage"
           }
         }
       },
       "block_order": [
-        "product_jWhDUi",
-        "product_rcLcyn",
-        "product_rf7Qx8",
-        "product_kxnHzj",
-        "product_AdBtEY"
+        "tab_qJpzY4"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
-        "heading": "Auto Sliding Gallery"
+        "heading": "Auto Sliding Gallery",
+        "description": "Show off your love for quality auto parts with exclusive products From tees and hats to shop gear, we’ve got something for every car enthusiast.",
+        "auto_scroll_speed": 1
       }
     },
     "17675636610d7f9620": {
