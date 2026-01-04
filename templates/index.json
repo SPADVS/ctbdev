@@ -376,41 +376,13 @@
             "product": "test"
           }
         },
-        "slide_zgGnPN": {
-          "type": "slide",
-          "settings": {
-            "title": "First Slide",
-            "description": "This carousel auto-slides every 4 seconds"
-          }
-        },
-        "slide_AbeVfg": {
-          "type": "slide",
-          "settings": {
-            "title": "Second Slide",
-            "description": "Hover to pause the auto-sliding"
-          }
-        },
-        "product_BR3HkV": {
+        "product_rf7Qx8": {
           "type": "product",
           "settings": {
-            "product": ""
+            "product": "test"
           }
         },
-        "slide_cJULWB": {
-          "type": "slide",
-          "settings": {
-            "title": "Third Slide",
-            "description": "Responsive design for all devices"
-          }
-        },
-        "slide_8iw38D": {
-          "type": "slide",
-          "settings": {
-            "title": "Fourth Slide",
-            "description": "Gold accent colors match CTB theme"
-          }
-        },
-        "product_rf7Qx8": {
+        "product_kxnHzj": {
           "type": "product",
           "settings": {
             "product": "test"
@@ -419,12 +391,8 @@
       },
       "block_order": [
         "product_rcLcyn",
-        "slide_zgGnPN",
-        "slide_AbeVfg",
-        "product_BR3HkV",
-        "slide_cJULWB",
-        "slide_8iw38D",
-        "product_rf7Qx8"
+        "product_rf7Qx8",
+        "product_kxnHzj"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
