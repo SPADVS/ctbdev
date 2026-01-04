@@ -427,6 +427,12 @@
             "description": "Hover to pause the auto-sliding"
           }
         },
+        "product_BR3HkV": {
+          "type": "product",
+          "settings": {
+            "product": ""
+          }
+        },
         "slide_cJULWB": {
           "type": "slide",
           "settings": {
@@ -440,13 +446,21 @@
             "title": "Fourth Slide",
             "description": "Gold accent colors match CTB theme"
           }
+        },
+        "product_rf7Qx8": {
+          "type": "product",
+          "settings": {
+            "product": "test"
+          }
         }
       },
       "block_order": [
         "slide_zgGnPN",
         "slide_AbeVfg",
+        "product_BR3HkV",
         "slide_cJULWB",
-        "slide_8iw38D"
+        "slide_8iw38D",
+        "product_rf7Qx8"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
@@ -477,11 +491,32 @@
             "description": "Third test slide - Splide carousel running!"
           }
         },
+        "slide_KQ43mD": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide Title",
+            "description": "This is a test slide in the Splide carousel."
+          }
+        },
         "slide_BhahTN": {
           "type": "slide",
           "settings": {
             "title": "Slide 4",
             "description": "rfy to go!"
+          }
+        },
+        "slide_Ceqnmd": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide Title",
+            "description": "This is a test slide in the Splide carousel."
+          }
+        },
+        "slide_gRQE7L": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide Title",
+            "description": "This is a test slide in the Splide carousel."
           }
         }
       },
@@ -489,7 +524,10 @@
         "slide_y7J7nq",
         "slide_8jaYhA",
         "slide_LbRiWY",
-        "slide_BhahTN"
+        "slide_KQ43mD",
+        "slide_BhahTN",
+        "slide_Ceqnmd",
+        "slide_gRQE7L"
       ],
       "name": "🧪 Test Carousel",
       "settings": {
