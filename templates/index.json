@@ -393,13 +393,20 @@
           "settings": {
             "product": "test"
           }
+        },
+        "product_AdBtEY": {
+          "type": "product",
+          "settings": {
+            "product": "test"
+          }
         }
       },
       "block_order": [
         "product_jWhDUi",
         "product_rcLcyn",
         "product_rf7Qx8",
-        "product_kxnHzj"
+        "product_kxnHzj",
+        "product_AdBtEY"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
