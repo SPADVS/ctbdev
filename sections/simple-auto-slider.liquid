@@ -43,6 +43,19 @@
     margin: 0;
   }
 
+  /* Fallback layout when Splide fails to mount */
+  .simple-auto-slider__list:not(.is-mounted) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .simple-auto-slider__fallback {
+    text-align: center;
+    color: #c9c9c9;
+    padding: 2rem 1rem;
+  }
+
   .simple-auto-slider__product-image {
     width: 100%;
     height: 250px;
@@ -122,6 +135,7 @@
       });
 
       splide.mount();
+      carousel.querySelector('.simple-auto-slider__list')?.classList.add('is-mounted');
       console.log('Carousel mounted successfully');
     } catch (error) {
       console.error('Carousel initialization failed:', error);
@@ -141,26 +155,30 @@
 
     <div id="simple-auto-carousel-{{ section.id }}" class="splide">
       <div class="splide__track">
-        <ul class="splide__list">
-          {% for block in section.blocks %}
-            <li class="splide__slide">
-              <div class="simple-auto-slider__slide">
-                {% if block.type == 'product' and block.settings.product != blank %}
-                  {% assign product = block.settings.product %}
-                  {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" class="simple-auto-slider__product-image">
+        {% if section.blocks.size == 0 %}
+          <div class="simple-auto-slider__fallback">Add slides or products to see the carousel here.</div>
+        {% else %}
+          <ul class="splide__list simple-auto-slider__list">
+            {% for block in section.blocks %}
+              <li class="splide__slide">
+                <div class="simple-auto-slider__slide">
+                  {% if block.type == 'product' and block.settings.product != blank %}
+                    {% assign product = block.settings.product %}
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" class="simple-auto-slider__product-image">
+                    {% endif %}
+                    <h3>{{ product.title }}</h3>
+                    <div class="simple-auto-slider__price">{{ product.price | money }}</div>
+                    <a href="{{ product.url }}" class="simple-auto-slider__btn">View Product</a>
+                  {% else %}
+                    <h3>{{ block.settings.title }}</h3>
+                    <p>{{ block.settings.description }}</p>
                   {% endif %}
-                  <h3>{{ product.title }}</h3>
-                  <div class="simple-auto-slider__price">{{ product.price | money }}</div>
-                  <a href="{{ product.url }}" class="simple-auto-slider__btn">View Product</a>
-                {% else %}
-                  <h3>{{ block.settings.title }}</h3>
-                  <p>{{ block.settings.description }}</p>
-                {% endif %}
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
     </div>
   </div>
