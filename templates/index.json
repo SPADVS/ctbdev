@@ -367,52 +367,15 @@
         "padding-block-end": 0
       }
     },
-    "test_carousel_dHhcFh": {
-      "type": "test-carousel",
-      "blocks": {
-        "slide_cV4b7y": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 1",
-            "description": "First test slide - GitHub sync working!"
-          }
-        },
-        "slide_QhgnCE": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 2",
-            "description": "Second test slide - Auto-deploy active!"
-          }
-        },
-        "slide_Qd9cri": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 3",
-            "description": "Third test slide - Splide carousel running!"
-          }
-        },
-        "slide_fVM7H8": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 4",
-            "description": "Fourth test slide - Ready to go!"
-          }
-        }
-      },
-      "block_order": [
-        "slide_cV4b7y",
-        "slide_QhgnCE",
-        "slide_Qd9cri",
-        "slide_fVM7H8"
-      ],
-      "name": "🧪 Test Carousel",
-      "settings": {
-        "heading": "Test Splide Carousel"
-      }
-    },
     "simple_auto_slider_PcXb6Q": {
       "type": "simple-auto-slider",
       "blocks": {
+        "product_rcLcyn": {
+          "type": "product",
+          "settings": {
+            "product": "test"
+          }
+        },
         "slide_zgGnPN": {
           "type": "slide",
           "settings": {
@@ -455,6 +418,7 @@
         }
       },
       "block_order": [
+        "product_rcLcyn",
         "slide_zgGnPN",
         "slide_AbeVfg",
         "product_BR3HkV",
@@ -466,81 +430,12 @@
       "settings": {
         "heading": "Auto Sliding Gallery"
       }
-    },
-    "test_carousel_rTVhig": {
-      "type": "test-carousel",
-      "blocks": {
-        "slide_y7J7nq": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 1",
-            "description": "First test slide - GitHub sync working!"
-          }
-        },
-        "slide_8jaYhA": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 2",
-            "description": "Second test slide - Auto-deploy active!"
-          }
-        },
-        "slide_LbRiWY": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 3",
-            "description": "Third test slide - Splide carousel running!"
-          }
-        },
-        "slide_KQ43mD": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide Title",
-            "description": "This is a test slide in the Splide carousel."
-          }
-        },
-        "slide_BhahTN": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide 4",
-            "description": "rfy to go!"
-          }
-        },
-        "slide_Ceqnmd": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide Title",
-            "description": "This is a test slide in the Splide carousel."
-          }
-        },
-        "slide_gRQE7L": {
-          "type": "slide",
-          "settings": {
-            "title": "Slide Title",
-            "description": "This is a test slide in the Splide carousel."
-          }
-        }
-      },
-      "block_order": [
-        "slide_y7J7nq",
-        "slide_8jaYhA",
-        "slide_LbRiWY",
-        "slide_KQ43mD",
-        "slide_BhahTN",
-        "slide_Ceqnmd",
-        "slide_gRQE7L"
-      ],
-      "name": "🧪 Test Carousel",
-      "settings": {
-        "heading": "Test Splide Cardfousel"
-      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "product_list_fa6P9H",
     "section_XrX9gi",
-    "test_carousel_dHhcFh",
-    "simple_auto_slider_PcXb6Q",
-    "test_carousel_rTVhig"
+    "simple_auto_slider_PcXb6Q"
   ]
 }
