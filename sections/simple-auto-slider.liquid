@@ -94,6 +94,11 @@
     background: #f5d76e;
   }
 
+  /* Ensure Splide becomes visible when mounted */
+  .splide.is-initialized {
+    visibility: visible;
+  }
+
   .simple-auto-slider .splide__arrow {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -106,17 +111,20 @@
 {% endstylesheet %}
 
 {% javascript %}
-  function initCarousel() {
+  function initCarousel(attempt = 1) {
     const carousel = document.querySelector('#simple-auto-carousel-{{ section.id }}');
+    const slides = carousel?.querySelectorAll('.splide__slide') || [];
+
+    console.log(`[AutoSlider] Init attempt ${attempt} | carousel:`, !!carousel, '| slides:', slides.length);
     
     if (!carousel) {
-      console.warn('Carousel element not found');
+      console.warn('[AutoSlider] Carousel element not found');
       return;
     }
 
     if (typeof Splide === 'undefined') {
-      console.warn('Splide not loaded yet, retrying...');
-      setTimeout(initCarousel, 500);
+      console.warn('[AutoSlider] Splide not loaded yet, retrying...');
+      if (attempt < 10) setTimeout(() => initCarousel(attempt + 1), 500);
       return;
     }
 
@@ -136,9 +144,10 @@
 
       splide.mount();
       carousel.querySelector('.simple-auto-slider__list')?.classList.add('is-mounted');
-      console.log('Carousel mounted successfully');
+      carousel.classList.add('is-initialized');
+      console.log('[AutoSlider] Mounted successfully with', slides.length, 'slides');
     } catch (error) {
-      console.error('Carousel initialization failed:', error);
+      console.error('[AutoSlider] Initialization failed:', error);
     }
   }
 
