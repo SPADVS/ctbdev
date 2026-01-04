@@ -94,6 +94,12 @@
     background: #f5d76e;
   }
 
+  /* Force visibility in case default Splide CSS hides the root */
+  .simple-auto-slider .splide {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
   /* Ensure Splide becomes visible when mounted */
   .splide.is-initialized {
     visibility: visible;
@@ -115,7 +121,7 @@
     const carousel = document.querySelector('#simple-auto-carousel-{{ section.id }}');
     const slides = carousel?.querySelectorAll('.splide__slide') || [];
 
-    console.log(`[AutoSlider] Init attempt ${attempt} | carousel:`, !!carousel, '| slides:', slides.length);
+    console.log(`[AutoSlider] Init attempt ${attempt} | carousel: ${!!carousel} | slides: ${slides.length} | Splide: ${typeof Splide}`);
     
     if (!carousel) {
       console.warn('[AutoSlider] Carousel element not found');
