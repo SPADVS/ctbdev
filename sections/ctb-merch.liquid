@@ -1,0 +1,252 @@
+{% stylesheet %}
+  .ctb-merch {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .ctb-merch__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ctb-merch__title {
+    text-align: center;
+    color: {{ section.settings.heading_color }};
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ctb-merch__subtitle {
+    text-align: center;
+    color: {{ section.settings.subtext_color }};
+    margin: 0 0 2.5rem 0;
+    font-size: 1.05rem;
+  }
+
+  .ctb-merch__carousel {
+    margin: 0 -10px;
+  }
+
+  .ctb-merch__card {
+    background: {{ section.settings.card_background }};
+    border: 1px solid {{ section.settings.card_border }};
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .ctb-merch__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .ctb-merch__media {
+    position: relative;
+    padding-bottom: 75%;
+    background: #0f0f0f;
+  }
+
+  .ctb-merch__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ctb-merch__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: {{ section.settings.accent_color }};
+    color: #050505;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .ctb-merch__body {
+    padding: 1rem 1.25rem 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+  }
+
+  .ctb-merch__name {
+    margin: 0;
+    color: {{ section.settings.heading_color }};
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .ctb-merch__price {
+    margin: 0;
+    color: {{ section.settings.accent_color }};
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .ctb-merch__cta {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .ctb-merch__cta:hover {
+    border-color: {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-merch .splide__pagination__page.is-active {
+    background: {{ section.settings.accent_color }};
+  }
+
+  .ctb-merch .splide__arrow {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f5f5f5;
+  }
+
+  .ctb-merch .splide__arrow:hover {
+    border-color: {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+  }
+
+  @media (max-width: 768px) {
+    .ctb-merch {
+      padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 0 {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px 0;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.querySelector('#ctb-merch-{{ section.id }} .ctb-merch__carousel');
+    if (!slider || typeof Splide === 'undefined') return;
+
+    const perPage = {{ section.settings.items_per_page }};
+
+    const splide = new Splide(slider, {
+      type: 'loop',
+      gap: '16px',
+      perPage: perPage,
+      pagination: true,
+      arrows: true,
+      autoplay: {{ section.settings.autoplay | json }},
+      interval: {{ section.settings.autoplay_speed }},
+      speed: 650,
+      pauseOnHover: true,
+      breakpoints: {
+        1024: { perPage: Math.max(perPage - 1, 1) },
+        768: { perPage: 1 }
+      }
+    });
+
+    splide.mount();
+  });
+{% endjavascript %}
+
+<section id="ctb-merch-{{ section.id }}" class="ctb-merch">
+  <div class="ctb-merch__inner">
+    <h2 class="ctb-merch__title">{{ section.settings.heading }}</h2>
+    {% if section.settings.subtitle != blank %}
+      <p class="ctb-merch__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+
+    <div class="ctb-merch__carousel splide" aria-label="Merchandise">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% for block in section.blocks %}
+            {% if block.type == 'item' %}
+              <li class="splide__slide">
+                <article class="ctb-merch__card">
+                  <div class="ctb-merch__media">
+                    {% if block.settings.badge != blank %}
+                      <span class="ctb-merch__badge">{{ block.settings.badge }}</span>
+                    {% endif %}
+                    {% if block.settings.image != blank %}
+                      <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.image.alt | default: block.settings.title }}" loading="lazy">
+                    {% endif %}
+                  </div>
+                  <div class="ctb-merch__body">
+                    <p class="ctb-merch__name">{{ block.settings.title }}</p>
+                    <p class="ctb-merch__price">{{ block.settings.price }}</p>
+                    {% if block.settings.link != blank %}
+                      <a class="ctb-merch__cta" href="{{ block.settings.link }}">
+                        {{ section.settings.cta_text }}
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                      </a>
+                    {% endif %}
+                  </div>
+                </article>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTB Merch Carousel (Black)",
+  "settings": [
+    {"type": "text", "id": "heading", "label": "Heading", "default": "CTB Garage Merch"},
+    {"type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Exclusive apparel and gear straight from the shop."},
+    {"type": "text", "id": "cta_text", "label": "Card CTA Text", "default": "View Item"},
+    {"type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true},
+    {"type": "range", "id": "autoplay_speed", "min": 3000, "max": 12000, "step": 500, "unit": "ms", "label": "Autoplay speed", "default": 5500},
+    {"type": "range", "id": "items_per_page", "label": "Items per view", "min": 1, "max": 4, "step": 1, "default": 3},
+    {"type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 140, "step": 10, "unit": "px", "default": 70},
+    {"type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 140, "step": 10, "unit": "px", "default": 70},
+    {"type": "color", "id": "background_color", "label": "Background", "default": "#050505"},
+    {"type": "color", "id": "heading_color", "label": "Heading Color", "default": "#f5f5f5"},
+    {"type": "color", "id": "text_color", "label": "Text Color", "default": "#e6e6e6"},
+    {"type": "color", "id": "subtext_color", "label": "Subtext Color", "default": "#bdbdbd"},
+    {"type": "color", "id": "card_background", "label": "Card Background", "default": "#0c0c0c"},
+    {"type": "text", "id": "card_border", "label": "Card Border", "default": "1px solid #1c1c1c"},
+    {"type": "color", "id": "accent_color", "label": "Accent Color", "default": "#f5d76e"}
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Merch Item",
+      "settings": [
+        {"type": "image_picker", "id": "image", "label": "Image"},
+        {"type": "text", "id": "title", "label": "Title", "default": "CTB Garage Hoodie"},
+        {"type": "text", "id": "price", "label": "Price", "default": "$45"},
+        {"type": "text", "id": "badge", "label": "Badge (optional)", "default": "New"},
+        {"type": "url", "id": "link", "label": "Link"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTB Merch Carousel (Black)",
+      "blocks": [
+        {"type": "item"},
+        {"type": "item", "settings": {"title": "CTB Garage T-Shirt", "price": "$30"}},
+        {"type": "item", "settings": {"title": "CTB Garage Hat", "price": "$25"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,367 @@
+{% stylesheet %}
+  .ctb-hero {
+    position: relative;
+    min-height: 80vh;
+    background: radial-gradient(circle at 20% 20%, rgba(245, 215, 110, 0.05), transparent 35%), #050505;
+    color: {{ section.settings.text_color }};
+    overflow: hidden;
+  }
+
+  .ctb-hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ctb-hero__slider,
+  .ctb-hero__image {
+    height: 100%;
+  }
+
+  .ctb-hero__video,
+  .ctb-hero__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ctb-hero__video video,
+  .ctb-hero__video img,
+  .ctb-hero__image-wrapper img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ctb-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ctb-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .ctb-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    color: {{ section.settings.accent_color }};
+    background: rgba(245, 215, 110, 0.08);
+    border: 1px solid rgba(245, 215, 110, 0.2);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+  }
+
+  .ctb-hero__title {
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  .ctb-hero__subtitle {
+    font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+    line-height: 1.7;
+    max-width: 780px;
+    margin: 0;
+    color: {{ section.settings.subtext_color }};
+  }
+
+  .ctb-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .ctb-hero__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .ctb-hero__button--primary {
+    background: {{ section.settings.accent_color }};
+    color: #050505;
+    border-color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-hero__button--primary:hover {
+    box-shadow: 0 10px 30px rgba(245, 215, 110, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .ctb-hero__button--ghost {
+    background: transparent;
+    color: {{ section.settings.text_color }};
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .ctb-hero__button--ghost:hover {
+    border-color: {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-hero__metrics {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .ctb-hero__metric {
+    min-width: 140px;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+
+  .ctb-hero__metric strong {
+    display: block;
+    font-size: 1.25rem;
+    color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-hero__metric span {
+    color: {{ section.settings.subtext_color }};
+    font-size: 0.95rem;
+  }
+
+  .ctb-hero .splide__pagination__page.is-active {
+    background: {{ section.settings.accent_color }};
+  }
+
+  .ctb-hero .splide__arrow {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f5f5f5;
+  }
+
+  .ctb-hero .splide__arrow:hover {
+    border-color: {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+  }
+
+  @media (max-width: 768px) {
+    .ctb-hero {
+      min-height: 70vh;
+    }
+
+    .ctb-hero__content {
+      padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 16px {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px 16px;
+    }
+
+    .ctb-hero__buttons {
+      flex-direction: column;
+    }
+
+    .ctb-hero__button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const root = document.getElementById('ctb-hero-{{ section.id }}');
+    if (!root) return;
+
+    const sliderEl = root.querySelector('.ctb-hero__slider');
+    if (!sliderEl || typeof Splide === 'undefined') return;
+
+    const splide = new Splide(sliderEl, {
+      type: 'fade',
+      rewind: true,
+      arrows: false,
+      pagination: true,
+      autoplay: {{ section.settings.autoplay | json }},
+      interval: {{ section.settings.autoplay_speed }},
+      speed: 1200,
+      pauseOnHover: true,
+    });
+
+    const pauseAll = () => {
+      sliderEl.querySelectorAll('[data-ctb-hero-video]').forEach((video) => {
+        video.pause();
+      });
+    };
+
+    const playActive = () => {
+      const active = sliderEl.querySelector('.splide__slide.is-active video[data-ctb-hero-video]');
+      if (active) {
+        active.currentTime = 0;
+        active.play().catch(() => {});
+      }
+    };
+
+    splide.on('mounted move', () => {
+      pauseAll();
+      playActive();
+    });
+
+    splide.mount();
+  });
+{% endjavascript %}
+
+<section id="ctb-hero-{{ section.id }}" class="ctb-hero">
+  <div class="ctb-hero__media">
+    {% if section.blocks.size > 0 %}
+      <div class="ctb-hero__slider splide" aria-label="Hero Visuals">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {% for block in section.blocks %}
+              <li class="splide__slide">
+                <div class="ctb-hero__video">
+                  {% if block.settings.poster_image != blank %}
+                    <img src="{{ block.settings.poster_image | image_url: width: 1920 }}" alt="{{ block.settings.poster_image.alt | default: 'Hero poster' }}" loading="lazy">
+                  {% endif %}
+                  {% if block.settings.video_mp4 != blank %}
+                    <video muted loop playsinline preload="auto" data-ctb-hero-video poster="{{ block.settings.poster_image | image_url: width: 1920 }}">
+                      <source src="{{ block.settings.video_mp4 }}" type="video/mp4">
+                    </video>
+                  {% elsif block.settings.fallback_image != blank %}
+                    <img src="{{ block.settings.fallback_image | image_url: width: 1920 }}" alt="{{ block.settings.fallback_image.alt | default: 'Hero image' }}" loading="lazy">
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% elsif section.settings.hero_image %}
+      <div class="ctb-hero__image">
+        <div class="ctb-hero__image-wrapper">
+          <img src="{{ section.settings.hero_image | image_url: width: 1920 }}" alt="{{ section.settings.hero_image.alt }}">
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ctb-hero__overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+
+  <div class="ctb-hero__content">
+    {% if section.settings.eyebrow != blank %}
+      <span class="ctb-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+
+    <h1 class="ctb-hero__title">{{ section.settings.heading }}</h1>
+    <p class="ctb-hero__subtitle">{{ section.settings.tagline }}</p>
+
+    <div class="ctb-hero__buttons">
+      {% if section.settings.button_text_1 != blank %}
+        <a href="{{ section.settings.button_link_1 }}" class="ctb-hero__button ctb-hero__button--primary">
+          {% if section.settings.button_icon_1 != blank %}
+            <i class="{{ section.settings.button_icon_1 }}"></i>
+          {% endif %}
+          {{ section.settings.button_text_1 }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.button_text_2 != blank %}
+        <a href="{{ section.settings.button_link_2 }}" class="ctb-hero__button ctb-hero__button--ghost">
+          {% if section.settings.button_icon_2 != blank %}
+            <i class="{{ section.settings.button_icon_2 }}"></i>
+          {% endif %}
+          {{ section.settings.button_text_2 }}
+        </a>
+      {% endif %}
+    </div>
+
+    {% if section.blocks.size > 0 and section.settings.show_metrics %}
+      <div class="ctb-hero__metrics">
+        {% for block in section.blocks %}
+          {% if block.type == 'metric' %}
+            <div class="ctb-hero__metric">
+              <strong>{{ block.settings.value }}</strong>
+              <span>{{ block.settings.label }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTB Hero (Black)",
+  "settings": [
+    {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Auto Body & Apparel"},
+    {"type": "text", "id": "heading", "label": "Heading", "default": "CTB GARAGE"},
+    {"type": "textarea", "id": "tagline", "label": "Tagline", "default": "Precision. Protection. Perfection—Your Ride, Our Pride."},
+    {"type": "image_picker", "id": "hero_image", "label": "Fallback Hero Image (if no slides)"},
+    {"type": "checkbox", "id": "autoplay", "label": "Autoplay slides", "default": true},
+    {"type": "range", "id": "autoplay_speed", "min": 3000, "max": 10000, "step": 500, "unit": "ms", "label": "Autoplay speed", "default": 6000},
+    {"type": "range", "id": "overlay_opacity", "min": 30, "max": 95, "step": 1, "unit": "%", "label": "Overlay opacity", "default": 80},
+    {"type": "text", "id": "button_text_1", "label": "Primary Button Text", "default": "Book Now"},
+    {"type": "url", "id": "button_link_1", "label": "Primary Button Link", "default": "#contact"},
+    {"type": "text", "id": "button_icon_1", "label": "Primary Button Icon", "default": "fas fa-calendar-check"},
+    {"type": "text", "id": "button_text_2", "label": "Ghost Button Text", "default": "About Us"},
+    {"type": "url", "id": "button_link_2", "label": "Ghost Button Link", "default": "#about"},
+    {"type": "text", "id": "button_icon_2", "label": "Ghost Button Icon", "default": "fas fa-plus"},
+    {"type": "checkbox", "id": "show_metrics", "label": "Show metrics blocks", "default": false},
+    {"type": "range", "id": "padding_top", "min": 20, "max": 160, "step": 10, "unit": "px", "label": "Padding Top", "default": 100},
+    {"type": "range", "id": "padding_bottom", "min": 20, "max": 160, "step": 10, "unit": "px", "label": "Padding Bottom", "default": 80},
+    {"type": "color", "id": "text_color", "label": "Heading/Text Color", "default": "#f5f5f5"},
+    {"type": "color", "id": "subtext_color", "label": "Subtext Color", "default": "#c9c9c9"},
+    {"type": "color", "id": "accent_color", "label": "Accent Color", "default": "#f5d76e"}
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Video/Image Slide",
+      "settings": [
+        {"type": "image_picker", "id": "poster_image", "label": "Poster / Cover Image"},
+        {"type": "url", "id": "video_mp4", "label": "Video MP4 URL"},
+        {"type": "image_picker", "id": "fallback_image", "label": "Fallback Image (if no video)"}
+      ]
+    },
+    {
+      "type": "metric",
+      "name": "Metric",
+      "settings": [
+        {"type": "text", "id": "value", "label": "Metric Value", "default": "350+"},
+        {"type": "text", "id": "label", "label": "Metric Label", "default": "Projects Completed"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTB Hero (Black)",
+      "blocks": [
+        {"type": "slide", "settings": {}},
+        {"type": "slide", "settings": {}},
+        {"type": "slide", "settings": {}},
+        {"type": "metric", "settings": {"value": "4201", "label": "Kinzie St, Chicago"}},
+        {"type": "metric", "settings": {"value": "15+", "label": "Years Combined Experience"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

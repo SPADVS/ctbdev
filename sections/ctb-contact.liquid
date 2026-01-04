@@ -1,0 +1,333 @@
+{% stylesheet %}
+  .ctb-contact {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .ctb-contact__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .ctb-contact__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ctb-contact__intro {
+    margin: 0 0 1.5rem 0;
+    color: {{ section.settings.subtext_color }};
+    line-height: 1.7;
+  }
+
+  .ctb-contact__items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ctb-contact__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem 1rem;
+    align-items: start;
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .ctb-contact__icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(245, 215, 110, 0.1);
+    color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-contact__item-title {
+    margin: 0;
+    color: {{ section.settings.heading_color }};
+    font-weight: 700;
+  }
+
+  .ctb-contact__item-text,
+  .ctb-contact__item-link {
+    margin: 0;
+    color: {{ section.settings.subtext_color }};
+    line-height: 1.6;
+  }
+
+  .ctb-contact__item-link {
+    color: {{ section.settings.accent_color }};
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .ctb-contact__item-link:hover {
+    text-decoration: underline;
+  }
+
+  .ctb-contact__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .ctb-contact__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .ctb-contact__btn--primary {
+    background: {{ section.settings.accent_color }};
+    color: #050505;
+    border-color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-contact__btn--primary:hover {
+    box-shadow: 0 10px 30px rgba(245, 215, 110, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .ctb-contact__btn--ghost {
+    background: transparent;
+    color: {{ section.settings.text_color }};
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .ctb-contact__btn--ghost:hover {
+    border-color: {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+  }
+
+  .ctb-contact__form {
+    background: {{ section.settings.form_background }};
+    border: 1px solid {{ section.settings.form_border }};
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  }
+
+  .ctb-contact__group {
+    margin-bottom: 1.25rem;
+  }
+
+  .ctb-contact__label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: {{ section.settings.heading_color }};
+    font-weight: 700;
+  }
+
+  .ctb-contact__input,
+  .ctb-contact__textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #1f1f1f;
+    background: #0c0c0c;
+    color: {{ section.settings.text_color }};
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ctb-contact__input:focus,
+  .ctb-contact__textarea:focus {
+    outline: none;
+    border-color: {{ section.settings.accent_color }};
+    box-shadow: 0 0 0 3px rgba(245, 215, 110, 0.15);
+  }
+
+  .ctb-contact__textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .ctb-contact__submit {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 6px;
+    border: none;
+    background: {{ section.settings.accent_color }};
+    color: #050505;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ctb-contact__submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245, 215, 110, 0.25);
+  }
+
+  @media (max-width: 1024px) {
+    .ctb-contact__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ctb-contact {
+      padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 0 {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px 0;
+    }
+
+    .ctb-contact__inner {
+      padding: 0 16px;
+    }
+
+    .ctb-contact__buttons {
+      flex-direction: column;
+    }
+
+    .ctb-contact__btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+{% endstylesheet %}
+
+<section id="ctb-contact-{{ section.id }}" class="ctb-contact">
+  <div class="ctb-contact__inner">
+    <div class="ctb-contact__info">
+      <h2 class="ctb-contact__title">{{ section.settings.heading }}</h2>
+      {% if section.settings.intro_text != blank %}
+        <p class="ctb-contact__intro">{{ section.settings.intro_text }}</p>
+      {% endif %}
+
+      <div class="ctb-contact__items">
+        {% for block in section.blocks %}
+          {% if block.type == 'info' %}
+            <div class="ctb-contact__item">
+              <span class="ctb-contact__icon"><i class="{{ block.settings.icon }}" aria-hidden="true"></i></span>
+              <div>
+                <p class="ctb-contact__item-title">{{ block.settings.title }}</p>
+                {% if block.settings.is_link and block.settings.link_url != blank %}
+                  <a class="ctb-contact__item-link" href="{{ block.settings.link_url }}" {% if block.settings.open_in_new_tab %}target="_blank"{% endif %}>{{ block.settings.content }}</a>
+                {% else %}
+                  <p class="ctb-contact__item-text">{{ block.settings.content }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="ctb-contact__buttons">
+        {% if section.settings.button_text_1 != blank %}
+          <a class="ctb-contact__btn ctb-contact__btn--primary" href="{{ section.settings.button_link_1 }}">
+            {% if section.settings.button_icon_1 != blank %}<i class="{{ section.settings.button_icon_1 }}" aria-hidden="true"></i>{% endif %}
+            {{ section.settings.button_text_1 }}
+          </a>
+        {% endif %}
+        {% if section.settings.button_text_2 != blank %}
+          <a class="ctb-contact__btn ctb-contact__btn--ghost" href="{{ section.settings.button_link_2 }}">
+            {% if section.settings.button_icon_2 != blank %}<i class="{{ section.settings.button_icon_2 }}" aria-hidden="true"></i>{% endif %}
+            {{ section.settings.button_text_2 }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.settings.enable_contact_form %}
+      <div class="ctb-contact__form">
+        <form method="post" action="/contact#ctb-contact-{{ section.id }}" id="ContactForm-{{ section.id }}" accept-charset="UTF-8" class="contact-form">
+          <input type="hidden" name="form_type" value="contact">
+          <input type="hidden" name="utf8" value="✓">
+
+          <div class="ctb-contact__group">
+            <label class="ctb-contact__label" for="ContactFormName-{{ section.id }}">Name</label>
+            <input class="ctb-contact__input" type="text" id="ContactFormName-{{ section.id }}" name="contact[name]" required>
+          </div>
+
+          <div class="ctb-contact__group">
+            <label class="ctb-contact__label" for="ContactFormEmail-{{ section.id }}">Email</label>
+            <input class="ctb-contact__input" type="email" id="ContactFormEmail-{{ section.id }}" name="contact[email]" required>
+          </div>
+
+          <div class="ctb-contact__group">
+            <label class="ctb-contact__label" for="ContactFormPhone-{{ section.id }}">Phone (optional)</label>
+            <input class="ctb-contact__input" type="tel" id="ContactFormPhone-{{ section.id }}" name="contact[phone]">
+          </div>
+
+          <div class="ctb-contact__group">
+            <label class="ctb-contact__label" for="ContactFormMessage-{{ section.id }}">Message</label>
+            <textarea class="ctb-contact__textarea" id="ContactFormMessage-{{ section.id }}" name="contact[body]" required></textarea>
+          </div>
+
+          <button type="submit" class="ctb-contact__submit">Send Message</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTB Contact (Black)",
+  "settings": [
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Get in Touch"},
+    {"type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "Have questions about our services, apparel, or events? Reach out to the CTB Garage team."},
+    {"type": "checkbox", "id": "enable_contact_form", "label": "Show contact form", "default": true},
+    {"type": "text", "id": "button_text_1", "label": "Primary Button Text", "default": "Call Us"},
+    {"type": "url", "id": "button_link_1", "label": "Primary Button Link", "default": "tel:+15551234567"},
+    {"type": "text", "id": "button_icon_1", "label": "Primary Button Icon", "default": "fas fa-phone"},
+    {"type": "text", "id": "button_text_2", "label": "Secondary Button Text", "default": "Map & Directions"},
+    {"type": "url", "id": "button_link_2", "label": "Secondary Button Link", "default": "https://maps.google.com/?q=4201+W+Kinzie+Street,+Chicago,+IL"},
+    {"type": "text", "id": "button_icon_2", "label": "Secondary Button Icon", "default": "fas fa-map-marker-alt"},
+    {"type": "range", "id": "padding_top", "min": 20, "max": 140, "step": 10, "unit": "px", "label": "Padding Top", "default": 70},
+    {"type": "range", "id": "padding_bottom", "min": 20, "max": 140, "step": 10, "unit": "px", "label": "Padding Bottom", "default": 70},
+    {"type": "color", "id": "background_color", "label": "Background", "default": "#050505"},
+    {"type": "color", "id": "heading_color", "label": "Heading Color", "default": "#f5f5f5"},
+    {"type": "color", "id": "text_color", "label": "Text Color", "default": "#e6e6e6"},
+    {"type": "color", "id": "subtext_color", "label": "Subtext Color", "default": "#bdbdbd"},
+    {"type": "color", "id": "accent_color", "label": "Accent Color", "default": "#f5d76e"},
+    {"type": "color", "id": "form_background", "label": "Form Background", "default": "#0a0a0a"},
+    {"type": "text", "id": "form_border", "label": "Form Border", "default": "1px solid #1f1f1f"}
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Contact Info",
+      "settings": [
+        {"type": "text", "id": "icon", "label": "Icon class", "default": "fas fa-map-marker-alt"},
+        {"type": "text", "id": "title", "label": "Title", "default": "Address"},
+        {"type": "textarea", "id": "content", "label": "Content", "default": "4201 W Kinzie Street, Chicago, IL"},
+        {"type": "checkbox", "id": "is_link", "label": "Make clickable", "default": true},
+        {"type": "url", "id": "link_url", "label": "Link URL", "default": "https://maps.google.com/?q=4201+W+Kinzie+Street,+Chicago,+IL"},
+        {"type": "checkbox", "id": "open_in_new_tab", "label": "Open in new tab", "default": true}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTB Contact (Black)",
+      "blocks": [
+        {"type": "info"},
+        {"type": "info", "settings": {"icon": "fas fa-phone", "title": "Phone", "content": "(555) 123-4567", "link_url": "tel:+15551234567"}},
+        {"type": "info", "settings": {"icon": "fas fa-envelope", "title": "Email", "content": "info@ctbgarage.com", "link_url": "mailto:info@ctbgarage.com"}}
+      ]
+    }
+  ]
+}
+{% endschema %}
