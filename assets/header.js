@@ -47,6 +47,12 @@ class HeaderComponent extends Component {
   #lastScrollTop = 0;
 
   /**
+   * Last logged scroll state to avoid noisy console output
+   * @type {{direction: string | null, sticky: string | null}}
+   */
+  #lastScrollLog = { direction: null, sticky: null };
+
+  /**
    * A timeout to allow for hiding animation, when sticky behavior is 'scroll-up'
    * @type {number | null}
    */
@@ -148,6 +154,7 @@ class HeaderComponent extends Component {
       }
 
       this.#lastScrollTop = scrollTop;
+      this.#logScrollState(scrollTop);
       return;
     }
 
@@ -179,6 +186,22 @@ class HeaderComponent extends Component {
     }
 
     this.#lastScrollTop = scrollTop;
+    this.#logScrollState(scrollTop);
+  };
+
+  /**
+   * Log scroll state changes to the console without spamming every scroll event
+   * @param {number} scrollTop - Current scrollTop value
+   */
+  #logScrollState = (scrollTop) => {
+    const direction = this.dataset.scrollDirection ?? 'none';
+    const sticky = this.dataset.stickyState ?? 'inactive';
+
+    if (this.#lastScrollLog.direction === direction && this.#lastScrollLog.sticky === sticky) return;
+
+    this.#lastScrollLog = { direction, sticky };
+    // Helpful diagnostic to see header scroll behavior
+    console.log('Header scroll state', { direction, sticky, scrollTop });
   };
 
   connectedCallback() {
