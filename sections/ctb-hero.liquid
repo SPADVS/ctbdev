@@ -75,6 +75,17 @@
     font-weight: 800;
     letter-spacing: 1px;
     margin: 0;
+    opacity: 1;
+  }
+
+  .ctb-hero__title .letter {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  .ctb-hero__title .tricksword {
+    white-space: nowrap;
+    display: inline-block;
   }
 
   .ctb-hero__subtitle {
@@ -83,6 +94,8 @@
     max-width: 780px;
     margin: 0;
     color: {{ section.settings.subtext_color }};
+    opacity: 0;
+    transform: translateX(50px);
   }
 
   .ctb-hero__buttons {
@@ -98,6 +111,8 @@
     gap: 0.5rem;
     padding: 12px 28px;
     border-radius: 6px;
+    opacity: 0;
+    transform: translateX(50px);
     font-weight: 700;
     text-decoration: none;
     border: 2px solid transparent;
@@ -226,6 +241,59 @@
     });
 
     splide.mount();
+  });
+{% endjavascript %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    // Split title text into letters for animation
+    const titleEl = document.querySelector('#ctb-hero-{{ section.id }} .ctb-hero__title');
+    if (titleEl && typeof anime !== 'undefined') {
+      // Split words
+      const titleWords = titleEl.innerHTML.split(/\s+/);
+      titleEl.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
+      
+      // Split letters in each word
+      const wordEls = titleEl.querySelectorAll('.tricksword');
+      wordEls.forEach(wordEl => {
+        const letters = wordEl.textContent.split('');
+        wordEl.innerHTML = letters.map(letter => 
+          letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`
+        ).join('');
+      });
+
+      // Animate letters
+      anime({
+        targets: '#ctb-hero-{{ section.id }} .ctb-hero__title .letter',
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(25, { start: 100 })
+      });
+
+      // Animate subtitle
+      anime({
+        targets: '#ctb-hero-{{ section.id }} .ctb-hero__subtitle',
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: 600
+      });
+
+      // Animate buttons
+      anime({
+        targets: '#ctb-hero-{{ section.id }} .ctb-hero__button',
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(150, { start: 800 })
+      });
+    }
   });
 {% endjavascript %}
 
