@@ -1,0 +1,308 @@
+{
+  "sections": {
+    "ctb_hero": {
+      "type": "ctb-hero",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {}
+        }
+      },
+      "block_order": ["slide_1", "slide_2", "slide_3"],
+      "settings": {
+        "eyebrow": "Auto Body & Apparel",
+        "heading": "CTB GARAGE",
+        "tagline": "Precision. Protection. Perfection—Your Ride, Our Pride.",
+        "autoplay": true,
+        "autoplay_speed": 6000,
+        "button_text_1": "Book Now",
+        "button_link_1": "#ctb-contact",
+        "button_icon_1": "fas fa-calendar-check",
+        "button_text_2": "About Us",
+        "button_link_2": "#ctb-about",
+        "button_icon_2": "fas fa-plus"
+      }
+    },
+    "ctb_hero_features": {
+      "type": "ctb-hero-features",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-check",
+            "text": "Professional Auto Body Repair"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-map-marker-alt",
+            "text": "Located at 4201 W Kinzie Street, Chicago"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-ticket-alt",
+            "text": "Exclusive Car Event Tickets"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-blog",
+            "text": "Automotive Lifestyle Blog"
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {}
+    },
+    "ctb_about": {
+      "type": "ctb-about",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-wrench",
+            "title": "Professional Auto Body Repair",
+            "detail": "Expert collision repair, paint work, and restoration services."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-map-marker-alt",
+            "title": "Located in Chicago",
+            "detail": "Visit us at 4201 W Kinzie Street, Chicago, IL."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon_class": "fas fa-ticket-alt",
+            "title": "Car Event Tickets",
+            "detail": "Get tickets to exclusive automotive events and car meets."
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3"],
+      "settings": {
+        "heading": "About CTB Garage",
+        "description": "Welcome to CTB Garage - your premier destination for professional auto body repair in Chicago. This is our personal blog where we showcase our craftsmanship, share our automotive passion, and connect with car enthusiasts.",
+        "instagram_handle": "ctbgarage",
+        "button_text": "Contact Us for a Build",
+        "button_link": "#ctb-contact"
+      }
+    },
+    "ctb_merch": {
+      "type": "ctb-merch",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "title": "CTB Garage Hoodie",
+            "price": "$45",
+            "badge": "Popular"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "title": "CTB Garage T-Shirt",
+            "price": "$30"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "title": "CTB Garage Hat",
+            "price": "$25"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "title": "CTB Garage Sweatshirt",
+            "price": "$40"
+          }
+        }
+      },
+      "block_order": ["item_1", "item_2", "item_3", "item_4"],
+      "settings": {
+        "heading": "CTB Garage Merch",
+        "subtitle": "Check out our exclusive automotive apparel collection"
+      }
+    },
+    "ctb_testimonials": {
+      "type": "ctb-testimonials",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Excellent auto body work!",
+            "testimonial": "CTB Garage did an amazing job on my car's body repair. The paint match was perfect and they finished ahead of schedule. Highly recommend!",
+            "customer_name": "Mike T., Chicago"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Professional service!",
+            "testimonial": "Great experience at CTB Garage. They know their stuff and take pride in their work. My car looks brand new after the collision repair.",
+            "customer_name": "Sarah L., Illinois"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Love the apparel!",
+            "testimonial": "Not only do they do great auto body work, but their apparel line is fire! Wearing my CTB Garage hoodie to every car meet now.",
+            "customer_name": "Carlos R., Car Enthusiast"
+          }
+        },
+        "testimonial_4": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "Top notch quality!",
+            "testimonial": "Been following CTB Garage for a while now. Finally got to visit their shop on Kinzie Street and the quality of work is incredible. Will definitely be back!",
+            "customer_name": "Jennifer M., Chicago"
+          }
+        }
+      },
+      "block_order": ["testimonial_1", "testimonial_2", "testimonial_3", "testimonial_4"],
+      "settings": {
+        "heading": "What Customers Are Saying"
+      }
+    },
+    "ctb_gallery": {
+      "type": "ctb-gallery",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "Event Galleries",
+        "description": "Check out some of our recent auto body work and builds from CTB Garage."
+      }
+    },
+    "ctb_faq": {
+      "type": "ctb-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Where is CTB Garage located?",
+            "answer": "We're located at 4201 W Kinzie Street, Chicago, Illinois. Come visit us for professional auto body repair services."
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "What services does CTB Garage offer?",
+            "answer": "We offer professional auto body repair, collision repair, paint work, restoration services, exclusive car event tickets, and automotive apparel."
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "How can I book an appointment?",
+            "answer": "You can contact us through our contact form below or call us directly. We'll be happy to schedule a time that works best for you."
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you offer automotive apparel?",
+            "answer": "Yes! We have an exclusive collection of CTB Garage apparel including hoodies, t-shirts, hats, and more. Check out our merchandise section above."
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4"],
+      "settings": {
+        "heading": "Frequently Asked Questions"
+      }
+    },
+    "ctb_contact": {
+      "type": "ctb-contact",
+      "blocks": {
+        "info_1": {
+          "type": "info",
+          "settings": {
+            "icon": "fas fa-map-marker-alt",
+            "title": "Address",
+            "content": "4201 W Kinzie Street, Chicago, IL",
+            "is_link": true,
+            "link_url": "https://maps.google.com/?q=4201+W+Kinzie+Street,+Chicago,+IL",
+            "open_in_new_tab": true
+          }
+        },
+        "info_2": {
+          "type": "info",
+          "settings": {
+            "icon": "fas fa-phone",
+            "title": "Phone",
+            "content": "(555) 123-4567",
+            "is_link": true,
+            "link_url": "tel:+15551234567",
+            "open_in_new_tab": false
+          }
+        },
+        "info_3": {
+          "type": "info",
+          "settings": {
+            "icon": "fas fa-envelope",
+            "title": "Email",
+            "content": "info@ctbgarage.com",
+            "is_link": true,
+            "link_url": "mailto:info@ctbgarage.com",
+            "open_in_new_tab": false
+          }
+        },
+        "info_4": {
+          "type": "info",
+          "settings": {
+            "icon": "fab fa-instagram",
+            "title": "Instagram",
+            "content": "@ctbgarage",
+            "is_link": true,
+            "link_url": "https://www.instagram.com/ctbgarage/",
+            "open_in_new_tab": true
+          }
+        }
+      },
+      "block_order": ["info_1", "info_2", "info_3", "info_4"],
+      "settings": {
+        "heading": "Get in Touch",
+        "intro_text": "Have questions about our services? Get in touch with us today!",
+        "enable_contact_form": true,
+        "button_text_1": "Call Us",
+        "button_link_1": "tel:+15551234567",
+        "button_icon_1": "fas fa-phone",
+        "button_text_2": "Map & Directions",
+        "button_link_2": "https://maps.google.com/?q=4201+W+Kinzie+Street,+Chicago,+IL",
+        "button_icon_2": "fas fa-map-marker-alt"
+      }
+    }
+  },
+  "order": [
+    "ctb_hero",
+    "ctb_hero_features",
+    "ctb_about",
+    "ctb_merch",
+    "ctb_testimonials",
+    "ctb_gallery",
+    "ctb_faq",
+    "ctb_contact"
+  ]
+}
