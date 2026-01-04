@@ -477,16 +477,6 @@
     min-height: calc(var(--hero-min-height) - var(--hero-height-offset));
   }
 
-  .hero--scrolled .hero__container::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 1px;
-    background: rgb(var(--color-border-rgb) / var(--hero-border-opacity));
-    pointer-events: none;
-    z-index: var(--layer-base);
-  }
-
   .hero[data-shopify-visual-preview] {
     --hero-min-height: 600px;
 
@@ -692,45 +682,6 @@
     }
   }
 {% endstylesheet %}
-
-{% javascript %}
-  (() => {
-    const init = () => {
-      const hero = document.getElementById('Hero-{{ section.id }}');
-      if (!hero) return;
-
-      const setScrollState = () => {
-        const scrolled = window.scrollY > 0;
-        hero.classList.toggle('hero--scrolled', scrolled);
-      };
-
-      let ticking = false;
-      const handleScroll = () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          setScrollState();
-          ticking = false;
-        });
-      };
-
-      setScrollState();
-      window.addEventListener('scroll', handleScroll, { passive: true });
-
-      document.addEventListener('shopify:section:unload', (event) => {
-        if (event.detail?.sectionId === '{{ section.id }}') {
-          window.removeEventListener('scroll', handleScroll);
-        }
-      });
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init, { once: true });
-    } else {
-      init();
-    }
-  })();
-{% endjavascript %}
 
 {% schema %}
 {
