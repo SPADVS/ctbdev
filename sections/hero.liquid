@@ -681,7 +681,94 @@
       }
     }
   }
+
+  /* Anime.js letter animation styles */
+  .hero-animate-title {
+    opacity: 1;
+  }
+
+  .hero-animate-title .letter {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  .hero-animate-title .tricksword {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .hero-animate-text {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  .hero-animate-button {
+    opacity: 0;
+    transform: translateX(50px);
+  }
 {% endstylesheet %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroSection = document.querySelector('#Hero-{{ section.id }}');
+    if (!heroSection || typeof anime === 'undefined') return;
+
+    // Animate titles with letter stagger
+    const titles = heroSection.querySelectorAll('.hero-animate-title');
+    titles.forEach((title, titleIndex) => {
+      // Split words
+      const titleWords = title.innerHTML.split(/\s+/);
+      title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
+      
+      // Split letters in each word
+      const wordEls = title.querySelectorAll('.tricksword');
+      wordEls.forEach(wordEl => {
+        const letters = wordEl.textContent.split('');
+        wordEl.innerHTML = letters.map(letter => 
+          letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`
+        ).join('');
+      });
+
+      // Animate letters
+      anime({
+        targets: title.querySelectorAll('.letter'),
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(25, { start: 100 + (titleIndex * 300) })
+      });
+    });
+
+    // Animate text blocks
+    const textBlocks = heroSection.querySelectorAll('.hero-animate-text');
+    textBlocks.forEach((text, index) => {
+      anime({
+        targets: text,
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: 600 + (index * 100)
+      });
+    });
+
+    // Animate buttons
+    const buttons = heroSection.querySelectorAll('.hero-animate-button');
+    if (buttons.length > 0) {
+      anime({
+        targets: buttons,
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(150, { start: 800 })
+      });
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
@@ -1069,6 +1156,10 @@
     {
       "type": "header",
       "content": "t:content.appearance"
+    },
+    {
+      "type": "paragraph",
+      "content": "To enable letter animations: Add 'hero-animate-title' class to heading blocks, 'hero-animate-text' to text blocks, and 'hero-animate-button' to button blocks using the Custom CSS field."
     },
     {
       "type": "color_scheme",
