@@ -452,6 +452,49 @@
       "settings": {
         "heading": "Auto Sliding Gallery"
       }
+    },
+    "test_carousel_rTVhig": {
+      "type": "test-carousel",
+      "blocks": {
+        "slide_y7J7nq": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 1",
+            "description": "First test slide - GitHub sync working!"
+          }
+        },
+        "slide_8jaYhA": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 2",
+            "description": "Second test slide - Auto-deploy active!"
+          }
+        },
+        "slide_LbRiWY": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 3",
+            "description": "Third test slide - Splide carousel running!"
+          }
+        },
+        "slide_BhahTN": {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 4",
+            "description": "rfy to go!"
+          }
+        }
+      },
+      "block_order": [
+        "slide_y7J7nq",
+        "slide_8jaYhA",
+        "slide_LbRiWY",
+        "slide_BhahTN"
+      ],
+      "name": "🧪 Test Carousel",
+      "settings": {
+        "heading": "Test Splide Cardfousel"
+      }
     }
   },
   "order": [
@@ -459,6 +502,7 @@
     "product_list_fa6P9H",
     "section_XrX9gi",
     "test_carousel_dHhcFh",
-    "simple_auto_slider_PcXb6Q"
+    "simple_auto_slider_PcXb6Q",
+    "test_carousel_rTVhig"
   ]
 }
