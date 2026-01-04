@@ -93,25 +93,46 @@
 {% endstylesheet %}
 
 {% javascript %}
-  document.addEventListener('DOMContentLoaded', function() {
+  function initCarousel() {
     const carousel = document.querySelector('#simple-auto-carousel-{{ section.id }}');
-    if (!carousel || typeof Splide === 'undefined') return;
+    
+    if (!carousel) {
+      console.warn('Carousel element not found');
+      return;
+    }
 
-    const splide = new Splide(carousel, {
-      type: 'loop',
-      perPage: 3,
-      gap: '1.5rem',
-      autoplay: true,
-      interval: 4000,
-      pauseOnHover: true,
-      breakpoints: {
-        1024: { perPage: 2 },
-        768: { perPage: 1 }
-      }
-    });
+    if (typeof Splide === 'undefined') {
+      console.warn('Splide not loaded yet, retrying...');
+      setTimeout(initCarousel, 500);
+      return;
+    }
 
-    splide.mount();
-  });
+    try {
+      const splide = new Splide(carousel, {
+        type: 'loop',
+        perPage: 3,
+        gap: '1.5rem',
+        autoplay: true,
+        interval: 4000,
+        pauseOnHover: true,
+        breakpoints: {
+          1024: { perPage: 2 },
+          768: { perPage: 1 }
+        }
+      });
+
+      splide.mount();
+      console.log('Carousel mounted successfully');
+    } catch (error) {
+      console.error('Carousel initialization failed:', error);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousel);
+  } else {
+    initCarousel();
+  }
 {% endjavascript %}
 
 <section class="simple-auto-slider">
