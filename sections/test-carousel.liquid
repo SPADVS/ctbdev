@@ -1,0 +1,172 @@
+{% stylesheet %}
+  .test-carousel {
+    background: #0a0a0a;
+    padding: 60px 0;
+    color: #f5f5f5;
+  }
+
+  .test-carousel__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .test-carousel__title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 0 0 2rem 0;
+    color: #f5d76e;
+    text-transform: uppercase;
+  }
+
+  .test-carousel__slide {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .test-carousel__slide h3 {
+    color: #f5d76e;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .test-carousel__slide p {
+    color: #c9c9c9;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .test-carousel .splide__pagination__page.is-active {
+    background: #f5d76e;
+  }
+
+  .test-carousel .splide__arrow {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .test-carousel .splide__arrow:hover {
+    background: #f5d76e;
+    border-color: #f5d76e;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('#test-carousel-{{ section.id }}');
+    if (!carousel || typeof Splide === 'undefined') return;
+
+    const splide = new Splide(carousel, {
+      type: 'loop',
+      perPage: 3,
+      gap: '1.5rem',
+      autoplay: true,
+      interval: 3000,
+      pauseOnHover: true,
+      breakpoints: {
+        1024: { perPage: 2 },
+        768: { perPage: 1 }
+      }
+    });
+
+    splide.mount();
+  });
+{% endjavascript %}
+
+<section class="test-carousel">
+  <div class="test-carousel__inner">
+    <h2 class="test-carousel__title">{{ section.settings.heading }}</h2>
+
+    <div id="test-carousel-{{ section.id }}" class="splide">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {% for block in section.blocks %}
+            <li class="splide__slide">
+              <div class="test-carousel__slide">
+                <h3>{{ block.settings.title }}</h3>
+                <p>{{ block.settings.description }}</p>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "🧪 Test Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Test Splide Carousel"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Slide Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "This is a test slide in the Splide carousel."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "🧪 Test Carousel",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 1",
+            "description": "First test slide - GitHub sync working!"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 2",
+            "description": "Second test slide - Auto-deploy active!"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 3",
+            "description": "Third test slide - Splide carousel running!"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Slide 4",
+            "description": "Fourth test slide - Ready to go!"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
