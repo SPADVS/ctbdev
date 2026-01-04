@@ -409,12 +409,56 @@
       "settings": {
         "heading": "Test Splide Carousel"
       }
+    },
+    "simple_auto_slider_PcXb6Q": {
+      "type": "simple-auto-slider",
+      "blocks": {
+        "slide_zgGnPN": {
+          "type": "slide",
+          "settings": {
+            "title": "First Slide",
+            "description": "This carousel auto-slides every 4 seconds"
+          }
+        },
+        "slide_AbeVfg": {
+          "type": "slide",
+          "settings": {
+            "title": "Second Slide",
+            "description": "Hover to pause the auto-sliding"
+          }
+        },
+        "slide_cJULWB": {
+          "type": "slide",
+          "settings": {
+            "title": "Third Slide",
+            "description": "Responsive design for all devices"
+          }
+        },
+        "slide_8iw38D": {
+          "type": "slide",
+          "settings": {
+            "title": "Fourth Slide",
+            "description": "Gold accent colors match CTB theme"
+          }
+        }
+      },
+      "block_order": [
+        "slide_zgGnPN",
+        "slide_AbeVfg",
+        "slide_cJULWB",
+        "slide_8iw38D"
+      ],
+      "name": "🎠 Simple Auto Slider",
+      "settings": {
+        "heading": "Auto Sliding Gallery"
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "product_list_fa6P9H",
     "section_XrX9gi",
-    "test_carousel_dHhcFh"
+    "test_carousel_dHhcFh",
+    "simple_auto_slider_PcXb6Q"
   ]
 }
