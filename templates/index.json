@@ -370,6 +370,12 @@
     "simple_auto_slider_PcXb6Q": {
       "type": "simple-auto-slider",
       "blocks": {
+        "product_jWhDUi": {
+          "type": "product",
+          "settings": {
+            "product": "test"
+          }
+        },
         "product_rcLcyn": {
           "type": "product",
           "settings": {
@@ -390,6 +396,7 @@
         }
       },
       "block_order": [
+        "product_jWhDUi",
         "product_rcLcyn",
         "product_rf7Qx8",
         "product_kxnHzj"
