@@ -21,9 +21,9 @@
               {% if block.type == 'feature' %}
                 <li style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
                   <span style="color: {{ section.settings.text_color }};">
-                    <strong>{{ block.settings.title }}:</strong> {{ block.settings.description }}
+                    {{ block.settings.title }}{% if block.settings.description != blank %}: {% endif %}{{ block.settings.description }}
                   </span>
-                  <i class="fas fa-check" style="color: {{ section.settings.accent_color }}; font-size: 1.2rem;"></i>
+                  <i class="fas fa-check" style="color: {{ section.settings.accent_color }}; font-size: 1.2rem; width: 20px;"></i>
                 </li>
               {% endif %}
             {% endfor %}
