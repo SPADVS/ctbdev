@@ -862,12 +862,6 @@
     
     console.log('Anime.js loaded successfully');
 
-    // First, ensure Road Rage font is applied to titles
-    const allTitles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
-    allTitles.forEach(title => {
-      title.style.setProperty('font-family', '"Road Rage", -apple-system, BlinkMacSystemFont, sans-serif', 'important');
-    });
-
     // Animation settings from schema
     const direction = '{{ section.settings.animation_direction }}';
     const duration = {{ section.settings.animation_duration }};
@@ -895,8 +889,9 @@
       // Set initial opacity
       title.style.opacity = '1';
       
-      // Split words
-      const titleWords = title.innerHTML.split(/\s+/);
+      // Split words using textContent to avoid capturing HTML
+      const titleText = title.textContent;
+      const titleWords = titleText.split(/\s+/);
       console.log(`Title ${titleIndex} split into ${titleWords.length} words`);
       title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
       
