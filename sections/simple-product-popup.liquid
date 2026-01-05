@@ -1,0 +1,370 @@
+{% comment %}
+  Simple Product Popup - Floating button that opens a product showcase popup
+{% endcomment %}
+
+<style>
+  .product-popup-trigger {
+    position: fixed;
+    bottom: {{ section.settings.button_bottom }}px;
+    right: {{ section.settings.button_right }}px;
+    z-index: 999;
+    background: {{ section.settings.button_bg }};
+    color: {{ section.settings.button_text_color }};
+    padding: 16px 24px;
+    border-radius: {{ section.settings.button_radius }}px;
+    border: 2px solid {{ section.settings.button_border }};
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    animation: floatIn 0.5s ease;
+  }
+
+  .product-popup-trigger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  @keyframes floatIn {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .product-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .product-popup-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+
+  .product-popup-content {
+    background: {{ section.settings.popup_bg }};
+    max-width: 900px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 40px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+  }
+
+  .product-popup-overlay.active .product-popup-content {
+    transform: scale(1);
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    color: {{ section.settings.popup_text_color }};
+    cursor: pointer;
+    line-height: 1;
+    padding: 8px;
+    transition: transform 0.2s ease;
+  }
+
+  .popup-close:hover {
+    transform: rotate(90deg);
+  }
+
+  .popup-title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: {{ section.settings.popup_text_color }};
+    margin: 0 0 12px 0;
+    font-weight: 700;
+  }
+
+  .popup-description {
+    color: {{ section.settings.popup_text_color }};
+    margin: 0 0 32px 0;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .popup-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+  }
+
+  .popup-product-card {
+    background: {{ section.settings.card_bg }};
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid {{ section.settings.card_border }};
+  }
+
+  .popup-product-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .popup-product-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .popup-product-info {
+    padding: 16px;
+  }
+
+  .popup-product-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ section.settings.popup_text_color }};
+    margin: 0 0 8px 0;
+  }
+
+  .popup-product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: {{ section.settings.accent_color }};
+  }
+
+  .popup-product-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: {{ section.settings.accent_color }};
+    color: #000;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+  }
+
+  .popup-product-link:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .product-popup-content {
+      padding: 24px;
+      width: 95%;
+    }
+    
+    .popup-products {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<button class="product-popup-trigger" id="productPopupTrigger">
+  {{ section.settings.button_text }}
+</button>
+
+<div class="product-popup-overlay" id="productPopupOverlay">
+  <div class="product-popup-content">
+    <button class="popup-close" id="popupClose">&times;</button>
+    
+    <h2 class="popup-title">{{ section.settings.popup_title }}</h2>
+    <p class="popup-description">{{ section.settings.popup_description }}</p>
+
+    <div class="popup-products">
+      {% for block in section.blocks %}
+        {% if block.type == 'product' and block.settings.product != blank %}
+          {% assign product = block.settings.product %}
+          <div class="popup-product-card">
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | image_url: width: 400 }}" 
+                alt="{{ product.featured_image.alt | default: product.title }}"
+                class="popup-product-image"
+              >
+            {% endif %}
+            <div class="popup-product-info">
+              <h3 class="popup-product-title">{{ product.title }}</h3>
+              <div class="popup-product-price">{{ product.price | money }}</div>
+              <a href="{{ product.url }}" class="popup-product-link">View Product</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const trigger = document.getElementById('productPopupTrigger');
+    const overlay = document.getElementById('productPopupOverlay');
+    const closeBtn = document.getElementById('popupClose');
+
+    trigger.addEventListener('click', function() {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeBtn.addEventListener('click', function() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Simple Product Popup",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Floating Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Featured Products"
+    },
+    {
+      "type": "range",
+      "id": "button_bottom",
+      "min": 10,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Button bottom position",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "button_right",
+      "min": 10,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Button right position",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button background",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_border",
+      "label": "Button border color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "header",
+      "content": "Popup Content"
+    },
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "Popup title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "textarea",
+      "id": "popup_description",
+      "label": "Popup description",
+      "default": "Check out our latest products and special offers."
+    },
+    {
+      "type": "color",
+      "id": "popup_bg",
+      "label": "Popup background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "popup_text_color",
+      "label": "Popup text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Product card background",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Product card border",
+      "default": "#3a3a3a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#FFD700"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Simple Product Popup",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
