@@ -982,6 +982,20 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "simple_floating_products_pbNbNr": {
+      "type": "simple-floating-products",
+      "name": "Simple Floating Products",
+      "settings": {
+        "heading": "Featured Products",
+        "trigger_color": "#000000",
+        "accent_color": "#FFD700",
+        "icon_color": "#FFD700",
+        "panel_background": "#1a1a1a",
+        "header_background": "#000000",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff"
+      }
     }
   },
   "order": [
@@ -993,6 +1007,7 @@
     "1767563700acdcc142",
     "simple_about_bP4iTT",
     "ctb_faq_KTeKq3",
-    "section_AQBaJ6"
+    "section_AQBaJ6",
+    "simple_floating_products_pbNbNr"
   ]
 }
