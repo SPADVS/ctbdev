@@ -74,6 +74,11 @@
   </div>
 </section>
 
+<!-- Load Splide CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+
 <!-- CSS: Updated Styles -->
 <style>
   /* Outer text: white */
@@ -302,10 +307,17 @@
 
 <!-- JavaScript: Tab switching, slider initialization, and animation -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+// Wait for Splide and extensions to load
+function initProductSliderTabs() {
   // Scope everything within the Product Slider Tabs section
   var productSliderTabs = document.querySelector('.product-slider-tabs');
   if (!productSliderTabs) return;
+
+  // Check if Splide is loaded
+  if (typeof Splide === 'undefined') {
+    console.error('Splide library not loaded');
+    return;
+  }
 
   // Function to animate the slider slides (now including clones)
   function animateSplide(splideElement) {
@@ -344,7 +356,17 @@ document.addEventListener('DOMContentLoaded', function () {
           767: { autoScroll: { speed: autoScrollSpeed } }
         }
       });
-      splideInstance.mount(window.splide.Extensions);
+      // Mount with autoScroll extension
+      try {
+        if (typeof window.splide !== 'undefined' && window.splide.Extensions) {
+          splideInstance.mount(window.splide.Extensions);
+        } else {
+          splideInstance.mount();
+        }
+      } catch(e) {
+        console.warn('AutoScroll extension not available, mounting without it', e);
+        splideInstance.mount();
+      }
       splideElement.classList.add('splide-initialized');
       console.log('Initialized Splide for', splideElement);
       // Trigger the animation once mounted.
@@ -390,7 +412,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var splideElement = firstTabContent.querySelector('.splide');
     initSplide(splideElement);
   }
-});
+}
+
+// Load when DOM is ready, with delay to ensure scripts are loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initProductSliderTabs, 100);
+  });
+} else {
+  setTimeout(initProductSliderTabs, 100);
+}
 </script>
 
 {% schema %}
