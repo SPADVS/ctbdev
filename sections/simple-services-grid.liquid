@@ -1,0 +1,376 @@
+{% comment %}
+  Simple Services Grid - Grid of service/ticket cards with CTB Garage styling
+{% endcomment %}
+
+<style>
+.services-section {
+    padding: 80px 0;
+    background: #000;
+}
+
+.services-intro {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #9CA3AF;
+    margin-bottom: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.ticket-card {
+    background-color: #0a0a0a;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid {{ section.settings.border_color }};
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.ticket-card:nth-child(1) { animation-delay: 0.1s; }
+.ticket-card:nth-child(2) { animation-delay: 0.2s; }
+.ticket-card:nth-child(3) { animation-delay: 0.3s; }
+.ticket-card:nth-child(4) { animation-delay: 0.4s; }
+.ticket-card:nth-child(5) { animation-delay: 0.5s; }
+.ticket-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ticket-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 35px rgba(255, 255, 255, 0.4);
+}
+
+.ticket-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.ticket-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.ticket-card:hover .ticket-image img {
+    transform: scale(1.1);
+}
+
+.ticket-content {
+    padding: 30px;
+    text-align: center;
+}
+
+.ticket-content h3 {
+    font-family: var(--font-heading-family);
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.ticket-content p {
+    color: #9CA3AF;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+}
+
+.ticket-content .btn {
+    width: 100%;
+    max-width: 250px;
+    display: inline-block;
+    padding: 12px 24px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.ticket-content .btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+.view-all-container {
+    text-align: center;
+    padding: 40px 20px;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 0.6s ease 0.7s forwards;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    color: #D1D5DB;
+    margin-bottom: 20px;
+}
+
+.view-all-container .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.view-all-container .btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+    .services-section {
+        padding: 60px 0;
+    }
+
+    .ticket-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .ticket-image {
+        height: 250px;
+    }
+}
+</style>
+
+<section class="services-section">
+    <div class="page-width">
+        <h2 class="section-title gsap-fade-up">{{ section.settings.section_title }}</h2>
+        <p class="services-intro gsap-fade-up">{{ section.settings.section_intro }}</p>
+
+        <div class="ticket-grid">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'service_card' %}
+                  <div class="ticket-card" {{ block.shopify_attributes }}>
+                      <div class="ticket-image">
+                          {% if block.settings.card_image %}
+                            <img src="{{ block.settings.card_image | image_url: width: 800 }}" alt="{{ block.settings.card_title }}">
+                          {% else %}
+                            <div style="background: #333; width: 100%; height: 100%;"></div>
+                          {% endif %}
+                      </div>
+                      <div class="ticket-content">
+                          <h3>{{ block.settings.card_title }}</h3>
+                          <p>{{ block.settings.card_description }}</p>
+                          <a href="{{ block.settings.card_link }}" {% if block.settings.open_new_tab %}target="_blank"{% endif %} class="btn">{{ block.settings.button_text }}</a>
+                      </div>
+                  </div>
+              {% endcase %}
+            {% endfor %}
+        </div>
+
+        {% if section.settings.show_cta %}
+          <div class="view-all-container">
+              <p class="cta-text">{{ section.settings.cta_text }}</p>
+              <a href="{{ section.settings.cta_link }}" {% if section.settings.cta_new_tab %}target="_blank"{% endif %} class="btn">{{ section.settings.cta_button_text }}</a>
+          </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Simple Services Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Our Services"
+    },
+    {
+      "type": "textarea",
+      "id": "section_intro",
+      "label": "Section intro text",
+      "default": "Get tickets to exclusive automotive events in the Chicago area and beyond."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Card border color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Follow us on Instagram for event announcements!"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA button text",
+      "default": "Follow @ctbgarage"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_new_tab",
+      "label": "Open CTA link in new tab",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_card",
+      "name": "Service Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card image"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Card title",
+          "default": "Service Name"
+        },
+        {
+          "type": "textarea",
+          "id": "card_description",
+          "label": "Card description",
+          "default": "Description of the service or event."
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Get Tickets"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open link in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Simple Services Grid",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "Car Shows & Meets",
+            "card_description": "Access to exclusive car shows, meets, and automotive events in the Chicago area and beyond.",
+            "button_text": "Get Tickets"
+          }
+        },
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "Special Events",
+            "card_description": "Be part of special automotive events, cruises, and gatherings. Limited tickets available.",
+            "button_text": "Get Tickets"
+          }
+        },
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "VIP Experiences",
+            "card_description": "Premium VIP access to exclusive automotive events with behind-the-scenes experiences.",
+            "button_text": "Get Tickets"
+          }
+        },
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "Collision Repair",
+            "card_description": "Expert collision repair services to restore your vehicle to its original condition. We work with all insurance companies.",
+            "button_text": "Get Quote"
+          }
+        },
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "Paint & Body Work",
+            "card_description": "Professional paint jobs and body work with precision color matching. From touch-ups to full repaints.",
+            "button_text": "Get Quote"
+          }
+        },
+        {
+          "type": "service_card",
+          "settings": {
+            "card_title": "Full Customization & Builds",
+            "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
+            "button_text": "Get Started"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
