@@ -1,5 +1,5 @@
 {% comment %}
-  Simple Testimonials - Testimonial carousel with Splide slider (CTB Garage style)
+  Simple Testimonials - Testimonial carousel with Splide (CTB Garage style)
 {% endcomment %}
 
 <!-- Splide CSS -->
@@ -33,21 +33,20 @@
     font-size: 1.2rem;
 }
 
-.stars i {
-    margin: 0 2px;
-}
-
-.testimonial-card p {
+.testimonial-card > p:first-of-type {
     font-style: italic;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     color: #D1D5DB;
     font-size: 1.1rem;
     line-height: 1.6;
+    font-weight: 600;
 }
 
 .testimonial-detail {
-    font-size: 1rem !important;
-    color: #9CA3AF !important;
+    font-size: 1rem;
+    color: #9CA3AF;
+    margin-bottom: 25px;
+    line-height: 1.6;
 }
 
 .testimonial-card h4 {
@@ -59,39 +58,35 @@
 }
 
 /* Splide Overrides */
-.splide__pagination__page.is-active {
-    background: {{ section.settings.star_color }};
+.testimonials-section .splide__pagination__page.is-active {
+    background: {{ section.settings.pagination_active_color }};
     transform: scale(1.2);
 }
 
-.splide__pagination__page {
+.testimonials-section .splide__pagination__page {
     background: #555;
 }
 
-.splide__arrow {
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid {{ section.settings.star_color }};
+.testimonials-section .splide__arrow {
+    background: {{ section.settings.arrow_color }};
+    opacity: 1;
 }
 
-.splide__arrow:hover {
-    background: {{ section.settings.star_color }};
+.testimonials-section .splide__arrow:hover {
+    background: {{ section.settings.arrow_hover_color }};
 }
 
-.splide__arrow svg {
-    fill: {{ section.settings.star_color }};
-}
-
-.splide__arrow:hover svg {
-    fill: #000;
+.testimonials-section .splide__arrow svg {
+    fill: white;
 }
 
 @media (max-width: 768px) {
     .testimonials-section {
         padding: 60px 0;
     }
-
+    
     .testimonial-card {
-        padding: 30px 20px;
+        padding: 30px;
     }
 }
 </style>
@@ -100,7 +95,7 @@
     <div class="page-width">
         <h2 class="section-title">{{ section.settings.section_title }}</h2>
 
-        <div class="splide" id="testimonial-slider-{{ section.id }}" aria-label="Customer Testimonials">
+        <div class="splide" aria-label="Customer Testimonials">
             <div class="splide__track">
                 <ul class="splide__list">
                     {% for block in section.blocks %}
@@ -109,7 +104,7 @@
                           <li class="splide__slide" {{ block.shopify_attributes }}>
                               <div class="testimonial-card">
                                   <div class="stars">
-                                      {% for i in (1..block.settings.rating) %}
+                                      {% for i in (1..block.settings.star_rating) %}
                                         <i class="fas fa-star"></i>
                                       {% endfor %}
                                   </div>
@@ -128,35 +123,28 @@
 
 <!-- Splide JS -->
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+
 <script>
 (function() {
-    document.addEventListener('DOMContentLoaded', function() {
-        var testimonialSlider = document.querySelector('#testimonial-slider-{{ section.id }}');
-        
-        if (testimonialSlider) {
-            new Splide(testimonialSlider, {
-                type: '{{ section.settings.slider_type }}',
-                perPage: {{ section.settings.slides_per_page }},
-                perMove: 1,
-                gap: '20px',
-                pagination: {{ section.settings.show_pagination }},
-                arrows: {{ section.settings.show_arrows }},
-                autoplay: {{ section.settings.autoplay }},
-                interval: {{ section.settings.autoplay_speed }},
-                pauseOnHover: true,
-                pauseOnFocus: true,
-                resetProgress: false,
-                breakpoints: {
-                    1024: {
-                        perPage: 2,
-                    },
-                    640: {
-                        perPage: 1,
-                    }
+    if (document.querySelector('.testimonials-section .splide')) {
+        new Splide('.testimonials-section .splide', {
+            type: 'loop',
+            perPage: 3,
+            perMove: 1,
+            gap: '2rem',
+            autoplay: {{ section.settings.autoplay }},
+            interval: {{ section.settings.autoplay_interval | times: 1000 }},
+            speed: 800,
+            breakpoints: {
+                992: {
+                    perPage: 2,
+                },
+                768: {
+                    perPage: 1,
                 }
-            }).mount();
-        }
-    });
+            }
+        }).mount();
+    }
 })();
 </script>
 
@@ -174,48 +162,7 @@
     },
     {
       "type": "header",
-      "content": "Slider Settings"
-    },
-    {
-      "type": "select",
-      "id": "slider_type",
-      "label": "Slider type",
-      "options": [
-        {
-          "value": "slide",
-          "label": "Slide"
-        },
-        {
-          "value": "loop",
-          "label": "Loop"
-        },
-        {
-          "value": "fade",
-          "label": "Fade"
-        }
-      ],
-      "default": "loop"
-    },
-    {
-      "type": "range",
-      "id": "slides_per_page",
-      "label": "Slides per page (desktop)",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "checkbox",
-      "id": "show_pagination",
-      "label": "Show pagination dots",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_arrows",
-      "label": "Show navigation arrows",
-      "default": true
+      "content": "Carousel Settings"
     },
     {
       "type": "checkbox",
@@ -225,12 +172,12 @@
     },
     {
       "type": "range",
-      "id": "autoplay_speed",
-      "label": "Autoplay speed (ms)",
-      "min": 2000,
-      "max": 10000,
-      "step": 500,
-      "default": 5000
+      "id": "autoplay_interval",
+      "label": "Autoplay interval (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "header",
@@ -239,7 +186,7 @@
     {
       "type": "color",
       "id": "star_color",
-      "label": "Star color",
+      "label": "Star rating color",
       "default": "#FFD700"
     },
     {
@@ -247,6 +194,24 @@
       "id": "author_color",
       "label": "Author name color",
       "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "pagination_active_color",
+      "label": "Active pagination dot",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow background",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_color",
+      "label": "Arrow hover background",
+      "default": "#E5C100"
     }
   ],
   "blocks": [
@@ -256,7 +221,7 @@
       "settings": [
         {
           "type": "range",
-          "id": "rating",
+          "id": "star_rating",
           "label": "Star rating",
           "min": 1,
           "max": 5,
@@ -273,7 +238,7 @@
           "type": "textarea",
           "id": "testimonial_text",
           "label": "Testimonial text",
-          "default": "The team did an amazing job. Highly recommend!"
+          "default": "Amazing experience! Highly recommend their services."
         },
         {
           "type": "text",
@@ -292,7 +257,7 @@
         {
           "type": "testimonial",
           "settings": {
-            "rating": 5,
+            "star_rating": 5,
             "testimonial_title": "Excellent auto body work!",
             "testimonial_text": "CTB Garage did an amazing job on my car's body repair. The paint match was perfect and they finished ahead of schedule. Highly recommend!",
             "author_name": "– Mike T., Chicago"
@@ -301,7 +266,7 @@
         {
           "type": "testimonial",
           "settings": {
-            "rating": 5,
+            "star_rating": 5,
             "testimonial_title": "Professional service!",
             "testimonial_text": "Great experience at CTB Garage. They know their stuff and take pride in their work. My car looks brand new after the collision repair.",
             "author_name": "– Sarah L., Illinois"
@@ -310,7 +275,7 @@
         {
           "type": "testimonial",
           "settings": {
-            "rating": 5,
+            "star_rating": 5,
             "testimonial_title": "Love the apparel!",
             "testimonial_text": "Not only do they do great auto body work, but their apparel line is fire! Wearing my CTB Garage hoodie to every car meet now.",
             "author_name": "– Carlos R., Car Enthusiast"
@@ -319,7 +284,7 @@
         {
           "type": "testimonial",
           "settings": {
-            "rating": 5,
+            "star_rating": 5,
             "testimonial_title": "Top notch quality!",
             "testimonial_text": "Been following CTB Garage for a while now. Finally got to visit their shop on Kinzie Street and the quality of work is incredible. Will definitely be back!",
             "author_name": "– Jennifer M., Chicago"
