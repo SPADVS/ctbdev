@@ -87,7 +87,7 @@
         "div_stagger": 20,
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
-        "overlay_color": "#1e0000",
+        "overlay_color": "#000000",
         "overlay_style": "gradient",
         "gradient_direction": "to top",
         "blurred_reflection": false,
