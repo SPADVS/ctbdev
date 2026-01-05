@@ -743,7 +743,7 @@
     console.log('Animation translation values:', { fromX, fromY });
 
     // Animate all h1-h3 headings with letter stagger
-    const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text');
+    const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
     console.log('Titles found:', titles.length, titles);
     
     titles.forEach((title, titleIndex) => {
@@ -788,8 +788,8 @@
       });
     });
 
-    // Animate paragraph text blocks
-    const textBlocks = heroSection.querySelectorAll('.text-block__text p, .text-block__text');
+    // Animate paragraph text blocks - find all text-block elements and their paragraphs
+    const textBlocks = heroSection.querySelectorAll('.text-block:not(.h1):not(.h2):not(.h3) p, .text-block:not(.h1):not(.h2):not(.h3)');
     console.log('Text blocks found:', textBlocks.length, textBlocks);
     
     textBlocks.forEach((text, index) => {
