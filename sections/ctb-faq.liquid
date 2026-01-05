@@ -176,14 +176,18 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('FAQ script loaded');
     const faqItems = document.querySelectorAll('.faq-item');
+    console.log('Found FAQ items:', faqItems.length);
     
-    faqItems.forEach((item) => {
+    faqItems.forEach((item, index) => {
       const question = item.querySelector('.faq-question');
+      console.log('FAQ item', index, '- button found:', !!question);
       
       if (question) {
         question.addEventListener('click', function(e) {
           e.preventDefault();
+          console.log('FAQ clicked!', item);
           
           // Close other items if single open mode is enabled
           if ('{{ section.settings.single_open | default: false }}' === 'true') {
