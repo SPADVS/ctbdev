@@ -467,10 +467,22 @@
   @font-face {
     font-family: 'Road Rage';
     src: url('{{ 'Road_Rage.woff' | asset_url }}') format('woff'),
+         url('{{ 'Road_Rage.ttf' | asset_url }}') format('truetype'),
          url('{{ 'Road_Rage.otf' | asset_url }}') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+  }
+  
+  /* Ensure font is loaded */
+  @supports (font-variation-settings: normal) {
+    .hero h1,
+    .hero .h1,
+    .hero .text-block.h1,
+    .hero .text-block.h2,
+    .hero .jumbo-text__text {
+      font-family: 'Road Rage', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+    }
   }
 
   .hero-wrapper {
@@ -970,6 +982,40 @@
     
     console.log('All animations queued');
   });
+</script>
+
+<script>
+  // Force font loading for iOS
+  (function() {
+    console.log('Font loading check started');
+    
+    // Check if FontFace API is available
+    if ('fonts' in document) {
+      // Force load Road Rage font
+      const roadRageFont = new FontFace('Road Rage', 'url({{ 'Road_Rage.woff' | asset_url }})');
+      
+      roadRageFont.load().then(function(loadedFont) {
+        document.fonts.add(loadedFont);
+        console.log('Road Rage font loaded successfully via FontFace API');
+        
+        // Force repaint
+        document.body.style.fontFamily = '"Road Rage", -apple-system, sans-serif';
+        setTimeout(() => {
+          document.body.style.fontFamily = '';
+        }, 10);
+      }).catch(function(error) {
+        console.error('Road Rage font failed to load:', error);
+      });
+      
+      // Also check when font is ready
+      document.fonts.ready.then(function() {
+        console.log('All fonts ready');
+        console.log('Road Rage available:', document.fonts.check('16px "Road Rage"'));
+      });
+    } else {
+      console.warn('FontFace API not available');
+    }
+  })();
 </script>
 {% endif %}
 
