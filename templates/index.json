@@ -435,6 +435,7 @@
         "logo_FyLCUE",
         "collection_title_8Uk46B"
       ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",
