@@ -474,10 +474,26 @@
             "tab_title": "Apparel",
             "collection": "frontpage"
           }
+        },
+        "tab_kGXPad": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "KeyChains",
+            "collection": "frontpage"
+          }
+        },
+        "tab_9nYnPB": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Hats",
+            "collection": ""
+          }
         }
       },
       "block_order": [
-        "tab_qJpzY4"
+        "tab_qJpzY4",
+        "tab_kGXPad",
+        "tab_9nYnPB"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
