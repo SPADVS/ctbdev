@@ -987,33 +987,83 @@
 <script>
   // Force font loading for iOS
   (function() {
-    console.log('Font loading check started');
+    console.log('=== FONT LOADING DEBUG START ===');
+    console.log('User Agent:', navigator.userAgent);
+    console.log('Font file URLs:');
+    console.log('WOFF:', '{{ 'Road_Rage.woff' | asset_url }}');
+    console.log('TTF:', '{{ 'Road_Rage.ttf' | asset_url }}');
+    console.log('OTF:', '{{ 'Road_Rage.otf' | asset_url }}');
     
     // Check if FontFace API is available
+    console.log('FontFace API available:', 'fonts' in document);
+    console.log('FontFace constructor available:', typeof FontFace !== 'undefined');
+    
     if ('fonts' in document) {
-      // Force load Road Rage font
-      const roadRageFont = new FontFace('Road Rage', 'url({{ 'Road_Rage.woff' | asset_url }})');
+      console.log('Attempting to load Road Rage font via FontFace API...');
+      
+      // Try loading with different formats
+      const fontUrl = '{{ 'Road_Rage.woff' | asset_url }}';
+      console.log('Loading from URL:', fontUrl);
+      
+      const roadRageFont = new FontFace('Road Rage', `url(${fontUrl})`);
+      console.log('FontFace object created:', roadRageFont);
       
       roadRageFont.load().then(function(loadedFont) {
+        console.log('✓ Font loaded successfully!', loadedFont);
         document.fonts.add(loadedFont);
-        console.log('Road Rage font loaded successfully via FontFace API');
+        console.log('✓ Font added to document.fonts');
+        
+        // Check font status
+        console.log('Font status:', loadedFont.status);
+        console.log('Font family:', loadedFont.family);
         
         // Force repaint
-        document.body.style.fontFamily = '"Road Rage", -apple-system, sans-serif';
-        setTimeout(() => {
-          document.body.style.fontFamily = '';
-        }, 10);
+        const heroTitles = document.querySelectorAll('.hero h1, .hero .h1, .hero .text-block.h1');
+        console.log('Hero titles found:', heroTitles.length);
+        heroTitles.forEach((el, i) => {
+          console.log(`Title ${i} computed font:`, window.getComputedStyle(el).fontFamily);
+          el.style.fontFamily = '"Road Rage", -apple-system, sans-serif';
+        });
       }).catch(function(error) {
-        console.error('Road Rage font failed to load:', error);
+        console.error('✗ Font failed to load:', error);
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
       });
       
-      // Also check when font is ready
+      // Also check when all fonts are ready
       document.fonts.ready.then(function() {
-        console.log('All fonts ready');
-        console.log('Road Rage available:', document.fonts.check('16px "Road Rage"'));
+        console.log('=== ALL FONTS READY ===');
+        console.log('Total fonts loaded:', document.fonts.size);
+        console.log('Road Rage check (16px):', document.fonts.check('16px "Road Rage"'));
+        console.log('Road Rage check (48px):', document.fonts.check('48px "Road Rage"'));
+        
+        // List all loaded fonts
+        const loadedFonts = [];
+        document.fonts.forEach(font => {
+          loadedFonts.push(font.family);
+        });
+        console.log('All loaded fonts:', loadedFonts);
+        console.log('=== FONT LOADING DEBUG END ===');
       });
     } else {
-      console.warn('FontFace API not available');
+      console.warn('✗ FontFace API not available in this browser');
+      
+      // Fallback: try loading via CSS and check after delay
+      setTimeout(() => {
+        const testEl = document.createElement('div');
+        testEl.style.fontFamily = '"Road Rage", sans-serif';
+        testEl.style.position = 'absolute';
+        testEl.style.visibility = 'hidden';
+        testEl.textContent = 'Test';
+        document.body.appendChild(testEl);
+        
+        const computedFont = window.getComputedStyle(testEl).fontFamily;
+        console.log('Computed font family (fallback test):', computedFont);
+        console.log('Font loaded via CSS:', computedFont.includes('Road Rage'));
+        
+        document.body.removeChild(testEl);
+        console.log('=== FONT LOADING DEBUG END (FALLBACK) ===');
+      }, 2000);
     }
   })();
 </script>
