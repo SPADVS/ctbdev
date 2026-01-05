@@ -1,0 +1,521 @@
+{% comment %}
+  Simple Contact - Contact section with form or Google Map option
+{% endcomment %}
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+.contact-section {
+    padding: 80px 0;
+    background: #000;
+}
+
+.contact-intro {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #9CA3AF;
+    margin-bottom: 50px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.contact-info h3 {
+    font-family: var(--font-heading-family);
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+.contact-info .tagline {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+.contact-info p {
+    margin-bottom: 15px;
+    font-size: 1.15rem;
+    color: #D1D5DB;
+}
+
+.contact-info i {
+    width: 30px;
+    color: {{ section.settings.icon_color }};
+}
+
+.contact-info a {
+    color: {{ section.settings.link_color }};
+    text-decoration: underline;
+}
+
+.contact-info a:hover {
+    color: #ffffff;
+}
+
+.contact-buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-buttons .btn {
+    width: 100%;
+    display: inline-block;
+    padding: 14px 28px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.contact-buttons .btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+.contact-buttons .btn-outline {
+    background: transparent;
+    border: 2px solid {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_bg_color }};
+}
+
+.contact-buttons .btn-outline:hover {
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+}
+
+/* Contact Form */
+.contact-form-wrapper {
+    background-color: #0a0a0a;
+    padding: 40px;
+    border-radius: 8px;
+    border: 2px solid {{ section.settings.form_border_color }};
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.contact-form-wrapper h4 {
+    font-family: var(--font-heading-family);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: #000;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: {{ section.settings.form_border_color }};
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+}
+
+.contact-form-wrapper .btn {
+    width: 100%;
+    padding: 14px 28px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-form-wrapper .btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+
+.form-note {
+    margin-top: 15px;
+    text-align: center;
+    color: #9CA3AF;
+}
+
+/* Google Map */
+.map-container {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid {{ section.settings.form_border_color }};
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(20%) invert(92%) contrast(83%);
+}
+
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 60px 0;
+    }
+    
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .map-container {
+        min-height: 400px;
+    }
+}
+</style>
+
+<section class="contact-section" id="contact">
+    <div class="page-width">
+        <h2 class="section-title">{{ section.settings.section_title }}</h2>
+        <p class="contact-intro">{{ section.settings.section_intro }}</p>
+        
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h3>{{ section.settings.business_name }}</h3>
+                <p class="tagline">{{ section.settings.business_tagline }}</p>
+
+                {% if section.settings.show_address %}
+                  <p>
+                      <i class="fas fa-map-marker-alt"></i> Address: 
+                      {% if section.settings.google_maps_link != blank %}
+                        <a href="{{ section.settings.google_maps_link }}" target="_blank">{{ section.settings.address }}</a>
+                      {% else %}
+                        {{ section.settings.address }}
+                      {% endif %}
+                  </p>
+                {% endif %}
+
+                {% if section.settings.show_instagram %}
+                  <p>
+                      <i class="fab fa-instagram"></i> Instagram: 
+                      <a href="{{ section.settings.instagram_url }}" target="_blank">{{ section.settings.instagram_handle }}</a>
+                  </p>
+                {% endif %}
+
+                {% if section.settings.custom_info != blank %}
+                  <p><i class="fas fa-shopping-bag"></i> {{ section.settings.custom_info }}</p>
+                {% endif %}
+
+                <div class="contact-buttons">
+                    {% for block in section.blocks %}
+                      {% case block.type %}
+                        {% when 'button' %}
+                          <a href="{{ block.settings.button_url }}" 
+                             {% if block.settings.open_new_tab %}target="_blank"{% endif %}
+                             class="btn {% if block.settings.button_style == 'outline' %}btn-outline{% endif %}"
+                             {{ block.shopify_attributes }}>
+                            {{ block.settings.button_text }}
+                          </a>
+                      {% endcase %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if section.settings.show_form %}
+              <div class="contact-form-wrapper">
+                  {% form 'contact' %}
+                    <h4>{{ section.settings.form_title }}</h4>
+                    
+                    {% if form.posted_successfully? %}
+                      <div class="form-success" style="background: #0a4d0a; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+                        <p style="margin: 0; color: #00ff00;">{{ section.settings.success_message }}</p>
+                      </div>
+                    {% endif %}
+                    
+                    {% if form.errors %}
+                      <div class="form-errors" style="background: #4d0a0a; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+                        <p style="margin: 0 0 10px 0; color: #ff0000; font-weight: bold;">Please fix the following errors:</p>
+                        <ul style="margin: 0; padding-left: 20px; color: #ff6b6b;">
+                          {% for field in form.errors %}
+                            <li>{{ field | capitalize }} {{ form.errors.messages[field] }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <input type="text" name="contact[name]" placeholder="Your Name *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="contact[email]" placeholder="Email Address *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="contact[subject]" placeholder="Subject *" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="contact[body]" rows="5" placeholder="Your Message *" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">{{ section.settings.submit_button_text }}</button>
+                    <p class="form-note"><small>{{ section.settings.form_note }}</small></p>
+                  {% endform %}
+              </div>
+            {% else %}
+              <!-- Google Map -->
+              <div class="map-container">
+                  <iframe src="{{ section.settings.google_map_embed }}"
+                          allowfullscreen="" 
+                          loading="lazy" 
+                          referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
+              </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+  "name": "Simple Contact",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Get In Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "section_intro",
+      "label": "Section intro text",
+      "default": "Have questions about our auto body services, apparel, or upcoming events? Reach out to us!"
+    },
+    {
+      "type": "header",
+      "content": "Business Information"
+    },
+    {
+      "type": "text",
+      "id": "business_name",
+      "label": "Business name",
+      "default": "CTB Garage"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "business_tagline",
+      "label": "Business tagline",
+      "default": "Auto Body Repair<br><strong>4201 W Kinzie Street, Chicago, IL</strong>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_address",
+      "label": "Show address",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "4201 W Kinzie Street, Chicago, Illinois"
+    },
+    {
+      "type": "url",
+      "id": "google_maps_link",
+      "label": "Google Maps link",
+      "info": "Link to your location on Google Maps"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram",
+      "label": "Show Instagram",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "Instagram handle",
+      "default": "@ctbgarage"
+    },
+    {
+      "type": "text",
+      "id": "custom_info",
+      "label": "Custom info line",
+      "default": "Apparel & Tickets: Available via Instagram"
+    },
+    {
+      "type": "header",
+      "content": "Form or Map"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_form",
+      "label": "Show contact form (unchecked = show Google Map)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit button text",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "form_note",
+      "label": "Form note",
+      "default": "We'll get back to you as soon as possible!"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for contacting us! We'll get back to you soon."
+    },
+    {
+      "type": "textarea",
+      "id": "google_map_embed",
+      "label": "Google Map embed URL",
+      "info": "Paste the embed URL from Google Maps (src attribute from iframe). Example: https://www.google.com/maps/embed?pb=..."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "form_border_color",
+      "label": "Form/Map border color",
+      "default": "#FFD700"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Follow Us On Instagram"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in new tab",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Simple Contact",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Follow Us On Instagram",
+            "button_style": "solid",
+            "open_new_tab": true
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Shop Apparel & Tickets",
+            "button_style": "outline",
+            "open_new_tab": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
