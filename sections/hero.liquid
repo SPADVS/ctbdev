@@ -704,32 +704,41 @@
 
   /* Blurry button effects */
   .hero .button,
-  .hero a.button {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  .hero a.button,
+  .hero .button-secondary,
+  .hero a[href].button {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
     background-color: rgba(255, 255, 255, 0.1) !important;
     border: 2px solid rgba(255, 255, 255, 0.4) !important;
   }
 
   .hero .button:hover,
-  .hero a.button:hover {
+  .hero a.button:hover,
+  .hero .button-secondary:hover,
+  .hero a[href].button:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
     background-color: rgba(255, 255, 255, 0.2) !important;
     border-color: rgba(255, 255, 255, 0.6) !important;
-    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2) !important;
   }
 
   /* Road Rage font for hero titles */
   .hero h1,
   .hero .h1,
   .hero .text-block.h1,
-  .hero .jumbo-text__text {
-    font-family: 'Road Rage', var(--font-heading-family) !important;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    font-weight: 400;
+  .hero .text-block.h2,
+  .hero .jumbo-text__text,
+  .hero-wrapper h1,
+  .hero-wrapper .h1 {
+    font-family: 'Road Rage', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 4px !important;
+    font-weight: 400 !important;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9),
-                 4px 4px 20px rgba(0, 0, 0, 0.8);
-    line-height: 1;
+                 4px 4px 20px rgba(0, 0, 0, 0.8) !important;
+    line-height: 1 !important;
   }
 
   .hero h1 .letter,
@@ -738,9 +747,12 @@
   .hero .h1 .tricksword,
   .hero .text-block.h1 .letter,
   .hero .text-block.h1 .tricksword,
+  .hero .text-block.h2 .letter,
+  .hero .text-block.h2 .tricksword,
   .hero .jumbo-text__text .letter,
   .hero .jumbo-text__text .tricksword {
-    font-family: 'Road Rage', var(--font-heading-family) !important;
+    font-family: 'Road Rage', sans-serif !important;
+    display: inline-block;
   }
 {% endstylesheet %}
 
