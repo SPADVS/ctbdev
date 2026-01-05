@@ -1117,6 +1117,58 @@
         "modal_border_color": "#ffffff",
         "modal_footer": "Follow <a href=\"https://www.instagram.com/ctbgarage/\" target=\"_blank\">@ctbgarage</a> on Instagram for the latest event announcements and ticket availability"
       }
+    },
+    "simple_contact_mKdRcd": {
+      "type": "simple-contact",
+      "blocks": {
+        "button_EfHbiF": {
+          "type": "button",
+          "settings": {
+            "button_text": "Follow Us On Instagram",
+            "button_url": "",
+            "button_style": "solid",
+            "open_new_tab": true
+          }
+        },
+        "button_AyWLe6": {
+          "type": "button",
+          "settings": {
+            "button_text": "Shop Apparel & Tickets",
+            "button_url": "",
+            "button_style": "outline",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "button_EfHbiF",
+        "button_AyWLe6"
+      ],
+      "name": "Simple Contact",
+      "settings": {
+        "section_title": "Get In Touch",
+        "section_intro": "Have questions about our auto body services, apparel, or upcoming events? Reach out to us!",
+        "business_name": "CTB Garage",
+        "business_tagline": "<p>Auto Body Repair<br/>4201 W Kinzie Street, Chicago, IL</p>",
+        "show_address": true,
+        "address": "4201 W Kinzie Street, Chicago, Illinois",
+        "google_maps_link": "",
+        "show_instagram": true,
+        "instagram_url": "",
+        "instagram_handle": "@ctbgarage",
+        "custom_info": "Apparel & Tickets: Available via Instagram",
+        "show_form": true,
+        "form_title": "Contact Us",
+        "submit_button_text": "Send Message",
+        "form_note": "We'll get back to you as soon as possible!",
+        "success_message": "Thanks for contacting us! We'll get back to you soon.",
+        "google_map_embed": "",
+        "icon_color": "#ffffff",
+        "link_color": "#ffffff",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#000000",
+        "form_border_color": "#ffffff"
+      }
     }
   },
   "order": [
@@ -1130,6 +1182,7 @@
     "simple_about_bP4iTT",
     "ctb_faq_KTeKq3",
     "section_AQBaJ6",
-    "simple_floating_tickets_abxEHp"
+    "simple_floating_tickets_abxEHp",
+    "simple_contact_mKdRcd"
   ]
 }
