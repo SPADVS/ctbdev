@@ -5,8 +5,6 @@
   }
 
   .faq-container {
-    max-width: 800px;
-    margin: 0 auto;
     padding: 0 20px;
   }
 
@@ -78,8 +76,9 @@
   }
 
   .faq-item.active .faq-answer {
-    max-height: 500px;
+    max-height: 1000px;
     padding: 1.5rem;
+    overflow: visible;
   }
 
   .faq-answer p {
@@ -154,7 +153,7 @@
 {% endjavascript %}
 
 <section class="ctb-faq">
-  <div class="faq-container">
+  <div class="page-width faq-container">
     <h2 class="section-title">{{ section.settings.heading }}</h2>
 
     <div class="faq-accordion">
