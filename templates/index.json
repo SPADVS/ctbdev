@@ -985,12 +985,30 @@
     },
     "simple_floating_products_pbNbNr": {
       "type": "simple-floating-products",
+      "blocks": {
+        "product_8M4pMe": {
+          "type": "product",
+          "settings": {
+            "product": "test"
+          }
+        },
+        "product_tRxKRQ": {
+          "type": "product",
+          "settings": {
+            "product": "tseting-migration"
+          }
+        }
+      },
+      "block_order": [
+        "product_8M4pMe",
+        "product_tRxKRQ"
+      ],
       "name": "Simple Floating Products",
       "settings": {
         "heading": "Featured Products",
         "trigger_color": "#000000",
-        "accent_color": "#FFD700",
-        "icon_color": "#FFD700",
+        "accent_color": "#ffd700",
+        "icon_color": "#ffd700",
         "panel_background": "#1a1a1a",
         "header_background": "#000000",
         "heading_color": "#ffffff",
