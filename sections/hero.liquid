@@ -375,12 +375,13 @@
 
 <div
   id="Hero-{{ section.id }}"
-  class="hero color-{{ section.settings.color_scheme }}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}{% if section.settings.animate_media_transition and media_count >= 2 %} hero--animate-transition{% endif %}"
+  class="hero color-{{ section.settings.color_scheme }}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}{% if section.settings.enable_media_slider and media_count > 1 %} hero--slider{% endif %}"
   style="
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+    --slider-transition-speed: {{ section.settings.slider_transition_speed | default: 1500 }}ms;
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -557,30 +558,6 @@
     z-index: var(--layer-base);
   }
 
-  /* Media transition animation */
-  .hero--animate-transition .hero__media-wrapper {
-    position: relative;
-  }
-
-  .hero--animate-transition .hero__image,
-  .hero--animate-transition .hero__video-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity var(--media-fade-speed, 1500ms) ease-in-out;
-  }
-
-  .hero--animate-transition .hero__image.active,
-  .hero--animate-transition .hero__video-wrapper.active {
-    opacity: 1;
-    z-index: 2;
-  }
-
-  .hero--animate-transition .hero__video-wrapper.active video {
-    /* Ensure video plays when active */
-  }
-
   /* Mobile/Desktop media visibility */
 
   .hero__image--mobile,
@@ -724,6 +701,25 @@
   .tricksword {
     white-space: nowrap;
     display: inline-block;
+  }
+
+  /* Media slider styles */
+  .hero--slider .hero__media-wrapper > * {
+    transition: opacity var(--slider-transition-speed, 1500ms) ease-in-out;
+  }
+
+  .hero--slider .hero__media-wrapper > .hero-slide-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero--slider .hero__image,
+  .hero--slider .hero__video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
   /* Blurry button effects */
@@ -936,80 +932,65 @@
 </script>
 {% endif %}
 
-{% if section.settings.animate_media_transition and media_count >= 2 %}
+{% if section.settings.enable_media_slider and media_count > 1 %}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     const heroSection = document.querySelector('#Hero-{{ section.id }}');
     if (!heroSection) return;
 
     const mediaWrapper = heroSection.querySelector('.hero__media-wrapper');
     if (!mediaWrapper) return;
 
-    // Get all media elements (images and video wrappers)
-    const desktopMedia = Array.from(mediaWrapper.querySelectorAll('.hero__image--desktop, .hero__video-wrapper--desktop'));
-    const mobileMedia = Array.from(mediaWrapper.querySelectorAll('.hero__image--mobile, .hero__video-wrapper--mobile'));
-    
-    if (desktopMedia.length < 2 && mobileMedia.length < 2) return;
+    // Get all direct children that are images or video wrappers
+    const mediaElements = Array.from(mediaWrapper.children).filter(el => 
+      el.classList.contains('hero__image') || 
+      el.classList.contains('hero__video-wrapper')
+    );
 
-    const transitionDuration = {{ section.settings.media_transition_duration | times: 1000 }}; // Convert to ms
-    const fadeSpeed = {{ section.settings.media_transition_speed }};
-    
-    // Set CSS variable for fade speed
-    heroSection.style.setProperty('--media-fade-speed', fadeSpeed + 'ms');
+    if (mediaElements.length < 2) return;
 
     let currentIndex = 0;
+    const interval = {{ section.settings.slider_interval | default: 6 }} * 1000;
 
-    function cycleMedia(mediaArray) {
-      if (mediaArray.length < 2) return;
+    // Hide all except first
+    mediaElements.forEach((el, index) => {
+      if (index !== 0) {
+        el.classList.add('hero-slide-hidden');
+      }
+    });
 
-      // Set initial state
-      mediaArray.forEach((media, index) => {
-        if (index === 0) {
-          media.classList.add('active');
-          // If it's a video wrapper, play the video
-          const video = media.querySelector('video');
-          if (video) {
-            video.play().catch(e => console.log('Video autoplay prevented:', e));
-          }
-        }
-      });
+    function slideToNext() {
+      const prevIndex = currentIndex;
+      currentIndex = (currentIndex + 1) % mediaElements.length;
 
-      // Start cycling
-      setInterval(() => {
-        const currentMedia = mediaArray[currentIndex];
-        currentIndex = (currentIndex + 1) % mediaArray.length;
-        const nextMedia = mediaArray[currentIndex];
+      // Fade out current
+      mediaElements[prevIndex].classList.add('hero-slide-hidden');
+      
+      // Fade in next
+      mediaElements[currentIndex].classList.remove('hero-slide-hidden');
 
-        // Fade out current
-        currentMedia.classList.remove('active');
-        const currentVideo = currentMedia.querySelector('video');
-        if (currentVideo) {
-          // Let it finish its loop before pausing
-          setTimeout(() => {
-            currentVideo.pause();
-            currentVideo.currentTime = 0;
-          }, fadeSpeed);
-        }
+      // If current or next element is a video, play it
+      const currentVideo = mediaElements[currentIndex].querySelector('video');
+      if (currentVideo) {
+        currentVideo.play().catch(() => {});
+      }
 
-        // Fade in next
-        nextMedia.classList.add('active');
-        const nextVideo = nextMedia.querySelector('video');
-        if (nextVideo) {
-          nextVideo.play().catch(e => console.log('Video autoplay prevented:', e));
-        }
-      }, transitionDuration);
+      // Pause previous video if it exists
+      const prevVideo = mediaElements[prevIndex].querySelector('video');
+      if (prevVideo) {
+        prevVideo.pause();
+      }
     }
 
-    // Run for desktop media
-    if (desktopMedia.length >= 2) {
-      cycleMedia(desktopMedia);
-    }
+    // Start the slider
+    setInterval(slideToNext, interval);
 
-    // Run for mobile media if they exist
-    if (mobileMedia.length >= 2) {
-      cycleMedia(mobileMedia);
+    // Play first video if exists
+    const firstVideo = mediaElements[0].querySelector('video');
+    if (firstVideo) {
+      firstVideo.play().catch(() => {});
     }
-  });
+  })();
 </script>
 {% endif %}
 
@@ -1121,6 +1102,35 @@
       "id": "stack_media_on_mobile",
       "label": "t:settings.stack_media_on_mobile",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_media_slider",
+      "label": "Enable background media slider",
+      "default": false,
+      "info": "Smoothly transitions between media 1 and media 2"
+    },
+    {
+      "type": "range",
+      "id": "slider_interval",
+      "label": "Slider interval (seconds)",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "default": 6,
+      "visible_if": "{{ section.settings.enable_media_slider }}"
+    },
+    {
+      "type": "range",
+      "id": "slider_transition_speed",
+      "label": "Transition speed (milliseconds)",
+      "min": 500,
+      "max": 3000,
+      "step": 100,
+      "unit": "ms",
+      "default": 1500,
+      "visible_if": "{{ section.settings.enable_media_slider }}"
     },
     {
       "type": "checkbox",
@@ -1505,35 +1515,6 @@
       ],
       "default": "to top",
       "visible_if": "{{ section.settings.toggle_overlay and section.settings.overlay_style == 'gradient' }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "animate_media_transition",
-      "label": "Animate media transition",
-      "default": false,
-      "info": "Smoothly crossfade between Media 1 and Media 2 (requires both media slots to be filled)"
-    },
-    {
-      "type": "range",
-      "id": "media_transition_duration",
-      "label": "Transition duration",
-      "min": 3,
-      "max": 15,
-      "step": 1,
-      "unit": "s",
-      "default": 6,
-      "visible_if": "{{ section.settings.animate_media_transition }}"
-    },
-    {
-      "type": "range",
-      "id": "media_transition_speed",
-      "label": "Fade speed",
-      "min": 500,
-      "max": 3000,
-      "step": 100,
-      "unit": "ms",
-      "default": 1500,
-      "visible_if": "{{ section.settings.animate_media_transition }}"
     },
     {
       "type": "checkbox",
