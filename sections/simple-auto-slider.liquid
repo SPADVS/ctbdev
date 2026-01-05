@@ -38,24 +38,17 @@
                       <div class="splide__slide">
                         <a href="{{ product.url }}" class="prorduct-wrapper">
                           <div class="relative rounded-20">
-                            <div class="background-4">
-                              <div class="bg-image-3">
-                                <img class="product-image" 
-                                     src="{{ product.featured_image | img_url: '500x' }}" 
-                                     alt="{{ product.title }}" 
-                                     loading="lazy">
-                              </div>
-                            </div>
-                            <div class="card-image-2"></div>
+                            <img class="product-image" 
+                                 src="{{ product.featured_image | img_url: '500x' }}" 
+                                 alt="{{ product.title }}" 
+                                 loading="lazy">
                           </div>
                           <div class="horizontal-between-center">
                             <div class="product-info">
-                              <div class="price">
-                                <div class="pricing-2">
-                                  <small class="starting-at"><em>starting at</em></small>{{ product.price | money }}
-                                </div>
-                              </div>
                               <div class="product-name">{{ product.title }}</div>
+                              <div class="pricing-2">
+                                <small class="starting-at"><em>starting at</em></small>{{ product.price | money }}
+                              </div>
                             </div>
                           </div>
                         </a>
@@ -81,227 +74,264 @@
 
 <!-- CSS: Updated Styles -->
 <style>
-  /* Outer text: white */
-  .heading-md, 
-  .uui-text-size-medium {
-    color: #fff;
-  }
-  /* Tab Buttons: White outline, transparent background, white text */
-  .tab-button {
-    background: transparent;
-    border: 1px solid #fff;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .tab-button:hover, .tab-button.active {
-       background: rgb(7 53 41);
-  }
-  /* Hidden tab content */
-  .tab-content.hide {
-    display: none;
-  }
-  /* Additional CSS from your style */
-  .subheading {
-    grid-column-gap: 1rem;
-    grid-row-gap: 1rem;
-    align-items: center;
-    display: flex;
-  }
-  .splide__list {
-    grid-column-gap: 32px;
-    flex: none;
-    display: flex;
-    -webkit-user-select: none;  /* Chrome, Safari, Opera */
-    -moz-user-select: none;     /* Firefox */
-    -ms-user-select: none;      /* Internet Explorer/Edge */
-    user-select: none;          /* Standard syntax */
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
-  }
-  .card-image-2 {
-    z-index: -10;
-    filter: invert();
-    object-fit: contain;
-    width: 250px;
-    height: 200px;
-    padding: 24px 40px;
-    position: relative;
-  }
-  .brands-card-2 {
-    color: #2c2c2c;
-    justify-content: center;
-    align-self: stretch;
-    align-items: center;
-    min-width: 22rem;
-    min-height: 8rem;
-    padding: 1rem;
-    display: flex;
-  }
-  .slider-wrapper {
-    padding-top: 16px;
-  }
-  .brands-list-2 {
-    z-index: 20;
-    color: #2c2c2c;
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-columns: 1fr;
-    align-items: end;
-    max-width: 100%;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    display: flex;
+  /* Section wrapper */
+  .product-slider-tabs {
+    background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
     position: relative;
     overflow: hidden;
+    padding: 80px 0;
   }
-  .pricing-2 {
-    color: #fff;
-    font-size: 1.1rem;
-    line-height: 1.5;
-    text-decoration: none;
-    display: block;
-  }
-  .pricing-2 .starting-at {
-    font-size: 0.6em;
-    font-style: italic;
-    margin-right: 0.25rem;
-    color: #fff;
-  }
-  .bg-image-3 {
-    width: 100%;
-    height: 100%;
-    overflow: clip;
-    transform: none;
-  }
-  .product-name {
-    color: #fff8ee;
-    font-size: .78rem;
-    font-weight: 800;
-    line-height: 1.5;
-  }
-  .splide__slide {
-    perspective-origin: 50% 100%;
-    transform-origin: 50% 100%;
-    background-color: #000;
-    border: 1px solid #fff;
-    border-radius: 3px;
-    flex-direction: column;
-    width: 278px;
-    padding: 14px;
-    transition: all 0.2s;
-    display: flex;
-    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.24);
-  }
-  .splide__slide:hover {
-    transform: scale(1.05);
-  }
-  span.splide__sr {
-    display: none;
-  }
-  .price {
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
-    flex-flow: column;
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-columns: 1fr;
-    justify-content: space-between;
-    align-items: flex-end;
-    font-weight: 300;
-    display: flex;
-  }
-  .product-image {
-    object-fit: cover;
-    object-position: 50% 50%;
-    background-image: linear-gradient(#000, transparent 50%, #000);
-    width: 100%;
-    max-width: none;
-    height: 100%;
+
+  .product-slider-tabs::before {
+    content: '';
     position: absolute;
-    overflow: visible;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
   }
-  .horizontal-between-center {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 15px;
-    display: block;
-  }
-  .relative {
-    position: relative;
-  }
-  .relative.rounded-20 {
-       border-radius: 20px;
-       overflow: hidden;
-       height: 265px;
-       width: 100%;
-  }
-  .column-list {
-    grid-column-gap: 1rem;
-    grid-row-gap: 1rem;
+
+  /* Container */
+  .product-slider-tabs .container {
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    display: flex;
-  }
-  .container {
-    flex-direction: column;
-    align-items: flex-start;
     width: 100%;
     max-width: 1440px;
-    margin-bottom: 10%;
+    margin: 0 auto;
     padding-left: 2rem;
     padding-right: 2rem;
     display: flex;
     position: relative;
   }
-  .heading-md {
-    text-align: left;
-    text-transform: capitalize;
-    padding-top: 11px;
-    padding-bottom: 11px;
-    font-size: 2.5rem;
+
+  /* Heading section */
+  .product-slider-tabs .column-list {
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 2rem;
+  }
+
+  .product-slider-tabs .heading-md {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white;
+    position: relative;
+    line-height: 1.2;
     font-weight: 900;
   }
-  /* Slider Animation Styles */
-  .splide {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity .3s ease-out, transform .3s ease-out;
+
+  .product-slider-tabs .heading-md::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 15px auto 0;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
   }
-  .splide.in-view {
-    opacity: 1;
-    transform: translateY(0);
+
+  .product-slider-tabs .uui-text-size-medium {
+    color: #fff;
+    text-align: center;
+    max-width: 600px;
   }
-  .splide.slider-animate {
-    transition-delay: 0.3s;
+
+  /* Tab Buttons */
+  .product-slider-tabs .tabs-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
   }
-  .splide__slide {
+
+  .product-slider-tabs .tab-button {
+    background: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+  }
+
+  .product-slider-tabs .tab-button:hover,
+  .product-slider-tabs .tab-button.active {
+    background: #ffffff;
+    color: #000;
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Hidden tab content */
+  .product-slider-tabs .tab-content.hide {
+    display: none;
+  }
+
+  /* Slider wrapper */
+  .product-slider-tabs .slider-wrapper {
+    width: 100%;
+    margin-top: 50px;
+    position: relative;
+  }
+
+  /* Splide list */
+  .product-slider-tabs .splide__list {
+    grid-column-gap: 32px;
+    gap: 32px;
+    flex: none;
+    display: flex;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Product card/slide */
+  .product-slider-tabs .splide__slide {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid #ffffff;
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+    transition: all 0.4s ease;
+    background: #000;
+    width: 350px;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
   }
-  .splide__slide.animate-slide {
+
+  .product-slider-tabs .splide__slide:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 50px rgba(255, 255, 255, 0.5);
+    border-color: #ffffff;
+  }
+
+  .product-slider-tabs .splide__slide.animate-slide {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 0.2s ease-out, transform 0.2s ease-out;
   }
-  .splide.all-visible .splide__slide {
+
+  .product-slider-tabs .splide.all-visible .splide__slide {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
-  .shop-now-button {
-    border: 0.5px solid #8d8d8d;
-    transition: all 0.2s;
-    color: white;
-    background: black;
+
+  /* Product wrapper */
+  .product-slider-tabs .prorduct-wrapper {
+    display: block;
+    text-decoration: none;
   }
-  .shop-now-button :hover {
-    transform: scale(1.05);
-    color: black;
-    background: white;
+
+  /* Product image container */
+  .product-slider-tabs .relative.rounded-20 {
+    border-radius: 0;
+    overflow: hidden;
+    height: 350px;
+    width: 100%;
+    position: relative;
+  }
+
+  .product-slider-tabs .product-image {
+    object-fit: cover;
+    object-position: 50% 50%;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Product info */
+  .product-slider-tabs .horizontal-between-center {
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+    text-align: center;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .product-slider-tabs .product-info {
+    width: 100%;
+  }
+
+  .product-slider-tabs .product-name {
+    font-family: var(--font-heading-family);
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+  }
+
+  .product-slider-tabs .pricing-2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+  }
+
+  .product-slider-tabs .pricing-2 .starting-at {
+    font-size: 0.6em;
+    font-style: italic;
+    margin-right: 0.25rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Slider Animation Styles */
+  .product-slider-tabs .splide {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity .3s ease-out, transform .3s ease-out;
+  }
+
+  .product-slider-tabs .splide.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .product-slider-tabs .splide.slider-animate {
+    transition-delay: 0.3s;
+  }
+
+  /* Hide SR text */
+  .product-slider-tabs span.splide__sr {
+    display: none;
+  }
+
+  /* Remove unused old styles */
+  .product-slider-tabs .card-image-2,
+  .product-slider-tabs .background-4,
+  .product-slider-tabs .bg-image-3 {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .product-slider-tabs {
+      padding: 60px 0;
+    }
+
+    .product-slider-tabs .splide__slide {
+      width: 280px;
+    }
+
+    .product-slider-tabs .relative.rounded-20 {
+      height: 280px;
+    }
   }
 </style>
 
