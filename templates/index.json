@@ -188,41 +188,6 @@
         "padding-block-end": 72
       }
     },
-    "simple_about_bP4iTT": {
-      "type": "simple-about",
-      "blocks": {
-        "image_8LFBbQ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/ctbgarage_1739809655_3570104606042425161_1412402950.jpg"
-          }
-        },
-        "image_KwhPHa": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/service_3vb_2.png"
-          }
-        }
-      },
-      "block_order": [
-        "image_8LFBbQ",
-        "image_KwhPHa"
-      ],
-      "name": "Simple About",
-      "settings": {
-        "heading": "About CTB Garage",
-        "description": "Welcome to CTB Garage — Chicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
-        "instagram_handle": "ctbgarage",
-        "button_text": "Contact Us",
-        "button_link": "",
-        "background_color": "#080808",
-        "heading_color": "#ffffff",
-        "text_color": "#e5e5e5",
-        "accent_color": "#ffffff",
-        "padding_top": 80,
-        "padding_bottom": 80
-      }
-    },
     "ctb_faq_KTeKq3": {
       "type": "ctb-faq",
       "blocks": {
@@ -693,16 +658,51 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "simple_about_bP4iTT": {
+      "type": "simple-about",
+      "blocks": {
+        "image_8LFBbQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ctbgarage_1739809655_3570104606042425161_1412402950.jpg"
+          }
+        },
+        "image_KwhPHa": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/service_3vb_2.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_8LFBbQ",
+        "image_KwhPHa"
+      ],
+      "name": "Simple About",
+      "settings": {
+        "heading": "About CTB Garage",
+        "description": "Welcome to CTB Garage — Chicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
+        "instagram_handle": "ctbgarage",
+        "button_text": "Contact Us",
+        "button_link": "",
+        "background_color": "#080808",
+        "heading_color": "#ffffff",
+        "text_color": "#e5e5e5",
+        "accent_color": "#ffffff",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "simple_about_bP4iTT",
     "ctb_faq_KTeKq3",
     "product_list_fa6P9H",
     "section_XrX9gi",
     "simple_auto_slider_PcXb6Q",
     "17675636610d7f9620",
-    "1767563700acdcc142"
+    "1767563700acdcc142",
+    "simple_about_bP4iTT"
   ]
 }
