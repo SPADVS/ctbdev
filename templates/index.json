@@ -473,21 +473,21 @@
           "type": "tab",
           "settings": {
             "tab_title": "Shirts",
-            "collection": "frontpage"
+            "collection": "merch"
           }
         },
         "tab_kGXPad": {
           "type": "tab",
           "settings": {
             "tab_title": "Sweaters",
-            "collection": "frontpage"
+            "collection": "sweaters"
           }
         },
         "tab_9nYnPB": {
           "type": "tab",
           "settings": {
             "tab_title": "Hats",
-            "collection": "frontpage"
+            "collection": "hats"
           }
         }
       },
