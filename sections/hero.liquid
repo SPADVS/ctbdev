@@ -711,11 +711,13 @@
   .letter {
     display: inline-block;
     opacity: 0;
+    font-family: inherit !important;
   }
 
   .tricksword {
     white-space: nowrap;
     display: inline-block;
+    font-family: inherit !important;
   }
 
   /* Ensure proper text wrapping for animated headings */
@@ -1017,31 +1019,22 @@
         console.log('Font status:', loadedFont.status);
         console.log('Font family:', loadedFont.family);
         
-        // Force apply to all hero titles
+        // Force apply to all hero titles BEFORE animation runs
         const heroTitles = document.querySelectorAll('.hero h1, .hero .h1, .hero .text-block.h1, .hero .text-block.h2, .hero .jumbo-text__text, .hero-wrapper h1, .hero-wrapper .h1');
         console.log('Hero titles found:', heroTitles.length);
         
         heroTitles.forEach((el, i) => {
           const beforeFont = window.getComputedStyle(el).fontFamily;
           console.log(`Title ${i} BEFORE - Font:`, beforeFont);
-          console.log(`Title ${i} BEFORE - Text:`, el.textContent.substring(0, 30));
           
-          // Force apply the font with !important via inline style
+          // Force apply the font - spans will inherit from parent
           el.style.setProperty('font-family', '"Road Rage", -apple-system, BlinkMacSystemFont, sans-serif', 'important');
           
           // Check after
           setTimeout(() => {
             const afterFont = window.getComputedStyle(el).fontFamily;
             console.log(`Title ${i} AFTER - Font:`, afterFont);
-            console.log(`Title ${i} font changed:`, beforeFont !== afterFont);
           }, 100);
-        });
-        
-        // Also apply to letter/tricksword spans
-        const letterSpans = document.querySelectorAll('.hero .letter, .hero .tricksword');
-        console.log('Letter/word spans found:', letterSpans.length);
-        letterSpans.forEach(span => {
-          span.style.setProperty('font-family', '"Road Rage", -apple-system, BlinkMacSystemFont, sans-serif', 'important');
         });
       }).catch(function(error) {
         console.error('✗ Font failed to load:', error);
