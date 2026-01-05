@@ -1035,7 +1035,7 @@
         "button_text_color": "#000000",
         "modal_title": "Car Event Tickets",
         "modal_intro": "Get tickets to exclusive automotive events in the Chicago area",
-        "modal_border_color": "#FFD700",
+        "modal_border_color": "#ffffff",
         "modal_footer": "Follow <a href=\"https://www.instagram.com/ctbgarage/\" target=\"_blank\">@ctbgarage</a> on Instagram for the latest event announcements and ticket availability"
       }
     }
