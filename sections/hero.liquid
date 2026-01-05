@@ -504,7 +504,7 @@
   .hero__content-wrapper {
     position: relative;
     inset: 0;
-    z-index: calc(var(--layer-flat) + 1);
+    z-index: var(--layer-flat);
   }
 
   .hero__content-wrapper .group-block-content {
@@ -698,15 +698,40 @@
 
 {% if section.settings.enable_hero_animations %}
 <script>
+  console.log('Hero animation script loading for section: #Hero-{{ section.id }}');
+  console.log('Animation settings:', {
+    enabled: {{ section.settings.enable_hero_animations }},
+    direction: '{{ section.settings.animation_direction }}',
+    duration: {{ section.settings.animation_duration }},
+    letterDelay: {{ section.settings.animation_delay }},
+    divStagger: {{ section.settings.div_stagger }}
+  });
+
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded fired');
+    
     const heroSection = document.querySelector('#Hero-{{ section.id }}');
-    if (!heroSection || typeof anime === 'undefined') return;
+    console.log('Hero section found:', heroSection);
+    
+    if (!heroSection) {
+      console.error('Hero section not found with ID: #Hero-{{ section.id }}');
+      return;
+    }
+    
+    if (typeof anime === 'undefined') {
+      console.error('Anime.js not loaded');
+      return;
+    }
+    
+    console.log('Anime.js loaded successfully');
 
     // Animation settings from schema
     const direction = '{{ section.settings.animation_direction }}';
     const duration = {{ section.settings.animation_duration }};
     const letterDelay = {{ section.settings.animation_delay }};
     const divStagger = {{ section.settings.div_stagger }};
+
+    console.log('Starting animations with settings:', { direction, duration, letterDelay, divStagger });
 
     // Determine starting values based on direction
     let fromX = 0, fromY = 0;
@@ -715,24 +740,35 @@
     else if (direction === 'fade-left') fromX = 20;
     else if (direction === 'fade-right') fromX = -20;
 
+    console.log('Animation translation values:', { fromX, fromY });
+
     // Animate all h1-h3 headings with letter stagger
     const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text');
+    console.log('Titles found:', titles.length, titles);
+    
     titles.forEach((title, titleIndex) => {
+      console.log(`Processing title ${titleIndex}:`, title.textContent);
+      
       // Set initial opacity
       title.style.opacity = '1';
       
       // Split words
       const titleWords = title.innerHTML.split(/\s+/);
+      console.log(`Title ${titleIndex} split into ${titleWords.length} words`);
       title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
       
       // Split letters in each word
       const wordEls = title.querySelectorAll('.tricksword');
+      console.log(`Title ${titleIndex} has ${wordEls.length} word spans`);
       wordEls.forEach(wordEl => {
         const letters = wordEl.textContent.split('');
         wordEl.innerHTML = letters.map(letter => 
           letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`
         ).join('');
       });
+
+      const letterEls = title.querySelectorAll('.letter');
+      console.log(`Title ${titleIndex} has ${letterEls.length} letter spans`);
 
       // Animate letters
       anime({
@@ -742,13 +778,22 @@
         opacity: [0, 1],
         easing: 'easeOutExpo',
         duration: duration,
-        delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) })
+        delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) }),
+        begin: function() {
+          console.log(`Title ${titleIndex} animation started`);
+        },
+        complete: function() {
+          console.log(`Title ${titleIndex} animation completed`);
+        }
       });
     });
 
     // Animate paragraph text blocks
     const textBlocks = heroSection.querySelectorAll('.text-block__text p, .text-block__text');
+    console.log('Text blocks found:', textBlocks.length, textBlocks);
+    
     textBlocks.forEach((text, index) => {
+      console.log(`Processing text block ${index}:`, text.textContent.substring(0, 50));
       text.style.opacity = '0';
       text.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
       anime({
@@ -758,15 +803,24 @@
         opacity: [0, 1],
         easing: 'easeOutExpo',
         duration: duration,
-        delay: 600 + (index * divStagger)
+        delay: 600 + (index * divStagger),
+        begin: function() {
+          console.log(`Text block ${index} animation started`);
+        },
+        complete: function() {
+          console.log(`Text block ${index} animation completed`);
+        }
       });
     });
 
     // Animate buttons
     const buttons = heroSection.querySelectorAll('.button, a[href]');
+    console.log('All buttons found:', buttons.length);
+    
     const validButtons = Array.from(buttons).filter(btn => 
       btn.classList.contains('button') || btn.textContent.trim().length > 0
     );
+    console.log('Valid buttons found:', validButtons.length, validButtons);
     
     if (validButtons.length > 0) {
       validButtons.forEach(btn => {
@@ -781,9 +835,17 @@
         opacity: [0, 1],
         easing: 'easeOutExpo',
         duration: duration,
-        delay: anime.stagger(divStagger, { start: 800 })
+        delay: anime.stagger(divStagger, { start: 800 }),
+        begin: function() {
+          console.log('Button animations started');
+        },
+        complete: function() {
+          console.log('Button animations completed');
+        }
       });
     }
+    
+    console.log('All animations queued');
   });
 </script>
 {% endif %}
