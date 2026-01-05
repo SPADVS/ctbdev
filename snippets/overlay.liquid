@@ -9,7 +9,7 @@
 {%- enddoc -%}
 
 <div
-  class="overlay overlay--{{ settings.overlay_style | default: 'gradient' }}"
+  class="overlay overlay--{{ settings.overlay_style | default: 'gradient' }}{% if settings.gradient_direction == 'both' %} overlay--gradient-both{% endif %}"
   style="
     --overlay-layer: {{ layer | default: 'var(--layer-flat)' }};
     --overlay-color: {{ settings.overlay_color | default: 'rgb(0 0 0 / var(--opacity-25))' }};
@@ -34,5 +34,9 @@
 
   .overlay--gradient {
     background: linear-gradient(var(--overlay-direction), var(--overlay-color), var(--overlay-color--end));
+  }
+
+  .overlay--gradient-both {
+    background: linear-gradient(to bottom, var(--overlay-color), var(--overlay-color--end) 50%, var(--overlay-color));
   }
 {% endstylesheet %}
