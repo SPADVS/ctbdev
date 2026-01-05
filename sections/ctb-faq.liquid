@@ -175,22 +175,25 @@
 </section>
 
 <script>
+  console.log('FAQ Script loaded');
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('FAQ script loaded');
+    console.log('FAQ: DOMContentLoaded fired');
     const faqItems = document.querySelectorAll('.faq-item');
-    console.log('Found FAQ items:', faqItems.length);
+    console.log('FAQ: Found', faqItems.length, 'items');
     
     faqItems.forEach((item, index) => {
       const question = item.querySelector('.faq-question');
-      console.log('FAQ item', index, '- button found:', !!question);
+      console.log('FAQ: Setting up item', index, question);
       
       if (question) {
         question.addEventListener('click', function(e) {
           e.preventDefault();
-          console.log('FAQ clicked!', item);
+          console.log('FAQ: Button clicked!', index);
+          console.log('FAQ: Item before toggle:', item.classList.contains('active'));
           
           // Close other items if single open mode is enabled
           if ('{{ section.settings.single_open | default: false }}' === 'true') {
+            console.log('FAQ: Single open mode enabled');
             faqItems.forEach((otherItem) => {
               if (otherItem !== item) {
                 otherItem.classList.remove('active');
@@ -205,6 +208,7 @@
           // Toggle current item
           item.classList.toggle('active');
           const isExpanded = item.classList.contains('active');
+          console.log('FAQ: Item after toggle:', isExpanded);
           question.setAttribute('aria-expanded', isExpanded);
         });
       }
