@@ -862,6 +862,12 @@
     
     console.log('Anime.js loaded successfully');
 
+    // First, ensure Road Rage font is applied to titles
+    const allTitles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
+    allTitles.forEach(title => {
+      title.style.setProperty('font-family', '"Road Rage", -apple-system, BlinkMacSystemFont, sans-serif', 'important');
+    });
+
     // Animation settings from schema
     const direction = '{{ section.settings.animation_direction }}';
     const duration = {{ section.settings.animation_duration }};
@@ -1003,7 +1009,6 @@
     if ('fonts' in document) {
       console.log('Attempting to load Road Rage font via FontFace API...');
       
-      // Try loading with different formats
       const fontUrl = '{{ 'Road_Rage.woff' | asset_url }}';
       console.log('Loading from URL:', fontUrl);
       
@@ -1014,35 +1019,15 @@
         console.log('✓ Font loaded successfully!', loadedFont);
         document.fonts.add(loadedFont);
         console.log('✓ Font added to document.fonts');
-        
-        // Check font status
         console.log('Font status:', loadedFont.status);
         console.log('Font family:', loadedFont.family);
-        
-        // Force apply to all hero titles BEFORE animation runs
-        const heroTitles = document.querySelectorAll('.hero h1, .hero .h1, .hero .text-block.h1, .hero .text-block.h2, .hero .jumbo-text__text, .hero-wrapper h1, .hero-wrapper .h1');
-        console.log('Hero titles found:', heroTitles.length);
-        
-        heroTitles.forEach((el, i) => {
-          const beforeFont = window.getComputedStyle(el).fontFamily;
-          console.log(`Title ${i} BEFORE - Font:`, beforeFont);
-          
-          // Force apply the font - spans will inherit from parent
-          el.style.setProperty('font-family', '"Road Rage", -apple-system, BlinkMacSystemFont, sans-serif', 'important');
-          
-          // Check after
-          setTimeout(() => {
-            const afterFont = window.getComputedStyle(el).fontFamily;
-            console.log(`Title ${i} AFTER - Font:`, afterFont);
-          }, 100);
-        });
       }).catch(function(error) {
         console.error('✗ Font failed to load:', error);
         console.error('Error name:', error.name);
         console.error('Error message:', error.message);
       });
       
-      // Also check when all fonts are ready
+      // Check when all fonts are ready
       document.fonts.ready.then(function() {
         console.log('=== ALL FONTS READY ===');
         console.log('Total fonts loaded:', document.fonts.size);
@@ -1059,23 +1044,6 @@
       });
     } else {
       console.warn('✗ FontFace API not available in this browser');
-      
-      // Fallback: try loading via CSS and check after delay
-      setTimeout(() => {
-        const testEl = document.createElement('div');
-        testEl.style.fontFamily = '"Road Rage", sans-serif';
-        testEl.style.position = 'absolute';
-        testEl.style.visibility = 'hidden';
-        testEl.textContent = 'Test';
-        document.body.appendChild(testEl);
-        
-        const computedFont = window.getComputedStyle(testEl).fontFamily;
-        console.log('Computed font family (fallback test):', computedFont);
-        console.log('Font loaded via CSS:', computedFont.includes('Road Rage'));
-        
-        document.body.removeChild(testEl);
-        console.log('=== FONT LOADING DEBUG END (FALLBACK) ===');
-      }, 2000);
     }
   })();
 </script>
