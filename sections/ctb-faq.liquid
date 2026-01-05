@@ -113,10 +113,13 @@
   }
 
   .faq-answer {
-    overflow: hidden !important;
-    height: 0 !important;
-    transition: height 0.3s ease !important;
-    display: block !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .faq-item.open .faq-answer {
+    max-height: 1500px;
   }
   
   .faq-answer-content {
@@ -172,13 +175,10 @@
     document.querySelectorAll('.ctb-faq .faq-question').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var item = btn.parentElement;
-        var answer = item.querySelector('.faq-answer');
         
         if (item.classList.contains('open')) {
-          answer.style.height = '0';
           item.classList.remove('open');
         } else {
-          answer.style.height = answer.scrollHeight + 'px';
           item.classList.add('open');
         }
       });
