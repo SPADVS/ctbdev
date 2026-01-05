@@ -1079,6 +1079,7 @@
         "service_card_NbapiB": {
           "type": "service_card",
           "settings": {
+            "card_image": "shopify://shop_images/collision_repair.jpg",
             "card_title": "Collision Repair",
             "card_description": "Expert collision repair services to restore your vehicle to its original condition. We work with all insurance companies.",
             "card_link": "",
@@ -1089,6 +1090,7 @@
         "service_card_AyqeRP": {
           "type": "service_card",
           "settings": {
+            "card_image": "shopify://shop_images/paint_job.jpg",
             "card_title": "Paint & Body Work",
             "card_description": "Professional paint jobs and body work with precision color matching. From touch-ups to full repaints.",
             "card_link": "",
@@ -1099,6 +1101,7 @@
         "service_card_CPCXfT": {
           "type": "service_card",
           "settings": {
+            "card_image": "shopify://shop_images/gallery_36.jpg",
             "card_title": "Full Customization & Builds",
             "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
             "card_link": "",
