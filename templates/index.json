@@ -634,7 +634,7 @@
             "star_rating": 5,
             "testimonial_title": "Excellent auto body work!",
             "testimonial_text": "CTB Garage did an amazing job on my car's body repair. The paint match was perfect and they finished ahead of schedule. Highly recommend!",
-            "author_name": "– Mike T., Chicago"
+            "author_name": "– Mike T"
           }
         },
         "testimonial_ykRKHX": {
@@ -643,7 +643,7 @@
             "star_rating": 5,
             "testimonial_title": "Professional service!",
             "testimonial_text": "Great experience at CTB Garage. They know their stuff and take pride in their work. My car looks brand new after the collision repair.",
-            "author_name": "– Sarah L., Illinois"
+            "author_name": "– Sarah L."
           }
         },
         "testimonial_8HGiwg": {
@@ -652,7 +652,7 @@
             "star_rating": 5,
             "testimonial_title": "Love the apparel!",
             "testimonial_text": "Not only do they do great auto body work, but their apparel line is fire! Wearing my CTB Garage hoodie to every car meet now.",
-            "author_name": "– Carlos R., Car Enthusiast"
+            "author_name": "– Carlos R"
           }
         },
         "testimonial_mdigHQ": {
@@ -661,7 +661,7 @@
             "star_rating": 5,
             "testimonial_title": "Top notch quality!",
             "testimonial_text": "Been following CTB Garage for a while now. Finally got to visit their shop on Kinzie Street and the quality of work is incredible. Will definitely be back!",
-            "author_name": "– Jennifer M., Chicago"
+            "author_name": "– Jennifer M."
           }
         }
       },
@@ -676,7 +676,7 @@
         "section_title": "What Customers Are Saying",
         "autoplay": true,
         "autoplay_interval": 3,
-        "star_color": "#FFD700",
+        "star_color": "#ffd700",
         "author_color": "#ffffff",
         "pagination_active_color": "#ffffff",
         "arrow_color": "#000000",
