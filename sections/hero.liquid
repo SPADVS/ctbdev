@@ -696,81 +696,81 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
-{% javascript %}
+{% if section.settings.enable_hero_animations %}
+<script>
   document.addEventListener('DOMContentLoaded', function() {
-    {% if section.settings.enable_hero_animations %}
-      const heroSection = document.querySelector('#Hero-{{ section.id }}');
-      if (!heroSection || typeof anime === 'undefined') return;
+    const heroSection = document.querySelector('#Hero-{{ section.id }}');
+    if (!heroSection || typeof anime === 'undefined') return;
 
-      // Animate all h1-h3 headings with letter stagger
-      const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text');
-      titles.forEach((title, titleIndex) => {
-        // Set initial opacity
-        title.style.opacity = '1';
-        
-        // Split words
-        const titleWords = title.innerHTML.split(/\s+/);
-        title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
-        
-        // Split letters in each word
-        const wordEls = title.querySelectorAll('.tricksword');
-        wordEls.forEach(wordEl => {
-          const letters = wordEl.textContent.split('');
-          wordEl.innerHTML = letters.map(letter => 
-            letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`
-          ).join('');
-        });
-
-        // Animate letters
-        anime({
-          targets: title.querySelectorAll('.letter'),
-          translateX: [50, 0],
-          opacity: [0, 1],
-          easing: 'easeOutExpo',
-          duration: 800,
-          delay: anime.stagger(25, { start: 100 + (titleIndex * 300) })
-        });
-      });
-
-      // Animate paragraph text blocks
-      const textBlocks = heroSection.querySelectorAll('.text-block__text p, .text-block__text');
-      textBlocks.forEach((text, index) => {
-        text.style.opacity = '0';
-        text.style.transform = 'translateX(50px)';
-        anime({
-          targets: text,
-          translateX: [50, 0],
-          opacity: [0, 1],
-          easing: 'easeOutExpo',
-          duration: 800,
-          delay: 600 + (index * 100)
-        });
-      });
-
-      // Animate buttons
-      const buttons = heroSection.querySelectorAll('.button, a[href]');
-      const validButtons = Array.from(buttons).filter(btn => 
-        btn.classList.contains('button') || btn.textContent.trim().length > 0
-      );
+    // Animate all h1-h3 headings with letter stagger
+    const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text');
+    titles.forEach((title, titleIndex) => {
+      // Set initial opacity
+      title.style.opacity = '1';
       
-      if (validButtons.length > 0) {
-        validButtons.forEach(btn => {
-          btn.style.opacity = '0';
-          btn.style.transform = 'translateX(50px)';
-        });
-        
-        anime({
-          targets: validButtons,
-          translateX: [50, 0],
-          opacity: [0, 1],
-          easing: 'easeOutExpo',
-          duration: 800,
-          delay: anime.stagger(150, { start: 800 })
-        });
-      }
-    {% endif %}
+      // Split words
+      const titleWords = title.innerHTML.split(/\s+/);
+      title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
+      
+      // Split letters in each word
+      const wordEls = title.querySelectorAll('.tricksword');
+      wordEls.forEach(wordEl => {
+        const letters = wordEl.textContent.split('');
+        wordEl.innerHTML = letters.map(letter => 
+          letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`
+        ).join('');
+      });
+
+      // Animate letters
+      anime({
+        targets: title.querySelectorAll('.letter'),
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(25, { start: 100 + (titleIndex * 300) })
+      });
+    });
+
+    // Animate paragraph text blocks
+    const textBlocks = heroSection.querySelectorAll('.text-block__text p, .text-block__text');
+    textBlocks.forEach((text, index) => {
+      text.style.opacity = '0';
+      text.style.transform = 'translateX(50px)';
+      anime({
+        targets: text,
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: 600 + (index * 100)
+      });
+    });
+
+    // Animate buttons
+    const buttons = heroSection.querySelectorAll('.button, a[href]');
+    const validButtons = Array.from(buttons).filter(btn => 
+      btn.classList.contains('button') || btn.textContent.trim().length > 0
+    );
+    
+    if (validButtons.length > 0) {
+      validButtons.forEach(btn => {
+        btn.style.opacity = '0';
+        btn.style.transform = 'translateX(50px)';
+      });
+      
+      anime({
+        targets: validButtons,
+        translateX: [50, 0],
+        opacity: [0, 1],
+        easing: 'easeOutExpo',
+        duration: 800,
+        delay: anime.stagger(150, { start: 800 })
+      });
+    }
   });
-{% endjavascript %}
+</script>
+{% endif %}
 
 {% schema %}
 {
