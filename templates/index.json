@@ -104,21 +104,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "button_HBn4XC": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "Merch",
-                "link": "shopify://collections/all",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 50,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 50
-              },
-              "blocks": {}
-            },
             "button_qNnC87": {
               "type": "button",
               "name": "t:names.button",
@@ -127,17 +112,32 @@
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 50,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 32
+                "width": "custom",
+                "custom_width": 93,
+                "width_mobile": "custom",
+                "custom_width_mobile": 45
+              },
+              "blocks": {}
+            },
+            "button_zenfCj": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Merch",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "width": "custom",
+                "custom_width": 93,
+                "width_mobile": "custom",
+                "custom_width_mobile": 45
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "button_HBn4XC",
-            "button_qNnC87"
+            "button_qNnC87",
+            "button_zenfCj"
           ]
         }
       },
