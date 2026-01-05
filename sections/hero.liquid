@@ -1,6 +1,4 @@
 
-<link rel="preload" href="{{ 'Road_Rage.otf' | asset_url }}" as="font" type="font/otf" crossorigin>
-
 {% liquid
   assign media_count = 0
   assign media_count_mobile = 0
@@ -468,10 +466,11 @@
   /* Custom Road Rage font */
   @font-face {
     font-family: 'Road Rage';
-    src: url('{{ 'Road_Rage.otf' | asset_url }}') format('opentype');
+    src: url('{{ 'Road_Rage.woff' | asset_url }}') format('woff'),
+         url('{{ 'Road_Rage.otf' | asset_url }}') format('opentype');
     font-weight: normal;
     font-style: normal;
-    font-display: block;
+    font-display: swap;
   }
 
   .hero-wrapper {
