@@ -91,29 +91,22 @@
   }
 
   .faq-answer {
+    max-height: 0 !important;
     overflow: hidden !important;
-    height: 0 !important;
-    transition: height 0.3s ease !important;
+    transition: max-height 0.4s ease !important;
     display: block !important;
   }
   
   .faq-item.open .faq-answer {
-    height: auto !important;
+    max-height: 2000px !important;
   }
   
   .faq-answer-content {
-    padding: 0;
+    padding: 20px;
     margin: 0;
     font-size: 16px;
     line-height: 1.6;
     color: {{ section.settings.text_color }};
-    opacity: 0;
-    transition: opacity 0.3s ease, padding 0.3s ease;
-  }
-  
-  .faq-item.open .faq-answer-content {
-    padding: 8px 20px 20px;
-    opacity: 1;
   }
 
   @media (max-width: 768px) {
