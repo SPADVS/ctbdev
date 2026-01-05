@@ -1,14 +1,20 @@
-{% stylesheet %}
+{% comment %}
+  CTB FAQ Section - Accordion style with toggle animations
+{% endcomment %}
+
+<style>
   .ctb-faq {
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
     background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px 20px;
+  }
+  
+  .ctb-faq .page-width {
+    max-width: 1440px;
+    margin: 0 auto;
   }
 
-  .faq-container {
-    padding: 0 20px;
-  }
-
-  .section-title {
+  .ctb-faq .section-title {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
     text-align: center;
@@ -18,155 +24,119 @@
     letter-spacing: 1px;
   }
 
-  .faq-accordion {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .faq-item {
+    margin-bottom: 12px;
+  }
+  
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 16px;
+    background: transparent;
     border: {{ section.settings.border_style }};
     border-radius: 8px;
-    overflow: hidden;
-    background: {{ section.settings.card_background }};
-    transition: all 0.3s ease;
-  }
-
-  .faq-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .faq-question {
-    width: 100%;
-    padding: 1.5rem;
-    background: {{ section.settings.card_background }};
-    border: none;
     cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: {{ section.settings.text_color }};
-    transition: all 0.3s ease;
+    transition: background 0.3s, border-color 0.3s;
   }
-
+  
   .faq-question:hover {
     background: {{ section.settings.question_hover_bg }};
-    color: {{ section.settings.icon_color }};
+  }
+  
+  .faq-question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+    text-align: left;
   }
 
-  .faq-question i {
-    color: {{ section.settings.icon_color }};
-    transition: transform 0.3s ease;
+  .faq-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-icon-horizontal,
+  .faq-icon-vertical {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: {{ section.settings.icon_color }};
+    transform-origin: center center;
+  }
+  
+  .faq-icon-horizontal {
+    width: 100%;
+    height: 2px;
+    transform: translate(-50%, -50%);
+  }
+  
+  .faq-icon-vertical {
+    width: 2px;
+    height: 100%;
+    transform: translate(-50%, -50%);
   }
 
-  .faq-question[aria-expanded="true"] i {
-    transform: rotate(180deg);
+  .faq-item.open .faq-icon {
+    transform: rotate(45deg);
+  }
+  
+  .faq-item.open .faq-icon-horizontal,
+  .faq-item.open .faq-icon-vertical {
+    background: {{ section.settings.icon_color }};
   }
 
   .faq-answer {
-    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
-    padding: 0 1.5rem;
-    background: {{ section.settings.answer_background }};
+    height: 0;
+    transition: height 0.3s ease;
   }
-
-  .faq-item.active .faq-answer {
-    max-height: 1000px;
-    padding: 1.5rem;
-    overflow: visible;
-  }
-
-  .faq-answer p {
+  
+  .faq-answer-content {
+    padding: 8px 20px 20px;
     margin: 0;
-    color: {{ section.settings.text_color }};
+    font-size: 16px;
     line-height: 1.6;
-  }
-
-  .faq-answer a {
-    color: {{ section.settings.link_color }};
-    text-decoration: none;
-  }
-
-  .faq-answer a:hover {
-    text-decoration: underline;
+    color: {{ section.settings.text_color }};
   }
 
   @media (max-width: 768px) {
-    .ctb-faq {
-      padding: calc({{ section.settings.padding_top }}px * 0.75) 0 calc({{ section.settings.padding_bottom }}px * 0.75) 0;
-    }
-
-    .section-title {
-      margin-bottom: 2rem;
-    }
-
     .faq-question {
-      padding: 1rem;
-      font-size: 1rem;
+      padding: 12px;
+      font-size: 16px;
     }
-
-    .faq-answer {
-      font-size: 0.95rem;
+    .faq-question-text {
+      font-size: 16px;
     }
-
-    .faq-item.active .faq-answer {
-      padding: 1rem;
+    .faq-answer-content {
+      font-size: 14px;
+      padding: 8px 16px 16px;
     }
   }
-{% endstylesheet %}
-
-{% javascript %}
-  document.addEventListener('DOMContentLoaded', function() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach((item) => {
-      const question = item.querySelector('.faq-question');
-      
-      if (question) {
-        question.addEventListener('click', function() {
-          // Close other items if single open mode is enabled
-          if ({{ section.settings.single_open | default: false }}) {
-            faqItems.forEach((otherItem) => {
-              if (otherItem !== item) {
-                otherItem.classList.remove('active');
-                const otherBtn = otherItem.querySelector('.faq-question');
-                if (otherBtn) {
-                  otherBtn.setAttribute('aria-expanded', 'false');
-                }
-              }
-            });
-          }
-          
-          // Toggle current item
-          item.classList.toggle('active');
-          const isExpanded = item.classList.contains('active');
-          question.setAttribute('aria-expanded', isExpanded);
-        });
-      }
-    });
-  });
-{% endjavascript %}
-
-{% endstylesheet %}
+</style>
 
 <section class="ctb-faq">
-  <div class="page-width faq-container">
+  <div class="page-width">
     <h2 class="section-title">{{ section.settings.heading }}</h2>
 
     <div class="faq-accordion">
       {% for block in section.blocks %}
         <div class="faq-item">
-          <button class="faq-question" aria-expanded="false" type="button">
-            <span>{{ block.settings.question }}</span>
-            <i class="fas fa-chevron-down"></i>
+          <button class="faq-question" type="button">
+            <div class="faq-question-text">{{ block.settings.question }}</div>
+            <div class="faq-icon">
+              <div class="faq-icon-horizontal"></div>
+              <div class="faq-icon-vertical"></div>
+            </div>
           </button>
           <div class="faq-answer">
-            <p>{{ block.settings.answer }}</p>
+            <div class="faq-answer-content rte">
+              {{ block.settings.answer }}
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -175,43 +145,20 @@
 </section>
 
 <script>
-  console.log('FAQ Script loaded');
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('FAQ: DOMContentLoaded fired');
-    const faqItems = document.querySelectorAll('.faq-item');
-    console.log('FAQ: Found', faqItems.length, 'items');
-    
-    faqItems.forEach((item, index) => {
-      const question = item.querySelector('.faq-question');
-      console.log('FAQ: Setting up item', index, question);
-      
-      if (question) {
-        question.addEventListener('click', function(e) {
-          e.preventDefault();
-          console.log('FAQ: Button clicked!', index);
-          console.log('FAQ: Item before toggle:', item.classList.contains('active'));
-          
-          // Close other items if single open mode is enabled
-          if ('{{ section.settings.single_open | default: false }}' === 'true') {
-            console.log('FAQ: Single open mode enabled');
-            faqItems.forEach((otherItem) => {
-              if (otherItem !== item) {
-                otherItem.classList.remove('active');
-                const otherBtn = otherItem.querySelector('.faq-question');
-                if (otherBtn) {
-                  otherBtn.setAttribute('aria-expanded', 'false');
-                }
-              }
-            });
-          }
-          
-          // Toggle current item
-          item.classList.toggle('active');
-          const isExpanded = item.classList.contains('active');
-          console.log('FAQ: Item after toggle:', isExpanded);
-          question.setAttribute('aria-expanded', isExpanded);
-        });
-      }
+    document.querySelectorAll('.ctb-faq .faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.parentElement;
+        var answer = item.querySelector('.faq-answer');
+        
+        if (item.classList.contains('open')) {
+          answer.style.height = '0';
+          item.classList.remove('open');
+        } else {
+          answer.style.height = answer.scrollHeight + 'px';
+          item.classList.add('open');
+        }
+      });
     });
   });
 </script>
@@ -219,6 +166,8 @@
 {% schema %}
 {
   "name": "CTB FAQ",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "text",
@@ -227,70 +176,46 @@
       "default": "Frequently Asked Questions"
     },
     {
-      "type": "checkbox",
-      "id": "single_open",
-      "label": "Allow only one open accordion item",
-      "default": false
-    },
-    {
       "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "default": "#0b0b0b"
+      "default": "#000000"
     },
     {
       "type": "color",
       "id": "heading_color",
       "label": "Heading Color",
-      "default": "#f5f5f5"
+      "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text Color",
-      "default": "#d8d8d8"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Card Background Color",
-      "default": "#111111"
-    },
-    {
-      "type": "color",
-      "id": "question_hover_bg",
-      "label": "Question Hover Background",
-      "default": "#1a1a1a"
-    },
-    {
-      "type": "color",
-      "id": "answer_background",
-      "label": "Answer Background Color",
-      "default": "#0f0f0f"
+      "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "icon_color",
       "label": "Icon Color",
-      "default": "#f5d76e"
-    },
-    {
-      "type": "color",
-      "id": "link_color",
-      "label": "Link Color",
-      "default": "#f5d76e"
+      "default": "#0f9d58"
     },
     {
       "type": "text",
       "id": "border_style",
       "label": "Border Style",
-      "default": "1px solid #1f1f1f"
+      "default": "1px solid #0f9d58"
+    },
+    {
+      "type": "color_background",
+      "id": "question_hover_bg",
+      "label": "Question Hover Background",
+      "default": "rgba(15, 157, 88, 0.1)"
     },
     {
       "type": "range",
       "id": "padding_top",
-      "min": 20,
-      "max": 100,
+      "min": 0,
+      "max": 200,
       "step": 10,
       "unit": "px",
       "label": "Padding Top",
@@ -299,8 +224,8 @@
     {
       "type": "range",
       "id": "padding_bottom",
-      "min": 20,
-      "max": 100,
+      "min": 0,
+      "max": 200,
       "step": 10,
       "unit": "px",
       "label": "Padding Bottom",
@@ -310,19 +235,19 @@
   "blocks": [
     {
       "type": "faq",
-      "name": "FAQ Item",
+      "name": "Question & Answer",
       "settings": [
         {
           "type": "text",
           "id": "question",
           "label": "Question",
-          "default": "What is your service?"
+          "default": "What services do you offer?"
         },
         {
-          "type": "textarea",
+          "type": "richtext",
           "id": "answer",
           "label": "Answer",
-          "default": "Provide a helpful answer to the question."
+          "default": "<p>We specialize in custom automotive builds, performance upgrades, and restoration services.</p>"
         }
       ]
     }
@@ -330,37 +255,7 @@
   "presets": [
     {
       "name": "CTB FAQ",
-      "category": "Custom",
-      "blocks": [
-        {
-          "type": "faq",
-          "settings": {
-            "question": "Where is CTB Garage located?",
-            "answer": "We're located at 4201 W Kinzie Street, Chicago, Illinois. Come visit us for professional auto body repair services."
-          }
-        },
-        {
-          "type": "faq",
-          "settings": {
-            "question": "What services does CTB Garage offer?",
-            "answer": "We offer professional auto body repair, collision repair, paint work, restoration services, exclusive car event tickets, and automotive apparel."
-          }
-        },
-        {
-          "type": "faq",
-          "settings": {
-            "question": "How can I book an appointment?",
-            "answer": "You can contact us through our contact form or call us directly. We'll be happy to schedule a time that works best for you."
-          }
-        },
-        {
-          "type": "faq",
-          "settings": {
-            "question": "Do you offer automotive apparel?",
-            "answer": "Yes! We have an exclusive collection of CTB Garage apparel including hoodies, t-shirts, hats, and more. Visit our shop for the latest items."
-          }
-        }
-      ]
+      "category": "Custom"
     }
   ]
 }
