@@ -471,7 +471,7 @@
         "tab_qJpzY4": {
           "type": "tab",
           "settings": {
-            "tab_title": "Apparel",
+            "tab_title": "cLOTHING",
             "collection": "frontpage"
           }
         },
@@ -486,7 +486,7 @@
           "type": "tab",
           "settings": {
             "tab_title": "Hats",
-            "collection": ""
+            "collection": "frontpage"
           }
         }
       },
