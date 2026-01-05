@@ -702,6 +702,19 @@
     const heroSection = document.querySelector('#Hero-{{ section.id }}');
     if (!heroSection || typeof anime === 'undefined') return;
 
+    // Animation settings from schema
+    const direction = '{{ section.settings.animation_direction }}';
+    const duration = {{ section.settings.animation_duration }};
+    const letterDelay = {{ section.settings.animation_delay }};
+    const divStagger = {{ section.settings.div_stagger }};
+
+    // Determine starting values based on direction
+    let fromX = 0, fromY = 0;
+    if (direction === 'fade-up') fromY = 20;
+    else if (direction === 'fade-down') fromY = -20;
+    else if (direction === 'fade-left') fromX = 20;
+    else if (direction === 'fade-right') fromX = -20;
+
     // Animate all h1-h3 headings with letter stagger
     const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text');
     titles.forEach((title, titleIndex) => {
@@ -724,11 +737,12 @@
       // Animate letters
       anime({
         targets: title.querySelectorAll('.letter'),
-        translateX: [50, 0],
+        translateX: [fromX, 0],
+        translateY: [fromY, 0],
         opacity: [0, 1],
         easing: 'easeOutExpo',
-        duration: 800,
-        delay: anime.stagger(25, { start: 100 + (titleIndex * 300) })
+        duration: duration,
+        delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) })
       });
     });
 
@@ -736,14 +750,15 @@
     const textBlocks = heroSection.querySelectorAll('.text-block__text p, .text-block__text');
     textBlocks.forEach((text, index) => {
       text.style.opacity = '0';
-      text.style.transform = 'translateX(50px)';
+      text.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
       anime({
         targets: text,
-        translateX: [50, 0],
+        translateX: [fromX, 0],
+        translateY: [fromY, 0],
         opacity: [0, 1],
         easing: 'easeOutExpo',
-        duration: 800,
-        delay: 600 + (index * 100)
+        duration: duration,
+        delay: 600 + (index * divStagger)
       });
     });
 
@@ -756,16 +771,17 @@
     if (validButtons.length > 0) {
       validButtons.forEach(btn => {
         btn.style.opacity = '0';
-        btn.style.transform = 'translateX(50px)';
+        btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
       });
       
       anime({
         targets: validButtons,
-        translateX: [50, 0],
+        translateX: [fromX, 0],
+        translateY: [fromY, 0],
         opacity: [0, 1],
         easing: 'easeOutExpo',
-        duration: 800,
-        delay: anime.stagger(150, { start: 800 })
+        duration: duration,
+        delay: anime.stagger(divStagger, { start: 800 })
       });
     }
   });
@@ -1160,11 +1176,53 @@
       "content": "t:content.appearance"
     },
     {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
       "type": "checkbox",
       "id": "enable_hero_animations",
       "label": "Enable text animations",
-      "info": "Animate headings, text, and buttons with staggered entrance effects",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "animation_direction",
+      "label": "Animation direction",
+      "default": "fade-right",
+      "options": [
+        {"value": "fade-up", "label": "Fade Up"},
+        {"value": "fade-down", "label": "Fade Down"},
+        {"value": "fade-left", "label": "Fade Left"},
+        {"value": "fade-right", "label": "Fade Right"}
+      ]
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation duration (ms)",
+      "min": 300,
+      "max": 3000,
+      "step": 100,
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "animation_delay",
+      "label": "Letter delay (ms)",
+      "min": 0,
+      "max": 300,
+      "step": 5,
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "div_stagger",
+      "label": "Element stagger (ms)",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 100
     },
     {
       "type": "color_scheme",
