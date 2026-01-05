@@ -24,12 +24,18 @@
     letter-spacing: 1.5px;
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     z-index: 1100;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(100px);
+    pointer-events: none;
     transition: opacity .35s ease, transform .35s ease, background .3s ease, box-shadow .3s ease;
     border: 2px solid transparent;
     cursor: pointer;
+}
+
+.floating-call-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .floating-call-btn i { font-size: 1rem; }
@@ -342,6 +348,44 @@
     const modalOverlay = document.querySelector('.modal-overlay');
 
     if (ticketsBtn && ticketsModal) {
+        // Show/hide button based on scroll position
+        function handleScroll() {
+            const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
+            if (heroSection) {
+                const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+                const scrollPosition = window.scrollY + window.innerHeight;
+                
+                // Show button only after scrolling past the hero
+                if (window.scrollY > heroBottom - window.innerHeight * 0.5) {
+                    ticketsBtn.classList.add('show');
+                } else {
+                    ticketsBtn.classList.remove('show');
+                }
+            } else {
+                // If no hero section found, show button after 100px scroll
+                if (window.scrollY > 100) {
+                    ticketsBtn.classList.add('show');
+                } else {
+                    ticketsBtn.classList.remove('show');
+                }
+            }
+        }
+
+        // Initial check
+        handleScroll();
+
+        // Listen for scroll events with throttling for performance
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
         // Open modal
         ticketsBtn.addEventListener('click', function() {
             ticketsModal.classList.add('active');
@@ -372,6 +416,8 @@
             }
         });
     }
+})();
+</script>
 })();
 </script>
 

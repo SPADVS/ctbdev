@@ -706,6 +706,17 @@
     display: inline-block;
   }
 
+  /* Ensure proper text wrapping for animated headings */
+  .hero h1,
+  .hero .h1,
+  .hero .text-block.h1,
+  .hero .text-block.h2,
+  .hero .jumbo-text__text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
   /* Media slider styles */
   .hero--slider .hero__media-wrapper {
     position: absolute;
