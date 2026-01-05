@@ -152,6 +152,8 @@
   });
 {% endjavascript %}
 
+{% endstylesheet %}
+
 <section class="ctb-faq">
   <div class="page-width faq-container">
     <h2 class="section-title">{{ section.settings.heading }}</h2>
@@ -159,7 +161,7 @@
     <div class="faq-accordion">
       {% for block in section.blocks %}
         <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
+          <button class="faq-question" aria-expanded="false" type="button">
             <span>{{ block.settings.question }}</span>
             <i class="fas fa-chevron-down"></i>
           </button>
@@ -171,6 +173,40 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach((item) => {
+      const question = item.querySelector('.faq-question');
+      
+      if (question) {
+        question.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Close other items if single open mode is enabled
+          if ('{{ section.settings.single_open | default: false }}' === 'true') {
+            faqItems.forEach((otherItem) => {
+              if (otherItem !== item) {
+                otherItem.classList.remove('active');
+                const otherBtn = otherItem.querySelector('.faq-question');
+                if (otherBtn) {
+                  otherBtn.setAttribute('aria-expanded', 'false');
+                }
+              }
+            });
+          }
+          
+          // Toggle current item
+          item.classList.toggle('active');
+          const isExpanded = item.classList.contains('active');
+          question.setAttribute('aria-expanded', isExpanded);
+        });
+      }
+    });
+  });
+</script>
 
 {% schema %}
 {
