@@ -983,36 +983,60 @@
         "padding-block-end": 48
       }
     },
-    "simple_floating_products_pbNbNr": {
-      "type": "simple-floating-products",
+    "simple_floating_tickets_abxEHp": {
+      "type": "simple-floating-tickets",
       "blocks": {
-        "product_8M4pMe": {
-          "type": "product",
+        "ticket_JWQfMm": {
+          "type": "ticket",
           "settings": {
-            "product": "test"
+            "ticket_title": "Car Shows & Meets",
+            "ticket_description": "Access to exclusive car shows, meets, and automotive events in the Chicago area and beyond.",
+            "ticket_date": "Multiple dates available",
+            "ticket_location": "Chicago area",
+            "ticket_price": "Starting at $25",
+            "ticket_link": "",
+            "button_text": "Get Tickets"
           }
         },
-        "product_tRxKRQ": {
-          "type": "product",
+        "ticket_tenAfz": {
+          "type": "ticket",
           "settings": {
-            "product": "tseting-migration"
+            "ticket_title": "Special Events",
+            "ticket_description": "Be part of special automotive events, cruises, and gatherings. Limited tickets available.",
+            "ticket_date": "Seasonal events",
+            "ticket_location": "Various locations",
+            "ticket_price": "Starting at $35",
+            "ticket_link": "",
+            "button_text": "Get Tickets"
+          }
+        },
+        "ticket_bMzCdb": {
+          "type": "ticket",
+          "settings": {
+            "ticket_title": "VIP Experiences",
+            "ticket_description": "Premium VIP access to exclusive automotive events with behind-the-scenes experiences.",
+            "ticket_date": "Exclusive dates",
+            "ticket_location": "Premium venues",
+            "ticket_price": "Starting at $75",
+            "ticket_link": "",
+            "button_text": "Get Tickets"
           }
         }
       },
       "block_order": [
-        "product_8M4pMe",
-        "product_tRxKRQ"
+        "ticket_JWQfMm",
+        "ticket_tenAfz",
+        "ticket_bMzCdb"
       ],
-      "name": "Simple Floating Products",
+      "name": "Simple Floating Tickets",
       "settings": {
-        "heading": "Featured Products",
-        "trigger_color": "#000000",
-        "accent_color": "#ffd700",
-        "icon_color": "#ffd700",
-        "panel_background": "#1a1a1a",
-        "header_background": "#000000",
-        "heading_color": "#ffffff",
-        "text_color": "#ffffff"
+        "button_text": "Get Tickets",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#000000",
+        "modal_title": "Car Event Tickets",
+        "modal_intro": "Get tickets to exclusive automotive events in the Chicago area",
+        "modal_border_color": "#FFD700",
+        "modal_footer": "Follow <a href=\"https://www.instagram.com/ctbgarage/\" target=\"_blank\">@ctbgarage</a> on Instagram for the latest event announcements and ticket availability"
       }
     }
   },
@@ -1026,6 +1050,6 @@
     "simple_about_bP4iTT",
     "ctb_faq_KTeKq3",
     "section_AQBaJ6",
-    "simple_floating_products_pbNbNr"
+    "simple_floating_tickets_abxEHp"
   ]
 }
