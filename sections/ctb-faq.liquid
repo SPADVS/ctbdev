@@ -91,17 +91,29 @@
   }
 
   .faq-answer {
-    overflow: hidden;
-    height: 0;
-    transition: height 0.3s ease;
+    overflow: hidden !important;
+    height: 0 !important;
+    transition: height 0.3s ease !important;
+    display: block !important;
+  }
+  
+  .faq-item.open .faq-answer {
+    height: auto !important;
   }
   
   .faq-answer-content {
-    padding: 8px 20px 20px;
+    padding: 0;
     margin: 0;
     font-size: 16px;
     line-height: 1.6;
     color: {{ section.settings.text_color }};
+    opacity: 0;
+    transition: opacity 0.3s ease, padding 0.3s ease;
+  }
+  
+  .faq-item.open .faq-answer-content {
+    padding: 8px 20px 20px;
+    opacity: 1;
   }
 
   @media (max-width: 768px) {
@@ -145,18 +157,26 @@
 </section>
 
 <script>
+  console.log('CTB FAQ: Script loaded');
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.ctb-faq .faq-question').forEach(function(btn) {
+    console.log('CTB FAQ: DOM ready');
+    document.querySelectorAll('.ctb-faq .faq-question').forEach(function(btn, index) {
+      console.log('CTB FAQ: Setting up button', index);
       btn.addEventListener('click', function() {
+        console.log('CTB FAQ: Clicked button', index);
         var item = btn.parentElement;
         var answer = item.querySelector('.faq-answer');
         
+        console.log('CTB FAQ: Item:', item);
+        console.log('CTB FAQ: Answer:', answer);
+        console.log('CTB FAQ: Has open class:', item.classList.contains('open'));
+        
         if (item.classList.contains('open')) {
-          answer.style.height = '0';
           item.classList.remove('open');
+          console.log('CTB FAQ: Closed item', index);
         } else {
-          answer.style.height = answer.scrollHeight + 'px';
           item.classList.add('open');
+          console.log('CTB FAQ: Opened item', index);
         }
       });
     });
