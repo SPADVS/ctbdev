@@ -4,9 +4,30 @@
 {% endcomment %}
 
 {% if section.settings.font_url != blank %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="{{ section.settings.font_url }}" rel="stylesheet">
+  {% comment %} Check if URL is a direct font file or a stylesheet {% endcomment %}
+  {% assign is_font_file = false %}
+  {% if section.settings.font_url contains '.woff' or section.settings.font_url contains '.ttf' or section.settings.font_url contains '.otf' %}
+    {% assign is_font_file = true %}
+  {% endif %}
+
+  {% if is_font_file %}
+    {%- comment -%} Direct font file - use @font-face {%- endcomment -%}
+    <style>
+      @font-face {
+        font-family: "{{ section.settings.font_family_name }}";
+        src: url("{{ section.settings.font_url }}") format("woff2"),
+             url("{{ section.settings.font_url }}") format("woff"),
+             url("{{ section.settings.font_url }}") format("truetype"),
+             url("{{ section.settings.font_url }}") format("opentype");
+        font-display: swap;
+      }
+    </style>
+  {% else %}
+    {%- comment -%} CSS stylesheet (like Google Fonts) {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="{{ section.settings.font_url }}" rel="stylesheet">
+  {% endif %}
 {% endif %}
 
 <style>
@@ -108,7 +129,8 @@
       "min": 10,
       "max": 100,
       "step": 1,
-      "info": "Leave at 10 to use default size"
+      "default": 16,
+      "info": "Leave at 16 to use default size"
     },
     {
       "type": "range",
@@ -117,7 +139,8 @@
       "min": 0.8,
       "max": 3.0,
       "step": 0.1,
-      "info": "Leave at 0.8 to use default line height"
+      "default": 1.5,
+      "info": "Leave at 1.5 to use default line height"
     },
     {
       "type": "range",
