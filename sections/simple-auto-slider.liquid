@@ -75,10 +75,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
 
-{% if section.settings.custom_font_url != blank %}
-  <link rel="stylesheet" href="{{ section.settings.custom_font_url }}">
-{% endif %}
-
 <!-- CSS: Updated Styles -->
 <style>
   /* Section wrapper */
@@ -152,26 +148,6 @@
     text-align: center;
     max-width: 600px;
   }
-
-  /* Custom Font Overrides */
-  {% if section.settings.custom_font_family != blank and section.settings.font_target != 'none' %}
-    {% if section.settings.font_target == 'heading' or section.settings.font_target == 'both' %}
-      .product-slider-tabs .heading-md {
-        font-family: '{{ section.settings.custom_font_family }}', sans-serif !important;
-        font-size: {{ section.settings.custom_font_size }}px !important;
-        line-height: {{ section.settings.custom_line_height }} !important;
-        letter-spacing: {{ section.settings.custom_letter_spacing }}px !important;
-      }
-    {% endif %}
-    {% if section.settings.font_target == 'description' or section.settings.font_target == 'both' %}
-      .product-slider-tabs .uui-text-size-medium {
-        font-family: '{{ section.settings.custom_font_family }}', sans-serif !important;
-        font-size: {{ section.settings.custom_font_size }}px !important;
-        line-height: {{ section.settings.custom_line_height }} !important;
-        letter-spacing: {{ section.settings.custom_letter_spacing }}px !important;
-      }
-    {% endif %}
-  {% endif %}
 
   /* Tab Buttons */
   .product-slider-tabs .tabs-buttons {
@@ -607,64 +583,6 @@ if (document.readyState === 'loading') {
       "id": "show_pagination",
       "label": "Show pagination dots",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Custom Font Override"
-    },
-    {
-      "type": "url",
-      "id": "custom_font_url",
-      "label": "Font URL",
-      "info": "Paste Google Fonts or custom font link (e.g., https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap)"
-    },
-    {
-      "type": "text",
-      "id": "custom_font_family",
-      "label": "Font family name",
-      "info": "Enter exact font name (e.g., 'Roboto', 'Open Sans')",
-      "placeholder": "Font Name"
-    },
-    {
-      "type": "select",
-      "id": "font_target",
-      "label": "Apply to",
-      "options": [
-        {"value": "none", "label": "None"},
-        {"value": "heading", "label": "Heading only"},
-        {"value": "description", "label": "Description only"},
-        {"value": "both", "label": "Both heading and description"}
-      ],
-      "default": "none"
-    },
-    {
-      "type": "range",
-      "id": "custom_font_size",
-      "min": 12,
-      "max": 72,
-      "step": 1,
-      "unit": "px",
-      "label": "Font size",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "custom_line_height",
-      "min": 1,
-      "max": 3,
-      "step": 0.1,
-      "label": "Line height",
-      "default": 1.5
-    },
-    {
-      "type": "range",
-      "id": "custom_letter_spacing",
-      "min": -5,
-      "max": 10,
-      "step": 0.5,
-      "unit": "px",
-      "label": "Letter spacing",
-      "default": 0
     }
   ],
   "blocks": [
