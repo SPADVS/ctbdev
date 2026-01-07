@@ -9,7 +9,10 @@
 <section class="product-slider-tabs">
   <div class="container">
     <div class="column-list _20">
-      <h2 class="heading-md"><strong>{{ section.settings.heading }}</strong></h2>
+      {% if section.settings.heading %}
+        {% assign heading_tag = section.settings.heading_tag | default: 'h2' %}
+        <{{ heading_tag }} class="heading-md"><strong>{{ section.settings.heading }}</strong></{{ heading_tag }}>
+      {% endif %}
       <div class="uui-text-size-medium">
         {{ section.settings.description }}
       </div>
@@ -369,17 +372,21 @@ function initProductSliderTabs() {
     if(splideElement && !splideElement.classList.contains('splide-initialized')) {
       var autoScrollSpeed = parseInt(splideElement.getAttribute('data-auto-scroll-speed')) || 1;
       var splideInstance = new Splide(splideElement, {
-        type: 'loop',
+        type: '{{ section.settings.slider_type }}',
         autoWidth: true,
         height: 'auto',
-        drag: 'free',
-        arrows: false,
-        pagination: false,
+        drag: {{ section.settings.enable_drag | json }},
+        arrows: {{ section.settings.show_arrows | json }},
+        pagination: {{ section.settings.show_pagination | json }},
+        keyboard: {{ section.settings.enable_keyboard | json }},
+        wheel: {{ section.settings.enable_wheel | json }},
+        speed: {{ section.settings.transition_speed }},
+        easing: '{{ section.settings.easing }}',
         label: 'Image Slider',
         autoScroll: {
           speed: autoScrollSpeed,
-          pauseOnHover: false,
-          pauseOnFocus: false,
+          pauseOnHover: {{ section.settings.pause_on_hover | json }},
+          pauseOnFocus: {{ section.settings.pause_on_focus | json }},
         },
         breakpoints: {
           991: { autoScroll: { speed: autoScrollSpeed } },
@@ -478,6 +485,104 @@ if (document.readyState === 'loading') {
       "min": 1,
       "max": 10,
       "step": 1
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {"value": "h1", "label": "H1"},
+        {"value": "h2", "label": "H2"},
+        {"value": "h3", "label": "H3"},
+        {"value": "h4", "label": "H4"},
+        {"value": "h5", "label": "H5"},
+        {"value": "h6", "label": "H6"}
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Splide Options"
+    },
+    {
+      "type": "select",
+      "id": "slider_type",
+      "label": "Slider type",
+      "options": [
+        {"value": "loop", "label": "Loop (infinite)"},
+        {"value": "slide", "label": "Slide (finite)"}
+      ],
+      "default": "loop"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 200,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 800
+    },
+    {
+      "type": "select",
+      "id": "easing",
+      "label": "Transition easing",
+      "options": [
+        {"value": "linear", "label": "Linear"},
+        {"value": "ease", "label": "Ease"},
+        {"value": "ease-in", "label": "Ease In"},
+        {"value": "ease-out", "label": "Ease Out"},
+        {"value": "ease-in-out", "label": "Ease In Out"},
+        {"value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)", "label": "Smooth"}
+      ],
+      "default": "ease"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_focus",
+      "label": "Pause autoplay on focus",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drag",
+      "label": "Enable drag/swipe",
+      "default": true,
+      "info": "Set to 'free' for continuous drag"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_keyboard",
+      "label": "Enable keyboard navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wheel",
+      "label": "Enable mouse wheel navigation",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": false
     }
   ],
   "blocks": [
