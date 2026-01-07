@@ -18,14 +18,16 @@
       </div>
     </div>
     
-    <!-- Tab Buttons -->
-    <div class="tabs-buttons" style="display:flex; gap:1rem; margin-bottom:1rem;">
-      {% for block in section.blocks %}
-        <button class="tab-button {% if forloop.first %}active{% endif %}" data-tab="{{ forloop.index0 }}">
-          {{ block.settings.tab_title }}
-        </button>
-      {% endfor %}
-    </div>
+    <!-- Tab Buttons (hidden if only 1 tab) -->
+    {% if section.blocks.size > 1 %}
+      <div class="tabs-buttons" style="display:flex; gap:1rem; margin-bottom:1rem;">
+        {% for block in section.blocks %}
+          <button class="tab-button {% if forloop.first %}active{% endif %}" data-tab="{{ forloop.index0 }}">
+            {{ block.settings.tab_title }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
     
     <!-- Tab Contents -->
     <div class="tabs-content">
@@ -227,7 +229,7 @@
   .product-slider-tabs .splide__slide.animate-slide {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    transition: opacity {{ section.settings.slide_animation_speed }}ms ease-out, transform {{ section.settings.slide_animation_speed }}ms ease-out;
   }
 
   .product-slider-tabs .splide.all-visible .splide__slide {
@@ -354,14 +356,15 @@ function initProductSliderTabs() {
 
   // Function to animate the slider slides (now including clones)
   function animateSplide(splideElement) {
+    var animationDelay = {{ section.settings.slide_animation_delay }};
     splideElement.classList.add('in-view', 'slider-animate');
     var slides = splideElement.querySelectorAll('.splide__slide');
     slides.forEach(function(slide, index) {
       setTimeout(function() {
         slide.classList.add('animate-slide');
-      }, index * 80);
+      }, index * animationDelay);
     });
-    var totalDelay = slides.length * 80 + 150;
+    var totalDelay = slides.length * animationDelay + 150;
     setTimeout(function() {
       splideElement.classList.add('all-visible');
     }, totalDelay);
@@ -583,6 +586,30 @@ if (document.readyState === 'loading') {
       "id": "show_pagination",
       "label": "Show pagination dots",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "slide_animation_speed",
+      "label": "Slide animation speed (ms)",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "default": 200,
+      "info": "Speed of the slide-in animation"
+    },
+    {
+      "type": "range",
+      "id": "slide_animation_delay",
+      "label": "Delay between slides (ms)",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "default": 80,
+      "info": "Stagger delay between each slide animation"
     }
   ],
   "blocks": [
