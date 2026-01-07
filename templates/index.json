@@ -714,10 +714,11 @@
       "settings": {
         "heading": "About CTB Garage",
         "description": "Welcome to CTB Garage — Chicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
+        "single_image": "shopify://shop_images/paint_job.jpg",
         "instagram_handle": "ctbgarage",
         "button_text": "Contact Us",
         "button_link": "",
-        "background_color": "#080808",
+        "background_color": "#000000",
         "heading_color": "#ffffff",
         "text_color": "#e5e5e5",
         "accent_color": "#ffffff",
