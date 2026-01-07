@@ -505,12 +505,12 @@
         "slider_type": "loop",
         "transition_speed": 800,
         "easing": "ease",
-        "pause_on_hover": false,
+        "pause_on_hover": true,
         "pause_on_focus": false,
         "enable_drag": true,
         "enable_keyboard": true,
         "enable_wheel": false,
-        "show_arrows": false,
+        "show_arrows": true,
         "show_pagination": false
       }
     },
