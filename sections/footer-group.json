@@ -19,7 +19,7 @@
         "font_family_name": "Road-rage",
         "fallback_font": "sans-serif",
         "target_elements": "h1,h2,h3,h4,h5,h6",
-        "font_size": 16,
+        "font_size": 68,
         "line_height": 1.5,
         "letter_spacing": 0,
         "font_weight": "",
