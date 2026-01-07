@@ -502,7 +502,7 @@
         "description": "Check out our exclusive automotive apparel collection",
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
-        "slider_type": "slide",
+        "slider_type": "loop",
         "transition_speed": 800,
         "easing": "ease",
         "pause_on_hover": true,
