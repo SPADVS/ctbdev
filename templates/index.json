@@ -475,26 +475,10 @@
             "tab_title": "Shirts",
             "collection": "shirts"
           }
-        },
-        "tab_kGXPad": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "Sweaters",
-            "collection": "sweaters"
-          }
-        },
-        "tab_9nYnPB": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "Hats",
-            "collection": "hats"
-          }
         }
       },
       "block_order": [
-        "tab_qJpzY4",
-        "tab_kGXPad",
-        "tab_9nYnPB"
+        "tab_qJpzY4"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
@@ -605,7 +589,7 @@
         "service_card_CPCXfT": {
           "type": "service_card",
           "settings": {
-            "card_image": "shopify://shop_images/paint_job.jpg",
+            "card_image": "shopify://shop_images/special_events.jpg",
             "card_title": "Full Customization & Builds",
             "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
             "card_link": "",
@@ -714,10 +698,11 @@
       "settings": {
         "heading": "About CTB Garage",
         "description": "Welcome to CTB Garage — Chicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
+        "single_image": "shopify://shop_images/paint_job.jpg",
         "instagram_handle": "ctbgarage",
         "button_text": "Contact Us",
         "button_link": "",
-        "background_color": "#080808",
+        "background_color": "#000000",
         "heading_color": "#ffffff",
         "text_color": "#e5e5e5",
         "accent_color": "#ffffff",
