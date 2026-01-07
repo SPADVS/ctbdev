@@ -13,17 +13,27 @@
   "sections": {
     "custom_font_override_waUJiF": {
       "type": "custom-font-override",
+      "blocks": {
+        "font_override_nmzijJ": {
+          "type": "font_override",
+          "settings": {
+            "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.ttf?v=1767828103",
+            "font_family_name": "",
+            "fallback_font": "sans-serif",
+            "target_elements": "h1,h2,h3,",
+            "font_size": 16,
+            "line_height": 1.5,
+            "letter_spacing": 0,
+            "font_weight": "",
+            "text_transform": "none"
+          }
+        }
+      },
+      "block_order": [
+        "font_override_nmzijJ"
+      ],
       "name": "Custom Font Override",
       "settings": {
-        "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.otf?v=1767827761",
-        "font_family_name": "Road",
-        "fallback_font": "sans-serif",
-        "target_elements": "h1,h2,h3",
-        "font_size": 68,
-        "line_height": 1.5,
-        "letter_spacing": 0,
-        "font_weight": "",
-        "text_transform": "none",
         "show_preview": true,
         "preview_bg": "#000000"
       }
