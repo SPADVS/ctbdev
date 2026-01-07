@@ -502,15 +502,15 @@
         "description": "Check out our exclusive automotive apparel collection",
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
-        "slider_type": "loop",
+        "slider_type": "slide",
         "transition_speed": 800,
         "easing": "ease",
-        "pause_on_hover": false,
+        "pause_on_hover": true,
         "pause_on_focus": false,
         "enable_drag": true,
         "enable_keyboard": true,
         "enable_wheel": false,
-        "show_arrows": false,
+        "show_arrows": true,
         "show_pagination": false
       }
     },

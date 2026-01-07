@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% comment %}
   Custom Font Override Section
   Allows you to load a custom font and apply it to specific elements with custom styling
@@ -206,3 +207,192 @@
   ]
 }
 {% endschema %}
+=======
+{% comment %}
+  Custom Font Override Section
+  Allows you to load a custom font and apply it to specific elements with custom styling
+{% endcomment %}
+
+{% if section.settings.font_url != blank %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="{{ section.settings.font_url }}" rel="stylesheet">
+{% endif %}
+
+<style>
+  {% if section.settings.font_url != blank %}
+    {% assign font_name = section.settings.font_family_name %}
+    {% assign targets = section.settings.target_elements | split: ',' %}
+    
+    {% for target in targets %}
+      {{ target | strip }} {
+        font-family: "{{ font_name }}", {{ section.settings.fallback_font }} !important;
+        {% if section.settings.font_size != blank %}
+          font-size: {{ section.settings.font_size }}px !important;
+        {% endif %}
+        {% if section.settings.line_height != blank %}
+          line-height: {{ section.settings.line_height }} !important;
+        {% endif %}
+        {% if section.settings.letter_spacing != blank %}
+          letter-spacing: {{ section.settings.letter_spacing }}px !important;
+        {% endif %}
+        {% if section.settings.font_weight != blank %}
+          font-weight: {{ section.settings.font_weight }} !important;
+        {% endif %}
+        {% if section.settings.text_transform != blank and section.settings.text_transform != 'none' %}
+          text-transform: {{ section.settings.text_transform }} !important;
+        {% endif %}
+      }
+    {% endfor %}
+  {% endif %}
+</style>
+
+{% if section.settings.show_preview %}
+  <div class="font-override-preview" style="padding: 40px 20px; text-align: center; background: {{ section.settings.preview_bg }};">
+    <div class="container">
+      <h1 style="margin-bottom: 20px;">Heading 1 Preview</h1>
+      <h2 style="margin-bottom: 20px;">Heading 2 Preview</h2>
+      <h3 style="margin-bottom: 20px;">Heading 3 Preview</h3>
+      <h4 style="margin-bottom: 20px;">Heading 4 Preview</h4>
+      <h5 style="margin-bottom: 20px;">Heading 5 Preview</h5>
+      <h6 style="margin-bottom: 20px;">Heading 6 Preview</h6>
+      <p style="margin-bottom: 20px;">This is a paragraph preview. The quick brown fox jumps over the lazy dog.</p>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Custom Font Override",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Font Settings"
+    },
+    {
+      "type": "text",
+      "id": "font_url",
+      "label": "Font URL",
+      "info": "Paste the full Google Fonts URL or custom font stylesheet URL",
+      "placeholder": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    },
+    {
+      "type": "text",
+      "id": "font_family_name",
+      "label": "Font Family Name",
+      "info": "Enter the exact font family name (e.g., 'Roboto', 'Open Sans')",
+      "placeholder": "Roboto"
+    },
+    {
+      "type": "select",
+      "id": "fallback_font",
+      "label": "Fallback Font",
+      "options": [
+        {"value": "sans-serif", "label": "Sans-Serif"},
+        {"value": "serif", "label": "Serif"},
+        {"value": "monospace", "label": "Monospace"},
+        {"value": "cursive", "label": "Cursive"}
+      ],
+      "default": "sans-serif"
+    },
+    {
+      "type": "header",
+      "content": "Target Elements"
+    },
+    {
+      "type": "text",
+      "id": "target_elements",
+      "label": "CSS Selectors (comma separated)",
+      "info": "Examples: h1,h2,h3 OR p OR .class-name OR #id-name",
+      "default": "h1,h2,h3,h4,h5,h6",
+      "placeholder": "h1,h2,h3,h4,h5,h6"
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size (px)",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "default": 16,
+      "info": "Leave at 16 to use default size"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line Height",
+      "min": 0.8,
+      "max": 3.0,
+      "step": 0.1,
+      "default": 1.5,
+      "info": "Leave at 1.5 to use default line height"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter Spacing (px)",
+      "min": -5,
+      "max": 20,
+      "step": 0.5,
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        {"value": "", "label": "Default"},
+        {"value": "100", "label": "100 - Thin"},
+        {"value": "200", "label": "200 - Extra Light"},
+        {"value": "300", "label": "300 - Light"},
+        {"value": "400", "label": "400 - Normal"},
+        {"value": "500", "label": "500 - Medium"},
+        {"value": "600", "label": "600 - Semi Bold"},
+        {"value": "700", "label": "700 - Bold"},
+        {"value": "800", "label": "800 - Extra Bold"},
+        {"value": "900", "label": "900 - Black"}
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text Transform",
+      "options": [
+        {"value": "none", "label": "None"},
+        {"value": "uppercase", "label": "UPPERCASE"},
+        {"value": "lowercase", "label": "lowercase"},
+        {"value": "capitalize", "label": "Capitalize"}
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Preview Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preview",
+      "label": "Show preview section",
+      "default": false,
+      "info": "Display a preview of all heading and paragraph styles"
+    },
+    {
+      "type": "color",
+      "id": "preview_bg",
+      "label": "Preview background color",
+      "default": "#f5f5f5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Font Override"
+    }
+  ]
+}
+{% endschema %}
+>>>>>>> 75edad029764997f658a6c11575e8fc3653ac8b3
