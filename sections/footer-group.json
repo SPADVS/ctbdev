@@ -34,7 +34,7 @@
       ],
       "name": "Custom Font Override",
       "settings": {
-        "show_preview": true,
+        "show_preview": false,
         "preview_bg": "#000000"
       }
     },
