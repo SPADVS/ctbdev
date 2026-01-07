@@ -504,7 +504,7 @@
         "heading_tag": "h2",
         "slider_type": "slide",
         "transition_speed": 800,
-        "easing": "ease-in",
+        "easing": "ease",
         "pause_on_hover": true,
         "pause_on_focus": false,
         "enable_drag": true,
