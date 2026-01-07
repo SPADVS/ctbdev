@@ -386,6 +386,13 @@ function initProductSliderTabs() {
         speed: {{ section.settings.transition_speed }},
         easing: '{{ section.settings.easing }}',
         label: 'Image Slider',
+        perPage: 1,
+        perMove: 1,
+        gap: '32px',
+        focus: 0,
+        trimSpace: false,
+        clones: 3,
+        cloneStatus: false,
         autoScroll: {
           speed: autoScrollSpeed,
           pauseOnHover: {{ section.settings.pause_on_hover | json }},
