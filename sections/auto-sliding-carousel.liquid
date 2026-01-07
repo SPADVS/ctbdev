@@ -51,6 +51,17 @@
     font-weight: 700;
   }
 
+  .auto-slider__item h1,
+  .auto-slider__item h2,
+  .auto-slider__item h4,
+  .auto-slider__item h5,
+  .auto-slider__item h6 {
+    color: #f5d76e;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 700;
+  }
+
   .auto-slider__item p {
     color: #b0b0b0;
     font-size: 1.1rem;
@@ -127,17 +138,54 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
+  const slidesList = carouselElement.querySelector('.splide__list');
+  const originalSlides = slidesList.querySelectorAll('.splide__slide');
+  const slideCount = originalSlides.length;
+  const perPage = {{ section.settings.items_per_page }};
+  const fewSlidesBehavior = '{{ section.settings.few_slides_behavior }}';
+  
+  let carouselType = 'loop';
+  let enableAutoplay = true;
+  
+  // Handle cases where there are fewer slides than perPage
+  if (slideCount <= perPage) {
+    if (fewSlidesBehavior === 'duplicate') {
+      // Duplicate slides until we have enough for smooth looping
+      const slidesNeeded = perPage + 2; // Add extra for smooth infinite loop
+      let duplicateCount = 0;
+      
+      while (slidesList.children.length < slidesNeeded && duplicateCount < 20) {
+        originalSlides.forEach(slide => {
+          const clone = slide.cloneNode(true);
+          slidesList.appendChild(clone);
+        });
+        duplicateCount++;
+      }
+    } else if (fewSlidesBehavior === 'disable_loop') {
+      // Use slide type instead of loop
+      carouselType = 'slide';
+      enableAutoplay = false;
+    }
+    // 'keep_loop' option keeps loop type even with few slides
+  }
+
   const splide = new Splide(carouselElement, {
-    type: 'loop',
-    perPage: {{ section.settings.items_per_page }},
-    gap: '2rem',
-    autoplay: {
+    type: carouselType,
+    perPage: perPage,
+    gap: '{{ section.settings.gap }}',
+    autoplay: enableAutoplay ? {
       interval: {{ section.settings.autoplay_speed }},
-      pause: 'hover'
-    },
-    speed: 800,
+      pauseOnHover: {{ section.settings.pause_on_hover | json }},
+      pauseOnFocus: {{ section.settings.pause_on_focus | json }}
+    } : false,
+    speed: {{ section.settings.transition_speed }},
+    easing: '{{ section.settings.easing }}',
     arrows: {{ section.settings.show_arrows | json }},
     pagination: {{ section.settings.show_pagination | json }},
+    drag: {{ section.settings.enable_drag | json }},
+    keyboard: {{ section.settings.enable_keyboard | json }},
+    wheel: {{ section.settings.enable_wheel | json }},
+    waitForTransition: {{ section.settings.wait_for_transition | json }},
     breakpoints: {
       1024: { 
         perPage: {% if section.settings.items_per_page > 2 %}2{% else %}{{ section.settings.items_per_page }}{% endif %}
@@ -155,7 +203,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <section class="auto-slider">
   <div class="auto-slider__container">
     {% if section.settings.heading %}
-      <h2 class="auto-slider__heading">{{ section.settings.heading }}</h2>
+      {% assign heading_tag = section.settings.heading_tag | default: 'h2' %}
+      <{{ heading_tag }} class="auto-slider__heading">{{ section.settings.heading }}</{{ heading_tag }}>
     {% endif %}
 
     <div id="auto-carousel-{{ section.id }}" class="splide">
@@ -164,7 +213,8 @@ document.addEventListener('DOMContentLoaded', function() {
           {% for block in section.blocks %}
             <li class="splide__slide">
               <div class="auto-slider__item">
-                <h3>{{ block.settings.title }}</h3>
+                {% assign slide_heading_tag = block.settings.title_tag | default: 'h3' %}
+                <{{ slide_heading_tag }}>{{ block.settings.title }}</{{ slide_heading_tag }}>
                 <p>{{ block.settings.description }}</p>
               </div>
             </li>
@@ -187,6 +237,20 @@ document.addEventListener('DOMContentLoaded', function() {
       "default": "Auto-Sliding Carousel"
     },
     {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {"value": "h1", "label": "H1"},
+        {"value": "h2", "label": "H2"},
+        {"value": "h3", "label": "H3"},
+        {"value": "h4", "label": "H4"},
+        {"value": "h5", "label": "H5"},
+        {"value": "h6", "label": "H6"}
+      ],
+      "default": "h2"
+    },
+    {
       "type": "range",
       "id": "items_per_page",
       "min": 1,
@@ -196,6 +260,18 @@ document.addEventListener('DOMContentLoaded', function() {
       "default": 3
     },
     {
+      "type": "select",
+      "id": "few_slides_behavior",
+      "label": "Behavior when few slides",
+      "info": "How to handle when there are fewer slides than items per page",
+      "options": [
+        {"value": "duplicate", "label": "Duplicate slides for smooth loop"},
+        {"value": "disable_loop", "label": "Disable loop and autoplay"},
+        {"value": "keep_loop", "label": "Keep loop (may glitch)"}
+      ],
+      "default": "duplicate"
+    },
+    {
       "type": "range",
       "id": "autoplay_speed",
       "min": 1000,
@@ -203,6 +279,81 @@ document.addEventListener('DOMContentLoaded', function() {
       "step": 500,
       "label": "Autoplay speed (ms)",
       "default": 5000
+    },
+    {
+      "type": "header",
+      "content": "Splide Options"
+    },
+    {
+      "type": "text",
+      "id": "gap",
+      "label": "Gap between slides",
+      "default": "2rem",
+      "info": "CSS value (e.g., 2rem, 20px, 1.5em)"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 200,
+      "max": 2000,
+      "step": 100,
+      "label": "Transition speed (ms)",
+      "default": 800
+    },
+    {
+      "type": "select",
+      "id": "easing",
+      "label": "Transition easing",
+      "options": [
+        {"value": "linear", "label": "Linear"},
+        {"value": "ease", "label": "Ease"},
+        {"value": "ease-in", "label": "Ease In"},
+        {"value": "ease-out", "label": "Ease Out"},
+        {"value": "ease-in-out", "label": "Ease In Out"},
+        {"value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)", "label": "Smooth"}
+      ],
+      "default": "ease"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_focus",
+      "label": "Pause autoplay on focus",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drag",
+      "label": "Enable drag/swipe",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_keyboard",
+      "label": "Enable keyboard navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wheel",
+      "label": "Enable mouse wheel navigation",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "wait_for_transition",
+      "label": "Wait for transition to complete",
+      "default": true,
+      "info": "Prevents rapid sliding when clicking multiple times"
+    },
+    {
+      "type": "header",
+      "content": "Display Options"
     },
     {
       "type": "checkbox",
@@ -227,6 +378,21 @@ document.addEventListener('DOMContentLoaded', function() {
           "id": "title",
           "label": "Title",
           "default": "Slide Title"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Title heading tag",
+          "options": [
+            {"value": "h1", "label": "H1"},
+            {"value": "h2", "label": "H2"},
+            {"value": "h3", "label": "H3"},
+            {"value": "h4", "label": "H4"},
+            {"value": "h5", "label": "H5"},
+            {"value": "h6", "label": "H6"},
+            {"value": "p", "label": "Paragraph"}
+          ],
+          "default": "h3"
         },
         {
           "type": "textarea",
