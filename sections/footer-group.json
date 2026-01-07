@@ -11,6 +11,23 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "custom_font_override_waUJiF": {
+      "type": "custom-font-override",
+      "name": "Custom Font Override",
+      "settings": {
+        "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.otf?v=1767827761",
+        "font_family_name": "Road-rage",
+        "fallback_font": "sans-serif",
+        "target_elements": "h1,h2,h3,h4,h5,h6",
+        "font_size": 16,
+        "line_height": 1.5,
+        "letter_spacing": 0,
+        "font_weight": "",
+        "text_transform": "none",
+        "show_preview": false,
+        "preview_bg": "#f5f5f5"
+      }
+    },
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
@@ -115,9 +132,9 @@
             "width": "fill",
             "custom_width": 100,
             "inherit_color_scheme": true,
+            "color_scheme": "",
             "heading": "",
             "heading_preset": "h3",
-            "color_scheme": "",
             "border_style": "all",
             "border_width": 1,
             "border_radius": 100,
@@ -205,6 +222,7 @@
     }
   },
   "order": [
+    "custom_font_override_waUJiF",
     "footer_m9NzUG",
     "footer_utilities_jLGE8U"
   ]
