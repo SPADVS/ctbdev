@@ -500,7 +500,18 @@
       "settings": {
         "heading": "CTB Garage Merch",
         "description": "Check out our exclusive automotive apparel collection",
-        "auto_scroll_speed": 1
+        "auto_scroll_speed": 1,
+        "heading_tag": "h2",
+        "slider_type": "loop",
+        "transition_speed": 800,
+        "easing": "ease",
+        "pause_on_hover": false,
+        "pause_on_focus": false,
+        "enable_drag": true,
+        "enable_keyboard": true,
+        "enable_wheel": false,
+        "show_arrows": false,
+        "show_pagination": false
       }
     },
     "17675636610d7f9620": {
@@ -594,6 +605,7 @@
         "service_card_CPCXfT": {
           "type": "service_card",
           "settings": {
+            "card_image": "shopify://shop_images/paint_job.jpg",
             "card_title": "Full Customization & Builds",
             "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
             "card_link": "",
