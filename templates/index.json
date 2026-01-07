@@ -475,26 +475,10 @@
             "tab_title": "Shirts",
             "collection": "shirts"
           }
-        },
-        "tab_kGXPad": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "Sweaters",
-            "collection": "sweaters"
-          }
-        },
-        "tab_9nYnPB": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "Hats",
-            "collection": "hats"
-          }
         }
       },
       "block_order": [
-        "tab_qJpzY4",
-        "tab_kGXPad",
-        "tab_9nYnPB"
+        "tab_qJpzY4"
       ],
       "name": "🎠 Simple Auto Slider",
       "settings": {
