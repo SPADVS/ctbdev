@@ -15,10 +15,15 @@
     <style>
       @font-face {
         font-family: "{{ section.settings.font_family_name }}";
-        src: url("{{ section.settings.font_url }}") format("woff2"),
-             url("{{ section.settings.font_url }}") format("woff"),
-             url("{{ section.settings.font_url }}") format("truetype"),
-             url("{{ section.settings.font_url }}") format("opentype");
+        {% if section.settings.font_url contains '.woff2' %}
+          src: url("{{ section.settings.font_url }}") format("woff2");
+        {% elsif section.settings.font_url contains '.woff' %}
+          src: url("{{ section.settings.font_url }}") format("woff");
+        {% elsif section.settings.font_url contains '.ttf' %}
+          src: url("{{ section.settings.font_url }}") format("truetype");
+        {% elsif section.settings.font_url contains '.otf' %}
+          src: url("{{ section.settings.font_url }}") format("opentype");
+        {% endif %}
         font-display: swap;
       }
     </style>
