@@ -503,7 +503,7 @@
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
         "slider_type": "loop",
-        "transition_speed": 200,
+        "transition_speed": 800,
         "easing": "ease",
         "pause_on_hover": true,
         "pause_on_focus": false,
