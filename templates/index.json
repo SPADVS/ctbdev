@@ -605,7 +605,7 @@
         "service_card_CPCXfT": {
           "type": "service_card",
           "settings": {
-            "card_image": "shopify://shop_images/paint_job.jpg",
+            "card_image": "shopify://shop_images/special_events.jpg",
             "card_title": "Full Customization & Builds",
             "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
             "card_link": "",
