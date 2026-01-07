@@ -20,10 +20,10 @@
             "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.ttf?v=1767828103",
             "font_family_name": "",
             "fallback_font": "sans-serif",
-            "target_elements": "h1,h2,h3,",
-            "font_size": 16,
+            "target_elements": "h1,h2",
+            "font_size": 64,
             "line_height": 1.5,
-            "letter_spacing": 0,
+            "letter_spacing": 4.5,
             "font_weight": "",
             "text_transform": "none"
           }
