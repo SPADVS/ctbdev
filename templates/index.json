@@ -473,7 +473,7 @@
           "type": "tab",
           "settings": {
             "tab_title": "Shirts",
-            "collection": "merch"
+            "collection": "shirts"
           }
         },
         "tab_kGXPad": {
@@ -594,7 +594,6 @@
         "service_card_CPCXfT": {
           "type": "service_card",
           "settings": {
-            "card_image": "shopify://shop_images/gallery_36.jpg",
             "card_title": "Full Customization & Builds",
             "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
             "card_link": "",
@@ -688,15 +687,11 @@
       "blocks": {
         "image_8LFBbQ": {
           "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/ctbgarage_1739809655_3570104606042425161_1412402950.jpg"
-          }
+          "settings": {}
         },
         "image_KwhPHa": {
           "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/service_3vb_2.png"
-          }
+          "settings": {}
         }
       },
       "block_order": [
