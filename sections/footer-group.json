@@ -15,17 +15,17 @@
       "type": "custom-font-override",
       "name": "Custom Font Override",
       "settings": {
-        "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.otf?v=1767827761",
+        "font_url": "https://cdn.shopify.com/s/files/1/0783/6300/1078/files/Road_Rage.otf",
         "font_family_name": "Road-rage",
         "fallback_font": "sans-serif",
-        "target_elements": "h1,h2,h3,h4,h5,h6",
+        "target_elements": "h1,h2,h3",
         "font_size": 68,
         "line_height": 1.5,
         "letter_spacing": 0,
         "font_weight": "",
         "text_transform": "none",
-        "show_preview": false,
-        "preview_bg": "#f5f5f5"
+        "show_preview": true,
+        "preview_bg": "#000000"
       }
     },
     "footer_m9NzUG": {
