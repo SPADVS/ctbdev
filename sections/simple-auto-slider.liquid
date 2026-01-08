@@ -191,13 +191,28 @@
     width: 100%;
     margin-top: 50px;
     position: relative;
+    overflow: hidden;
+  }
+
+  /* Splide container - prevent width overflow */
+  .product-slider-tabs .splide {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Splide track - constrain to container */
+  .product-slider-tabs .splide__track {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 
   /* Splide list */
   .product-slider-tabs .splide__list {
     grid-column-gap: 32px;
-    flex: none;
-    display: flex;
+    flex: none !important;
+    display: flex !important;
+    width: auto !important;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
