@@ -694,11 +694,18 @@
           "settings": {
             "image": "shopify://shop_images/paint_job.jpg"
           }
+        },
+        "image_ETLPYq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/paint_job.jpg"
+          }
         }
       },
       "block_order": [
         "image_KwhPHa",
-        "image_8DBKV3"
+        "image_8DBKV3",
+        "image_ETLPYq"
       ],
       "name": "Simple About",
       "settings": {
