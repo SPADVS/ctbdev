@@ -53,9 +53,10 @@
         {% for product in collection.products %}
           <li
             id="{{ section.id }}-{{ product.id }}"
-            class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+            class="product-grid__item product-grid__item--{{ forloop.index0 }} fade-in-stagger"
             data-page="{{ paginate.current_page }}"
             data-product-id="{{ product.id }}"
+            data-stagger-index="{{ forloop.index0 | modulo: 6 }}"
             ref="cards[]"
           >
             {% # theme-check-disable %}
@@ -77,6 +78,43 @@
 </results-list>
 
 {% stylesheet %}
+  /* Fade-in stagger animation */
+  .product-grid__item.fade-in-stagger {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .product-grid__item.fade-in-stagger.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger delays for every 6 products */
+  .product-grid__item.fade-in-stagger[data-stagger-index="0"].visible {
+    transition-delay: 0ms;
+  }
+
+  .product-grid__item.fade-in-stagger[data-stagger-index="1"].visible {
+    transition-delay: 100ms;
+  }
+
+  .product-grid__item.fade-in-stagger[data-stagger-index="2"].visible {
+    transition-delay: 200ms;
+  }
+
+  .product-grid__item.fade-in-stagger[data-stagger-index="3"].visible {
+    transition-delay: 300ms;
+  }
+
+  .product-grid__item.fade-in-stagger[data-stagger-index="4"].visible {
+    transition-delay: 400ms;
+  }
+
+  .product-grid__item.fade-in-stagger[data-stagger-index="5"].visible {
+    transition-delay: 500ms;
+  }
+
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);
 
@@ -149,6 +187,56 @@
     }
   }
 {% endstylesheet %}
+
+<script>
+  // Fade-in stagger animation on scroll
+  (function() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all product items
+    function observeProducts() {
+      const products = document.querySelectorAll('.product-grid__item.fade-in-stagger');
+      products.forEach(product => {
+        if (!product.classList.contains('visible')) {
+          observer.observe(product);
+        }
+      });
+    }
+
+    // Initial observation
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', observeProducts);
+    } else {
+      observeProducts();
+    }
+
+    // Re-observe when new products are loaded (infinite scroll)
+    const resultsListElement = document.querySelector('results-list');
+    if (resultsListElement) {
+      const mutationObserver = new MutationObserver(() => {
+        observeProducts();
+      });
+      
+      mutationObserver.observe(resultsListElement, {
+        childList: true,
+        subtree: true
+      });
+    }
+  })();
+</script>
 
 {% schema %}
 {
