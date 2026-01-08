@@ -195,8 +195,6 @@
 
   /* Splide list */
   .product-slider-tabs .splide__list {
-    grid-column-gap: 32px;
-    gap: 32px;
     flex: none;
     display: flex;
     -webkit-user-select: none;
@@ -386,12 +384,9 @@ function initProductSliderTabs() {
         speed: {{ section.settings.transition_speed }},
         easing: '{{ section.settings.easing }}',
         label: 'Image Slider',
-        perPage: 1,
-        perMove: 1,
         gap: '32px',
         focus: 0,
-        trimSpace: false,
-        clones: 3,
+        trimSpace: 'move',
         cloneStatus: false,
         autoScroll: {
           speed: autoScrollSpeed,
