@@ -1163,6 +1163,34 @@
         "button_text_color": "#000000",
         "form_border_color": "#ffffff"
       }
+    },
+    "popup_BQFBz9": {
+      "type": "popup",
+      "blocks": {
+        "popup_QTfrPj": {
+          "type": "popup",
+          "settings": {
+            "button_text": "Book Now",
+            "button_url": "/",
+            "popup_subtext": "Optional subtext",
+            "enable_slider": false
+          }
+        }
+      },
+      "block_order": [
+        "popup_QTfrPj"
+      ],
+      "name": "Default",
+      "settings": {
+        "hide_in_theme_editor": true,
+        "show_email_popup": false,
+        "email_popup_title": "Get 5% Off The Whole Shop!",
+        "email_popup_text": "Sign up for our newsletter and get 5% off your entire order. Stay updated with our latest promotions and offers.",
+        "email_popup_placeholder": "Email",
+        "email_popup_button_text": "Get More Deals",
+        "email_popup_button_url": "/",
+        "email_popup_disclaimer": "Excludes already discounted items. Cannot be combined with other promotions."
+      }
     }
   },
   "order": [
@@ -1177,6 +1205,7 @@
     "ctb_faq_KTeKq3",
     "section_AQBaJ6",
     "simple_floating_tickets_abxEHp",
-    "simple_contact_mKdRcd"
+    "simple_contact_mKdRcd",
+    "popup_BQFBz9"
   ]
 }
