@@ -6,15 +6,14 @@
 
 {% comment %} Load all font files/stylesheets {% endcomment %}
 {% for block in section.blocks %}
+  {% comment %} Desktop Font {% endcomment %}
   {% if block.settings.font_url != blank %}
-    {% comment %} Check if URL is a direct font file or a stylesheet {% endcomment %}
     {% assign is_font_file = false %}
     {% if block.settings.font_url contains '.woff' or block.settings.font_url contains '.ttf' or block.settings.font_url contains '.otf' %}
       {% assign is_font_file = true %}
     {% endif %}
 
     {% if is_font_file %}
-      {%- comment -%} Direct font file - use @font-face {%- endcomment -%}
       <style>
         @font-face {
           font-family: "{{ block.settings.font_family_name }}";
@@ -31,10 +30,93 @@
         }
       </style>
     {% else %}
-      {%- comment -%} CSS stylesheet (like Google Fonts) {%- endcomment -%}
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="{{ block.settings.font_url }}" rel="stylesheet">
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Tablet Font {% endcomment %}
+  {% if block.settings.font_url_tablet != blank %}
+    {% assign is_font_file_tablet = false %}
+    {% if block.settings.font_url_tablet contains '.woff' or block.settings.font_url_tablet contains '.ttf' or block.settings.font_url_tablet contains '.otf' %}
+      {% assign is_font_file_tablet = true %}
+    {% endif %}
+
+    {% if is_font_file_tablet %}
+      <style>
+        @font-face {
+          font-family: "{{ block.settings.font_family_name_tablet }}";
+          {% if block.settings.font_url_tablet contains '.woff2' %}
+            src: url("{{ block.settings.font_url_tablet }}") format("woff2");
+          {% elsif block.settings.font_url_tablet contains '.woff' %}
+            src: url("{{ block.settings.font_url_tablet }}") format("woff");
+          {% elsif block.settings.font_url_tablet contains '.ttf' %}
+            src: url("{{ block.settings.font_url_tablet }}") format("truetype");
+          {% elsif block.settings.font_url_tablet contains '.otf' %}
+            src: url("{{ block.settings.font_url_tablet }}") format("opentype");
+          {% endif %}
+          font-display: swap;
+        }
+      </style>
+    {% else %}
+      <link href="{{ block.settings.font_url_tablet }}" rel="stylesheet">
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Mobile Landscape Font {% endcomment %}
+  {% if block.settings.font_url_mobile_landscape != blank %}
+    {% assign is_font_file_mobile_l = false %}
+    {% if block.settings.font_url_mobile_landscape contains '.woff' or block.settings.font_url_mobile_landscape contains '.ttf' or block.settings.font_url_mobile_landscape contains '.otf' %}
+      {% assign is_font_file_mobile_l = true %}
+    {% endif %}
+
+    {% if is_font_file_mobile_l %}
+      <style>
+        @font-face {
+          font-family: "{{ block.settings.font_family_name_mobile_landscape }}";
+          {% if block.settings.font_url_mobile_landscape contains '.woff2' %}
+            src: url("{{ block.settings.font_url_mobile_landscape }}") format("woff2");
+          {% elsif block.settings.font_url_mobile_landscape contains '.woff' %}
+            src: url("{{ block.settings.font_url_mobile_landscape }}") format("woff");
+          {% elsif block.settings.font_url_mobile_landscape contains '.ttf' %}
+            src: url("{{ block.settings.font_url_mobile_landscape }}") format("truetype");
+          {% elsif block.settings.font_url_mobile_landscape contains '.otf' %}
+            src: url("{{ block.settings.font_url_mobile_landscape }}") format("opentype");
+          {% endif %}
+          font-display: swap;
+        }
+      </style>
+    {% else %}
+      <link href="{{ block.settings.font_url_mobile_landscape }}" rel="stylesheet">
+    {% endif %}
+  {% endif %}
+
+  {% comment %} Mobile Portrait Font {% endcomment %}
+  {% if block.settings.font_url_mobile_portrait != blank %}
+    {% assign is_font_file_mobile_p = false %}
+    {% if block.settings.font_url_mobile_portrait contains '.woff' or block.settings.font_url_mobile_portrait contains '.ttf' or block.settings.font_url_mobile_portrait contains '.otf' %}
+      {% assign is_font_file_mobile_p = true %}
+    {% endif %}
+
+    {% if is_font_file_mobile_p %}
+      <style>
+        @font-face {
+          font-family: "{{ block.settings.font_family_name_mobile_portrait }}";
+          {% if block.settings.font_url_mobile_portrait contains '.woff2' %}
+            src: url("{{ block.settings.font_url_mobile_portrait }}") format("woff2");
+          {% elsif block.settings.font_url_mobile_portrait contains '.woff' %}
+            src: url("{{ block.settings.font_url_mobile_portrait }}") format("woff");
+          {% elsif block.settings.font_url_mobile_portrait contains '.ttf' %}
+            src: url("{{ block.settings.font_url_mobile_portrait }}") format("truetype");
+          {% elsif block.settings.font_url_mobile_portrait contains '.otf' %}
+            src: url("{{ block.settings.font_url_mobile_portrait }}") format("opentype");
+          {% endif %}
+          font-display: swap;
+        }
+      </style>
+    {% else %}
+      <link href="{{ block.settings.font_url_mobile_portrait }}" rel="stylesheet">
     {% endif %}
   {% endif %}
 {% endfor %}
@@ -72,6 +154,9 @@
       @media (max-width: 991px) {
         {% for target in targets %}
           {{ target | strip }} {
+            {% if block.settings.font_url_tablet != blank and block.settings.font_family_name_tablet != blank %}
+              font-family: "{{ block.settings.font_family_name_tablet }}", {{ block.settings.fallback_font }} !important;
+            {% endif %}
             {% if block.settings.font_size_tablet != blank and block.settings.font_size_tablet > 10 %}
               font-size: {{ block.settings.font_size_tablet }}px !important;
             {% endif %}
@@ -92,6 +177,9 @@
       @media (max-width: 767px) {
         {% for target in targets %}
           {{ target | strip }} {
+            {% if block.settings.font_url_mobile_landscape != blank and block.settings.font_family_name_mobile_landscape != blank %}
+              font-family: "{{ block.settings.font_family_name_mobile_landscape }}", {{ block.settings.fallback_font }} !important;
+            {% endif %}
             {% if block.settings.font_size_mobile_landscape != blank and block.settings.font_size_mobile_landscape > 10 %}
               font-size: {{ block.settings.font_size_mobile_landscape }}px !important;
             {% endif %}
@@ -112,6 +200,9 @@
       @media (max-width: 479px) {
         {% for target in targets %}
           {{ target | strip }} {
+            {% if block.settings.font_url_mobile_portrait != blank and block.settings.font_family_name_mobile_portrait != blank %}
+              font-family: "{{ block.settings.font_family_name_mobile_portrait }}", {{ block.settings.fallback_font }} !important;
+            {% endif %}
             {% if block.settings.font_size_mobile_portrait != blank and block.settings.font_size_mobile_portrait > 10 %}
               font-size: {{ block.settings.font_size_mobile_portrait }}px !important;
             {% endif %}
@@ -282,6 +373,20 @@
           "content": "Tablet (≤991px)"
         },
         {
+          "type": "text",
+          "id": "font_url_tablet",
+          "label": "Tablet Font URL",
+          "info": "Optional: Use a different font for tablets",
+          "placeholder": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+        },
+        {
+          "type": "text",
+          "id": "font_family_name_tablet",
+          "label": "Tablet Font Family Name",
+          "info": "Required if using tablet font URL",
+          "placeholder": "Roboto"
+        },
+        {
           "type": "range",
           "id": "font_size_tablet",
           "label": "Font Size (px)",
@@ -333,6 +438,20 @@
           "content": "Mobile Landscape (≤767px)"
         },
         {
+          "type": "text",
+          "id": "font_url_mobile_landscape",
+          "label": "Mobile Landscape Font URL",
+          "info": "Optional: Use a different font for mobile landscape",
+          "placeholder": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+        },
+        {
+          "type": "text",
+          "id": "font_family_name_mobile_landscape",
+          "label": "Mobile Landscape Font Family Name",
+          "info": "Required if using mobile landscape font URL",
+          "placeholder": "Roboto"
+        },
+        {
           "type": "range",
           "id": "font_size_mobile_landscape",
           "label": "Font Size (px)",
@@ -382,6 +501,20 @@
         {
           "type": "header",
           "content": "Mobile Portrait (≤479px)"
+        },
+        {
+          "type": "text",
+          "id": "font_url_mobile_portrait",
+          "label": "Mobile Portrait Font URL",
+          "info": "Optional: Use a different font for mobile portrait",
+          "placeholder": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+        },
+        {
+          "type": "text",
+          "id": "font_family_name_mobile_portrait",
+          "label": "Mobile Portrait Font Family Name",
+          "info": "Required if using mobile portrait font URL",
+          "placeholder": "Roboto"
         },
         {
           "type": "range",
