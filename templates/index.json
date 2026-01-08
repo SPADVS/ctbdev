@@ -487,7 +487,7 @@
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
         "slider_type": "loop",
-        "transition_speed": 200,
+        "transition_speed": 800,
         "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         "pause_on_hover": true,
         "pause_on_focus": false,
@@ -497,7 +497,7 @@
         "show_arrows": true,
         "show_pagination": false,
         "slide_animation_speed": 200,
-        "slide_animation_delay": 20
+        "slide_animation_delay": 70
       }
     },
     "17675636610d7f9620": {
