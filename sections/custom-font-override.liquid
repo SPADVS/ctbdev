@@ -46,6 +46,7 @@
       {% assign font_name = block.settings.font_family_name %}
       {% assign targets = block.settings.target_elements | split: ',' %}
       
+      {% comment %} Desktop styles (default) {% endcomment %}
       {% for target in targets %}
         {{ target | strip }} {
           font-family: "{{ font_name }}", {{ block.settings.fallback_font }} !important;
@@ -66,6 +67,66 @@
           {% endif %}
         }
       {% endfor %}
+
+      {% comment %} Tablet styles (max-width: 991px) {% endcomment %}
+      @media (max-width: 991px) {
+        {% for target in targets %}
+          {{ target | strip }} {
+            {% if block.settings.font_size_tablet != blank and block.settings.font_size_tablet > 10 %}
+              font-size: {{ block.settings.font_size_tablet }}px !important;
+            {% endif %}
+            {% if block.settings.line_height_tablet != blank and block.settings.line_height_tablet != 1.5 %}
+              line-height: {{ block.settings.line_height_tablet }} !important;
+            {% endif %}
+            {% if block.settings.letter_spacing_tablet != blank %}
+              letter-spacing: {{ block.settings.letter_spacing_tablet }}px !important;
+            {% endif %}
+            {% if block.settings.font_weight_tablet != blank %}
+              font-weight: {{ block.settings.font_weight_tablet }} !important;
+            {% endif %}
+          }
+        {% endfor %}
+      }
+
+      {% comment %} Mobile Landscape (max-width: 767px) {% endcomment %}
+      @media (max-width: 767px) {
+        {% for target in targets %}
+          {{ target | strip }} {
+            {% if block.settings.font_size_mobile_landscape != blank and block.settings.font_size_mobile_landscape > 10 %}
+              font-size: {{ block.settings.font_size_mobile_landscape }}px !important;
+            {% endif %}
+            {% if block.settings.line_height_mobile_landscape != blank and block.settings.line_height_mobile_landscape != 1.5 %}
+              line-height: {{ block.settings.line_height_mobile_landscape }} !important;
+            {% endif %}
+            {% if block.settings.letter_spacing_mobile_landscape != blank %}
+              letter-spacing: {{ block.settings.letter_spacing_mobile_landscape }}px !important;
+            {% endif %}
+            {% if block.settings.font_weight_mobile_landscape != blank %}
+              font-weight: {{ block.settings.font_weight_mobile_landscape }} !important;
+            {% endif %}
+          }
+        {% endfor %}
+      }
+
+      {% comment %} Mobile Portrait (max-width: 479px) {% endcomment %}
+      @media (max-width: 479px) {
+        {% for target in targets %}
+          {{ target | strip }} {
+            {% if block.settings.font_size_mobile_portrait != blank and block.settings.font_size_mobile_portrait > 10 %}
+              font-size: {{ block.settings.font_size_mobile_portrait }}px !important;
+            {% endif %}
+            {% if block.settings.line_height_mobile_portrait != blank and block.settings.line_height_mobile_portrait != 1.5 %}
+              line-height: {{ block.settings.line_height_mobile_portrait }} !important;
+            {% endif %}
+            {% if block.settings.letter_spacing_mobile_portrait != blank %}
+              letter-spacing: {{ block.settings.letter_spacing_mobile_portrait }}px !important;
+            {% endif %}
+            {% if block.settings.font_weight_mobile_portrait != blank %}
+              font-weight: {{ block.settings.font_weight_mobile_portrait }} !important;
+            {% endif %}
+          }
+        {% endfor %}
+      }
     {% endif %}
   {% endfor %}
 </style>
@@ -215,6 +276,159 @@
             {"value": "capitalize", "label": "Capitalize"}
           ],
           "default": "none"
+        },
+        {
+          "type": "header",
+          "content": "Tablet (≤991px)"
+        },
+        {
+          "type": "range",
+          "id": "font_size_tablet",
+          "label": "Font Size (px)",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "default": 16,
+          "info": "Leave at 16 to use desktop size"
+        },
+        {
+          "type": "range",
+          "id": "line_height_tablet",
+          "label": "Line Height",
+          "min": 0.8,
+          "max": 3.0,
+          "step": 0.1,
+          "default": 1.5,
+          "info": "Leave at 1.5 to use desktop line height"
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing_tablet",
+          "label": "Letter Spacing (px)",
+          "min": -5,
+          "max": 20,
+          "step": 0.5,
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "font_weight_tablet",
+          "label": "Font Weight",
+          "options": [
+            {"value": "", "label": "Use Desktop"},
+            {"value": "100", "label": "100 - Thin"},
+            {"value": "200", "label": "200 - Extra Light"},
+            {"value": "300", "label": "300 - Light"},
+            {"value": "400", "label": "400 - Normal"},
+            {"value": "500", "label": "500 - Medium"},
+            {"value": "600", "label": "600 - Semi Bold"},
+            {"value": "700", "label": "700 - Bold"},
+            {"value": "800", "label": "800 - Extra Bold"},
+            {"value": "900", "label": "900 - Black"}
+          ],
+          "default": ""
+        },
+        {
+          "type": "header",
+          "content": "Mobile Landscape (≤767px)"
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile_landscape",
+          "label": "Font Size (px)",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "default": 16,
+          "info": "Leave at 16 to use tablet size"
+        },
+        {
+          "type": "range",
+          "id": "line_height_mobile_landscape",
+          "label": "Line Height",
+          "min": 0.8,
+          "max": 3.0,
+          "step": 0.1,
+          "default": 1.5,
+          "info": "Leave at 1.5 to use tablet line height"
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing_mobile_landscape",
+          "label": "Letter Spacing (px)",
+          "min": -5,
+          "max": 20,
+          "step": 0.5,
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile_landscape",
+          "label": "Font Weight",
+          "options": [
+            {"value": "", "label": "Use Tablet"},
+            {"value": "100", "label": "100 - Thin"},
+            {"value": "200", "label": "200 - Extra Light"},
+            {"value": "300", "label": "300 - Light"},
+            {"value": "400", "label": "400 - Normal"},
+            {"value": "500", "label": "500 - Medium"},
+            {"value": "600", "label": "600 - Semi Bold"},
+            {"value": "700", "label": "700 - Bold"},
+            {"value": "800", "label": "800 - Extra Bold"},
+            {"value": "900", "label": "900 - Black"}
+          ],
+          "default": ""
+        },
+        {
+          "type": "header",
+          "content": "Mobile Portrait (≤479px)"
+        },
+        {
+          "type": "range",
+          "id": "font_size_mobile_portrait",
+          "label": "Font Size (px)",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "default": 16,
+          "info": "Leave at 16 to use mobile landscape size"
+        },
+        {
+          "type": "range",
+          "id": "line_height_mobile_portrait",
+          "label": "Line Height",
+          "min": 0.8,
+          "max": 3.0,
+          "step": 0.1,
+          "default": 1.5,
+          "info": "Leave at 1.5 to use mobile landscape line height"
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing_mobile_portrait",
+          "label": "Letter Spacing (px)",
+          "min": -5,
+          "max": 20,
+          "step": 0.5,
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile_portrait",
+          "label": "Font Weight",
+          "options": [
+            {"value": "", "label": "Use Mobile Landscape"},
+            {"value": "100", "label": "100 - Thin"},
+            {"value": "200", "label": "200 - Extra Light"},
+            {"value": "300", "label": "300 - Light"},
+            {"value": "400", "label": "400 - Normal"},
+            {"value": "500", "label": "500 - Medium"},
+            {"value": "600", "label": "600 - Semi Bold"},
+            {"value": "700", "label": "700 - Bold"},
+            {"value": "800", "label": "800 - Extra Bold"},
+            {"value": "900", "label": "900 - Black"}
+          ],
+          "default": ""
         }
       ]
     }
