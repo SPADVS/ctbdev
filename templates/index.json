@@ -1182,7 +1182,7 @@
       ],
       "name": "Default",
       "settings": {
-        "hide_in_theme_editor": false,
+        "hide_in_theme_editor": true,
         "show_email_popup": false,
         "email_popup_title": "Get 5% Off The Whole Shop!",
         "email_popup_text": "Sign up for our newsletter and get 5% off your entire order. Stay updated with our latest promotions and offers.",
