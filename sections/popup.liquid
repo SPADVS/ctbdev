@@ -687,6 +687,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Popup] Script initialized');
+    
     // Cookie helpers for Ashley booking flow
     function getCookie(name) {
         var parts = document.cookie.split('; ');
@@ -708,18 +710,25 @@ document.addEventListener('DOMContentLoaded', function() {
     var activePopups = {{ section.blocks.size }};
     var popupsQueue = [{% for block in section.blocks %}'popup-{{ forloop.index }}'{% unless forloop.last %}, {% endunless %}{% endfor %}];
 
+    console.log('[Popup] Initial activePopups:', activePopups);
+    console.log('[Popup] Initial popupsQueue:', popupsQueue);
+
     if ({{ section.settings.show_email_popup | json }}) {
         popupsQueue.push('emailSignupPopup');
         activePopups++;
+        console.log('[Popup] Email popup added to queue');
     }
 
     // Ashley after purchase popup integration (Smash)
     var shouldQueueAshley = false;
     var dvsArtist = getCookie('dvs_last_artist');
 
+    console.log('[Popup] Checking Ashley cookie, dvsArtist:', dvsArtist);
+
     if (dvsArtist && dvsArtist.toLowerCase() === 'ashley') {
         shouldQueueAshley = true;
         deleteCookie('dvs_last_artist');
+        console.log('[Popup] Ashley popup triggered by cookie');
     }
 
     // Dev query param to force Ashley popup:
@@ -728,19 +737,23 @@ document.addEventListener('DOMContentLoaded', function() {
         var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('ashley_debug') === '1') {
             shouldQueueAshley = true;
-            console.log('[Popups] Ashley debug query detected, forcing popup');
+            console.log('[Popup] Ashley debug query detected, forcing popup');
         }
     } catch (e) {
-        console.warn('[Popups] URLSearchParams not available', e);
+        console.warn('[Popup] URLSearchParams not available', e);
     }
 
     if (shouldQueueAshley) {
         popupsQueue.unshift('ashleyBookingPopup');
         activePopups++;
-        console.log('[Popups] Ashley booking popup queued');
+        console.log('[Popup] Ashley booking popup queued');
     }
 
+    console.log('[Popup] Final popupsQueue:', popupsQueue);
+    console.log('[Popup] Final activePopups:', activePopups);
+
     function updateAnnouncementCount() {
+        console.log('[Popup] Updating announcement count, activePopups:', activePopups);
         if (activePopups > 0) {
             document.getElementById('announcementCount').textContent = activePopups;
             // Hide announcement counter if Ashley popup is showing
@@ -758,6 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var loyaltyButton = document.getElementById('bon-loyalty-btn');
         if (loyaltyButton) {
             loyaltyButton.style.display = 'none';
+            console.log('[Popup] Loyalty button hidden');
         }
     }
 
@@ -765,28 +779,35 @@ document.addEventListener('DOMContentLoaded', function() {
         var loyaltyButton = document.getElementById('bon-loyalty-btn');
         if (loyaltyButton) {
             loyaltyButton.style.display = 'flex';
+            console.log('[Popup] Loyalty button shown');
         }
     }
 
     function showPopup(popupId) {
+        console.log('[Popup] showPopup called with popupId:', popupId);
+        
         document.querySelectorAll('.image-popup').forEach(function(popup) {
             popup.style.visibility = 'hidden';
         });
 
         if (!isBodyFixed) {
+            console.log('[Popup] Setting body to fixed, hiding scrollbar');
             originalScrollY = window.scrollY;
             document.body.style.position = 'fixed';
             document.body.style.top = '-' + originalScrollY + 'px';
             document.body.style.width = '100%';
             var backdrop = document.getElementById('backdrop');
             backdrop.style.display = 'block';
+            console.log('[Popup] Backdrop displayed');
             // Trigger backdrop animation
             setTimeout(function() {
                 backdrop.classList.add('active');
+                console.log('[Popup] Backdrop active class added');
             }, 10);
             var siteHeader = document.querySelector('.site-header');
             if (siteHeader) {
                 siteHeader.style.display = 'none';
+                console.log('[Popup] Site header hidden');
             }
             hideLoyaltyButton();
             isBodyFixed = true;
@@ -794,10 +815,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var popup = document.getElementById(popupId);
         if (!popup) {
+            console.error('[Popup] Popup element not found:', popupId);
             return;
         }
+        console.log('[Popup] Popup element found:', popupId);
         popup.style.visibility = 'visible';
         popup.classList.add('visible');
+        console.log('[Popup] Popup visible class added');
 
         if (popup.querySelector('.slider') &&
             typeof jQuery !== 'undefined' &&
@@ -815,6 +839,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Auto redirect when Ashley popup shows
         if (popupId === 'ashleyBookingPopup') {
+            console.log('[Popup] Ashley popup shown, starting countdown');
             var igUrl = popup.getAttribute('data-ig-url');
             if (igUrl) {
                 var countdown = 4;
@@ -831,8 +856,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1000);
                 
                 setTimeout(function() {
+                    console.log('[Popup] Redirecting to Instagram:', igUrl);
                     window.location.href = igUrl;
                 }, 4000);
+            } else {
+                console.warn('[Popup] Ashley popup missing Instagram URL');
             }
         }
 
@@ -840,10 +868,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function closePopup(popupId) {
+        console.log('[Popup] closePopup called with popupId:', popupId);
         var popup = document.getElementById(popupId);
         if (popup) {
             popup.classList.remove('visible');
             popup.style.visibility = 'hidden';
+            console.log('[Popup] Popup closed:', popupId);
         }
         activePopups--;
         updateAnnouncementCount();
@@ -851,12 +881,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activePopups > 0 &&
             popupId !== 'thankYouPopup' &&
             popupId !== 'emailSignupPopup') {
+            console.log('[Popup] Showing next popup in queue');
             showPopup(popupsQueue[popupsQueue.length - activePopups]);
         }
 
         if (activePopups === 0 ||
             popupId === 'thankYouPopup' ||
             popupId === 'emailSignupPopup') {
+            console.log('[Popup] Restoring page state');
             var backdrop = document.getElementById('backdrop');
             backdrop.classList.remove('active');
             setTimeout(function() {
@@ -880,35 +912,44 @@ document.addEventListener('DOMContentLoaded', function() {
             closePopup(button.closest('.image-popup').id);
         });
     });
+    console.log('[Popup] Close button listeners attached');
 
     var shopNowBtn = document.getElementById('shopNowBtn');
     if (shopNowBtn) {
         shopNowBtn.addEventListener('click', function() {
             closePopup('thankYouPopup');
         });
+        console.log('[Popup] Shop now button listener attached');
     }
 
     if (window.location.href.indexOf('form_type=customer#contact_form') > -1) {
+        console.log('[Popup] Form submission detected, showing thank you popup');
         document.querySelector('.announcement-counter').style.opacity = '0';
         showPopup('thankYouPopup');
     } else if (window.location.href.indexOf('?email') > -1) {
+        console.log('[Popup] Email query detected, showing email popup');
         document.querySelector('.announcement-counter').style.opacity = '0';
         showPopup('emailSignupPopup');
     } else {
         // Show Ashley popup instantly, other popups with delay
         if (shouldQueueAshley) {
+            console.log('[Popup] Showing Ashley popup immediately');
             document.querySelector('.announcement-counter').style.opacity = '0';
             if (popupsQueue.length > 0) {
                 showPopup(popupsQueue[0]);
             }
         } else {
+            console.log('[Popup] Checking template, body classes:', document.body.className);
             document.querySelector('.announcement-counter').style.opacity = '1';
             if (document.body.classList.contains('template-index')) {
+                console.log('[Popup] Homepage detected, showing popup after 2s delay');
                 window.setTimeout(function() {
                     if (popupsQueue.length > 0) {
                         showPopup(popupsQueue[0]);
                     }
                 }, 2000);
+            } else {
+                console.log('[Popup] Not homepage, popup will not auto-show');
             }
         }
     }
