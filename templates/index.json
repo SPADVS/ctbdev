@@ -683,18 +683,22 @@
     "simple_about_bP4iTT": {
       "type": "simple-about",
       "blocks": {
-        "image_8LFBbQ": {
-          "type": "image",
-          "settings": {}
-        },
         "image_KwhPHa": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/special_events.jpg"
+          }
+        },
+        "image_8DBKV3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/paint_job.jpg"
+          }
         }
       },
       "block_order": [
-        "image_8LFBbQ",
-        "image_KwhPHa"
+        "image_KwhPHa",
+        "image_8DBKV3"
       ],
       "name": "Simple About",
       "settings": {
