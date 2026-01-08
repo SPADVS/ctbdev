@@ -195,6 +195,7 @@
 
   /* Splide list */
   .product-slider-tabs .splide__list {
+    grid-column-gap: 32px;
     flex: none;
     display: flex;
     -webkit-user-select: none;
@@ -376,7 +377,7 @@ function initProductSliderTabs() {
         type: '{{ section.settings.slider_type }}',
         autoWidth: true,
         height: 'auto',
-        drag: {{ section.settings.enable_drag | json }},
+        drag: {{ section.settings.enable_drag | json }} ? 'free' : false,
         arrows: {{ section.settings.show_arrows | json }},
         pagination: {{ section.settings.show_pagination | json }},
         keyboard: {{ section.settings.enable_keyboard | json }},
@@ -384,10 +385,6 @@ function initProductSliderTabs() {
         speed: {{ section.settings.transition_speed }},
         easing: '{{ section.settings.easing }}',
         label: 'Image Slider',
-        gap: '32px',
-        focus: 0,
-        trimSpace: 'move',
-        cloneStatus: false,
         autoScroll: {
           speed: autoScrollSpeed,
           pauseOnHover: {{ section.settings.pause_on_hover | json }},
