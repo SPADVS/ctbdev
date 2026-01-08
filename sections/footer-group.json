@@ -25,7 +25,19 @@
             "line_height": 1.5,
             "letter_spacing": 4.5,
             "font_weight": "",
-            "text_transform": "none"
+            "text_transform": "none",
+            "font_size_tablet": 16,
+            "line_height_tablet": 1.5,
+            "letter_spacing_tablet": 0,
+            "font_weight_tablet": "",
+            "font_size_mobile_landscape": 35,
+            "line_height_mobile_landscape": 1.5,
+            "letter_spacing_mobile_landscape": 0,
+            "font_weight_mobile_landscape": "",
+            "font_size_mobile_portrait": 16,
+            "line_height_mobile_portrait": 1.5,
+            "letter_spacing_mobile_portrait": 0,
+            "font_weight_mobile_portrait": ""
           }
         }
       },
