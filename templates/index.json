@@ -17,8 +17,8 @@
           "name": "t:names.heading",
           "settings": {
             "text": "<h1>CTB GARAGE</h1>",
-            "width": "fit-content",
-            "max_width": "normal",
+            "width": "100%",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
