@@ -939,18 +939,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showPopup(popupsQueue[0]);
             }
         } else {
-            console.log('[Popup] Checking template, body classes:', document.body.className);
+            console.log('[Popup] Showing popup after 2s delay');
             document.querySelector('.announcement-counter').style.opacity = '1';
-            if (document.body.classList.contains('template-index')) {
-                console.log('[Popup] Homepage detected, showing popup after 2s delay');
-                window.setTimeout(function() {
-                    if (popupsQueue.length > 0) {
-                        showPopup(popupsQueue[0]);
-                    }
-                }, 2000);
-            } else {
-                console.log('[Popup] Not homepage, popup will not auto-show');
-            }
+            window.setTimeout(function() {
+                if (popupsQueue.length > 0) {
+                    showPopup(popupsQueue[0]);
+                }
+            }, 2000);
         }
     }
 });
