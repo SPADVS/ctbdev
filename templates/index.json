@@ -486,6 +486,7 @@
         "description": "Check out our exclusive automotive apparel collection",
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
+        "enable_hover_effect": true,
         "slider_type": "loop",
         "transition_speed": 800,
         "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -1194,7 +1195,7 @@
       "name": "Default",
       "settings": {
         "hide_in_theme_editor": true,
-        "show_email_popup": false,
+        "show_email_popup": true,
         "email_popup_title": "Get 5% Off The Whole Shop!",
         "email_popup_text": "Sign up for our newsletter and get 5% off your entire order. Stay updated with our latest promotions and offers.",
         "email_popup_placeholder": "Email",
