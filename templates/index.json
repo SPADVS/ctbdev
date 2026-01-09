@@ -1178,20 +1178,6 @@
     },
     "popup_BQFBz9": {
       "type": "popup",
-      "blocks": {
-        "popup_QTfrPj": {
-          "type": "popup",
-          "settings": {
-            "button_text": "Book Now",
-            "button_url": "/",
-            "popup_subtext": "Optional subtext",
-            "enable_slider": false
-          }
-        }
-      },
-      "block_order": [
-        "popup_QTfrPj"
-      ],
       "name": "Default",
       "settings": {
         "hide_in_theme_editor": true,
