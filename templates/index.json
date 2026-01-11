@@ -618,7 +618,7 @@
         "button_text_color": "#000000",
         "show_cta": true,
         "cta_text": "Follow us on Instagram for event announcements!",
-        "cta_link": "",
+        "cta_link": "https://www.instagram.com/ctbgarage/",
         "cta_button_text": "Follow @ctbgarage",
         "cta_new_tab": true
       }
