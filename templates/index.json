@@ -1179,7 +1179,7 @@
         "button_height_desktop": 0,
         "button_height_mobile": 10,
         "button_text_size_desktop": 0,
-        "button_text_size_mobile": 11,
+        "button_text_size_mobile": 5,
         "button_bg_color": "#ffffff",
         "button_text_color": "#000000",
         "modal_title": "Car Event Tickets",
