@@ -887,9 +887,6 @@
     titles.forEach((title, titleIndex) => {
       console.log(`Processing title ${titleIndex}:`, title.textContent);
       
-      // Keep title hidden until animation starts
-      title.style.opacity = '0';
-      
       // Split words using textContent to avoid capturing HTML
       const titleText = title.textContent;
       const titleWords = titleText.split(/\s+/);
@@ -914,9 +911,6 @@
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         titles.forEach((title, titleIndex) => {
-          // Show title container now that animation is starting
-          title.style.opacity = '1';
-          
           // Animate letters
           anime({
             targets: title.querySelectorAll('.letter'),
