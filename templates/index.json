@@ -573,7 +573,7 @@
             "card_image": "shopify://shop_images/collision_repair.jpg",
             "card_title": "Collision Repair",
             "card_description": "Expert collision repair services to restore your vehicle to its original condition. We work with all insurance companies.",
-            "card_link": "",
+            "card_link": "#contact",
             "button_text": "Get Quote",
             "open_new_tab": false
           }
@@ -584,7 +584,7 @@
             "card_image": "shopify://shop_images/paint_job.jpg",
             "card_title": "Paint & Body Work",
             "card_description": "Professional paint jobs and body work with precision color matching. From touch-ups to full repaints.",
-            "card_link": "",
+            "card_link": "#contact",
             "button_text": "Get Quote",
             "open_new_tab": false
           }
@@ -716,7 +716,7 @@
         "single_image": "shopify://shop_images/paint_job.jpg",
         "instagram_handle": "ctbgarage",
         "button_text": "Contact Us",
-        "button_link": "",
+        "button_link": "#contact",
         "background_color": "#000000",
         "heading_color": "#ffffff",
         "text_color": "#e5e5e5",
