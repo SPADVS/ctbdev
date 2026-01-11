@@ -741,7 +741,7 @@
     opacity: 0;
   }
   
-  /* Show headings after they're split into letters */
+  /* Show headings and buttons after they're ready */
   .hero h1.hero-ready,
   .hero h2.hero-ready,
   .hero h3.hero-ready,
@@ -751,7 +751,9 @@
   .hero .text-block.h1.hero-ready,
   .hero .text-block.h2.hero-ready,
   .hero .text-block.h3.hero-ready,
-  .hero .jumbo-text__text.hero-ready {
+  .hero .jumbo-text__text.hero-ready,
+  .hero .button.hero-ready,
+  .hero a[href].button.hero-ready {
     opacity: 1;
   }
 
@@ -986,7 +988,12 @@
       const validButtons = Array.from(buttons).filter(btn => btn.classList.contains('button') || btn.textContent.trim().length > 0);
       console.log('Valid buttons found:', validButtons.length, validButtons);
       if (validButtons.length > 0) {
-        validButtons.forEach(btn => { btn.style.opacity = '0'; btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`; });
+        // Add hero-ready class to make buttons visible
+        validButtons.forEach(btn => { 
+          btn.classList.add('hero-ready');
+          btn.style.opacity = '0'; 
+          btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
+        });
         if (prefersReducedMotion) { validButtons.forEach(b => { b.style.opacity = '1'; b.style.transform = 'none'; }); }
         else {
           anime({
