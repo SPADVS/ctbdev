@@ -56,7 +56,7 @@
             class="product-grid__item product-grid__item--{{ forloop.index0 }} fade-in-stagger"
             data-page="{{ paginate.current_page }}"
             data-product-id="{{ product.id }}"
-            data-stagger-index="{{ forloop.index0 }}"
+            data-stagger-index="{{ forloop.index0 | modulo: 3 }}"
             ref="cards[]"
           >
             {% # theme-check-disable %}
@@ -83,9 +83,9 @@
     opacity: 0;
     transform: translateY(20px) scale(0.96);
     filter: blur(3px);
-    transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                filter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .product-grid__item.fade-in-stagger.visible {
@@ -173,7 +173,7 @@
 {% endstylesheet %}
 
 <script>
-  // Fade-in stagger animation on scroll with dynamic delays
+  // Fade-in stagger animation on scroll with faster delays
   (function() {
     const observerOptions = {
       root: null,
@@ -185,7 +185,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const staggerIndex = parseInt(entry.target.getAttribute('data-stagger-index') || 0);
-          const delay = Math.min(staggerIndex * 30, 900); // 30ms per item, max 900ms
+          const delay = staggerIndex * 60; // 60ms per item (resets every 3)
           
           setTimeout(() => {
             entry.target.classList.add('visible');
