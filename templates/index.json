@@ -1172,7 +1172,7 @@
         "icon_position": "before",
         "scroll_threshold": 100,
         "hide_in_hero": true,
-        "hide_in_footer": false,
+        "hide_in_footer": true,
         "hide_in_sections": "",
         "button_width_desktop": 0,
         "button_width_mobile": 85,
