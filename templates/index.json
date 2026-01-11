@@ -1147,7 +1147,9 @@
       ],
       "name": "Simple Floating Tickets",
       "settings": {
-        "button_text": "Get Tickets",
+        "button_type": "call",
+        "button_text": "Call Now",
+        "phone_number": "+1-555-123-4567",
         "button_bg_color": "#ffffff",
         "button_text_color": "#000000",
         "modal_title": "Car Event Tickets",
