@@ -971,22 +971,15 @@
       console.log('All animations queued');
     }
 
-    // Wait for fonts to be ready
+    // Defer animations until fonts are ready, hero is visible, and document is visible
     const fontsReadyPromise = ('fonts' in document && document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => Promise.resolve()) : Promise.resolve();
     
     let isAnimating = false;
     let hasAnimatedOnce = false;
     
     function triggerAnimation() {
-      if (isAnimating) {
-        console.log('Animation already in progress, skipping');
-        return;
-      }
-      
-      if (document.visibilityState !== 'visible') {
-        console.log('Document not visible, deferring animation');
-        return;
-      }
+      if (isAnimating) return;
+      if (document.visibilityState !== 'visible') return;
       
       isAnimating = true;
       console.log('Triggering hero animation');
@@ -994,45 +987,45 @@
       fontsReadyPromise.then(() => {
         requestAnimationFrame(() => requestAnimationFrame(() => {
           startAnimations();
-          // Mark as complete after the longest animation duration
-          setTimeout(() => {
-            isAnimating = false;
-            hasAnimatedOnce = true;
-          }, duration + 1500);
+          isAnimating = false;
+          hasAnimatedOnce = true;
         }));
       });
     }
     
-    // Set up persistent intersection observer that triggers every time hero enters view
+    // Continuously observe hero - animate every time it enters viewport
     try {
-      const observer = new IntersectionObserver((entries) => {
+      const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            console.log('Hero entered viewport');
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
             triggerAnimation();
           }
         });
       }, { threshold: 0.15 });
-      
-      observer.observe(heroSection);
+      io.observe(heroSection);
     } catch (e) {
       console.error('IntersectionObserver failed:', e);
-      // Fallback: trigger once on load
-      triggerAnimation();
+      triggerAnimation(); // Fallback to immediate animation
     }
     
-    // Also listen for Shopify view transitions
-    if ('navigation' in window && 'addEventListener' in window.navigation) {
-      window.navigation.addEventListener('navigate', () => {
-        console.log('Shopify navigation detected, resetting animation state');
-        hasAnimatedOnce = false;
+    // Listen for Shopify view transitions
+    if (window.Shopify && window.Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function(event) {
+        if (event.detail && event.detail.sectionId === '{{ section.id }}') {
+          console.log('Shopify section reload detected');
+          setTimeout(() => triggerAnimation(), 100);
+        }
       });
     }
     
-    // Listen for view transition end (Shopify theme feature)
-    document.addEventListener('view-transition-end', () => {
-      console.log('View transition ended, checking hero visibility');
-      setTimeout(() => triggerAnimation(), 100);
+    // Listen for view transition API (modern browsers)
+    document.addEventListener('astro:page-load', triggerAnimation); // Astro
+    window.addEventListener('popstate', triggerAnimation); // SPA navigation
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        console.log('Page restored from bfcache');
+        triggerAnimation();
+      }
     });
   });
 </script>
