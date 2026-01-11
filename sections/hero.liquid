@@ -713,6 +713,8 @@
     opacity: 0;
     font-family: inherit !important;
     will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .tricksword {
@@ -923,18 +925,29 @@
         requestAnimationFrame(function() {
           requestAnimationFrame(function() {
             console.log('[Hero Animation] Starting letter animation');
-            anime.timeline({ loop: false, autoplay: true })
-              .add({
-                targets: '.tricks .letter',
-                translateX: [fromValX, 0],
-                translateY: [fromValY, 0],
-                opacity: [0, 1],
-                easing: 'easeOutExpo',
-                duration: mainDuration,
-                delay: anime.stagger(letterDelay, { start: 120 }),
-                begin: function() { console.log('[Hero Animation] Letter animation started'); },
-                complete: function() { console.log('[Hero Animation] Letter animation completed'); }
+            var headingNodes = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            headingNodes.forEach(function(h, idx) {
+              var letters = h.querySelectorAll('.letter');
+              console.log('[Hero Animation] Heading ' + idx + ' has ' + letters.length + ' letters');
+              // Pre-set initial state to avoid first-frame jump
+              anime.set(letters, {
+                opacity: 0,
+                translateX: fromValX,
+                translateY: fromValY
               });
+              anime.timeline({ loop: false, autoplay: true })
+                .add({
+                  targets: letters,
+                  translateX: [fromValX, 0],
+                  translateY: [fromValY, 0],
+                  opacity: [0, 1],
+                  easing: 'easeOutExpo',
+                  duration: mainDuration,
+                  delay: anime.stagger(letterDelay, { start: 120 + (idx * 180) }),
+                  begin: function() { console.log('[Hero Animation] Letter animation started for heading ' + idx); },
+                  complete: function() { console.log('[Hero Animation] Letter animation completed for heading ' + idx); }
+                });
+            });
           });
         });
       };
