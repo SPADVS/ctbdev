@@ -971,39 +971,68 @@
       console.log('All animations queued');
     }
 
-    // Defer animations until fonts are ready, hero is visible, and document is visible
+    // Wait for fonts to be ready
     const fontsReadyPromise = ('fonts' in document && document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => Promise.resolve()) : Promise.resolve();
     
-    function checkAndAnimate() {
-      const documentVisiblePromise = new Promise(resolve => {
-        if (document.visibilityState === 'visible') return resolve();
-        const onVis = () => { if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', onVis); resolve(); } };
-        document.addEventListener('visibilitychange', onVis);
-      });
-      const heroVisiblePromise = new Promise(resolve => {
-        try {
-          const io = new IntersectionObserver((entries) => {
-            if (entries.some(e => e.isIntersecting)) { io.disconnect(); resolve(); }
-          }, { threshold: 0.15 });
-          io.observe(heroSection);
-        } catch (e) { resolve(); }
-      });
-
-      Promise.all([fontsReadyPromise, documentVisiblePromise, heroVisiblePromise]).then(() => {
-        // Double RAF to ensure DOM mutations and styles are fully applied before animating
-        requestAnimationFrame(() => requestAnimationFrame(() => startAnimations()));
+    let isAnimating = false;
+    let hasAnimatedOnce = false;
+    
+    function triggerAnimation() {
+      if (isAnimating) {
+        console.log('Animation already in progress, skipping');
+        return;
+      }
+      
+      if (document.visibilityState !== 'visible') {
+        console.log('Document not visible, deferring animation');
+        return;
+      }
+      
+      isAnimating = true;
+      console.log('Triggering hero animation');
+      
+      fontsReadyPromise.then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          startAnimations();
+          // Mark as complete after the longest animation duration
+          setTimeout(() => {
+            isAnimating = false;
+            hasAnimatedOnce = true;
+          }, duration + 1500);
+        }));
       });
     }
     
-    // Run on initial load
-    checkAndAnimate();
+    // Set up persistent intersection observer that triggers every time hero enters view
+    try {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            console.log('Hero entered viewport');
+            triggerAnimation();
+          }
+        });
+      }, { threshold: 0.15 });
+      
+      observer.observe(heroSection);
+    } catch (e) {
+      console.error('IntersectionObserver failed:', e);
+      // Fallback: trigger once on load
+      triggerAnimation();
+    }
     
-    // Re-run when navigating back to the page (e.g., browser back button or SPA navigation)
-    window.addEventListener('pageshow', function(event) {
-      if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
-        console.log('Page restored from cache, re-triggering hero animations');
-        checkAndAnimate();
-      }
+    // Also listen for Shopify view transitions
+    if ('navigation' in window && 'addEventListener' in window.navigation) {
+      window.navigation.addEventListener('navigate', () => {
+        console.log('Shopify navigation detected, resetting animation state');
+        hasAnimatedOnce = false;
+      });
+    }
+    
+    // Listen for view transition end (Shopify theme feature)
+    document.addEventListener('view-transition-end', () => {
+      console.log('View transition ended, checking hero visibility');
+      setTimeout(() => triggerAnimation(), 100);
     });
   });
 </script>
