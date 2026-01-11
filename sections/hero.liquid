@@ -724,11 +724,30 @@
   }
 
   /* Hide elements before animation */
+  .hero h1,
+  .hero h2,
+  .hero h3,
+  .hero .h1,
+  .hero .h2,
+  .hero .h3,
+  .hero .jumbo-text__text,
+  .hero .text-block.h1,
+  .hero .text-block.h2,
+  .hero .text-block.h3,
   .hero .text-block:not(.h1):not(.h2):not(.h3) p,
   .hero .text-block:not(.h1):not(.h2):not(.h3),
   .hero .button,
   .hero a[href].button {
     opacity: 0;
+  }
+  
+  /* Show elements when animations are disabled */
+  .hero.animations-disabled h1,
+  .hero.animations-disabled h2,
+  .hero.animations-disabled h3,
+  .hero.animations-disabled .text-block,
+  .hero.animations-disabled .button {
+    opacity: 1 !important;
   }
 
   /* Ensure proper text wrapping for animated headings */
@@ -893,10 +912,24 @@
     console.log('Animation translation values:', { fromX, fromY });
     // Helper: split titles once
     function prepareTitleForAnimation(title) {
-      // Avoid double-preparing if editor re-renders
-      if (title.querySelector('.tricksword')) return;
-      title.style.opacity = '1';
-      const titleText = title.textContent;
+      // Store original text if not already stored
+      if (!title.dataset.originalText) {
+        title.dataset.originalText = title.textContent;
+      }
+      
+      // If already prepared, just reset the letters
+      if (title.querySelector('.tricksword')) {
+        const letterEls = title.querySelectorAll('.letter');
+        letterEls.forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
+        });
+        return;
+      }
+      
+      // Keep title hidden during prep
+      title.style.opacity = '0';
+      const titleText = title.dataset.originalText;
       const titleWords = titleText.split(/\s+/);
       title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
       const wordEls = title.querySelectorAll('.tricksword');
@@ -983,37 +1016,66 @@
     const fontsReadyPromise = ('fonts' in document && document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => Promise.resolve()) : Promise.resolve();
     
     let isAnimating = false;
-    let hasAnimatedOnce = false;
+    let animationTimeout = null;
     
     function triggerAnimation() {
-      if (isAnimating) return;
+      if (isAnimating) {
+        console.log('Animation already in progress, skipping');
+        return;
+      }
       if (document.visibilityState !== 'visible') return;
       
-      isAnimating = true;
-      console.log('Triggering hero animation');
+      // Debounce rapid triggers
+      if (animationTimeout) {
+        clearTimeout(animationTimeout);
+      }
       
-      fontsReadyPromise.then(() => {
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          startAnimations();
-          isAnimating = false;
-          hasAnimatedOnce = true;
-        }));
-      });
+      animationTimeout = setTimeout(() => {
+        isAnimating = true;
+        console.log('Triggering hero animation');
+        
+        fontsReadyPromise.then(() => {
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            startAnimations();
+            // Keep isAnimating true for a bit to prevent immediate re-trigger
+            setTimeout(() => {
+              isAnimating = false;
+            }, 500);
+          }));
+        });
+      }, 100);
     }
     
-    // Continuously observe hero - animate every time it enters viewport
+    // Track if hero was visible on page load
+    let wasInitiallyVisible = false;
+    
+    // Check if hero is initially in viewport
+    const heroRect = heroSection.getBoundingClientRect();
+    const isInitiallyVisible = heroRect.top < window.innerHeight && heroRect.bottom > 0;
+    
+    // Observe hero - animate when it enters viewport
     try {
       const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
-            triggerAnimation();
+            // Only trigger if hero wasn't initially visible or if user navigated away and back
+            if (!wasInitiallyVisible || !isInitiallyVisible) {
+              triggerAnimation();
+            }
+            wasInitiallyVisible = true;
           }
         });
       }, { threshold: 0.15 });
       io.observe(heroSection);
     } catch (e) {
       console.error('IntersectionObserver failed:', e);
-      triggerAnimation(); // Fallback to immediate animation
+      wasInitiallyVisible = true;
+    }
+    
+    // If hero is visible on load, trigger animation immediately
+    if (isInitiallyVisible) {
+      wasInitiallyVisible = true;
+      triggerAnimation();
     }
     
     // Listen for Shopify view transitions
