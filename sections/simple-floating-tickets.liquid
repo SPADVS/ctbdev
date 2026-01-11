@@ -295,13 +295,21 @@
 }
 </style>
 
-<!-- Floating Tickets Button -->
-<button class="floating-call-btn" id="ticketsBtn" aria-label="Get Event Tickets">
+<!-- Floating Button (Tickets or Call) -->
+{% if section.settings.button_type == 'call' %}
+  <a href="tel:{{ section.settings.phone_number }}" class="floating-call-btn show" aria-label="Call Now">
+    <i class="fas fa-phone"></i>
+    <span>{{ section.settings.button_text }}</span>
+  </a>
+{% else %}
+  <button class="floating-call-btn" id="ticketsBtn" aria-label="Get Event Tickets">
     <i class="fas fa-ticket-alt"></i>
     <span>{{ section.settings.button_text }}</span>
-</button>
+  </button>
+{% endif %}
 
-<!-- Tickets Modal -->
+<!-- Tickets Modal (only shown if button_type is tickets) -->
+{% if section.settings.button_type == 'tickets' %}
 <div class="tickets-modal" id="ticketsModal">
     <div class="modal-overlay"></div>
     <div class="modal-content">
@@ -339,9 +347,49 @@
         <p class="modal-footer-text">{{ section.settings.modal_footer }}</p>
     </div>
 </div>
+{% endif %}
 
 <script>
 (function() {
+    const buttonType = '{{ section.settings.button_type }}';
+    
+    // Only run modal logic if in tickets mode
+    if (buttonType !== 'tickets') {
+        // For call button, just show it on scroll
+        const callBtn = document.querySelector('.floating-call-btn');
+        if (callBtn && !callBtn.classList.contains('show')) {
+            function handleScroll() {
+                const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
+                if (heroSection) {
+                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+                    if (window.scrollY > heroBottom - window.innerHeight * 0.5) {
+                        callBtn.classList.add('show');
+                    } else {
+                        callBtn.classList.remove('show');
+                    }
+                } else {
+                    if (window.scrollY > 100) {
+                        callBtn.classList.add('show');
+                    } else {
+                        callBtn.classList.remove('show');
+                    }
+                }
+            }
+            handleScroll();
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        }
+        return;
+    }
+    
     const ticketsBtn = document.getElementById('ticketsBtn');
     const ticketsModal = document.getElementById('ticketsModal');
     const closeModal = document.getElementById('closeModal');
@@ -430,10 +478,34 @@
       "content": "Floating Button"
     },
     {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button type",
+      "options": [
+        {
+          "value": "tickets",
+          "label": "Tickets (opens modal)"
+        },
+        {
+          "value": "call",
+          "label": "Call Now (direct phone link)"
+        }
+      ],
+      "default": "tickets"
+    },
+    {
       "type": "text",
       "id": "button_text",
       "label": "Button text",
-      "default": "Get Tickets"
+      "default": "Get Tickets",
+      "info": "For call button, try 'Call Now' or 'Contact Us'"
+    },
+    {
+      "type": "tel",
+      "id": "phone_number",
+      "label": "Phone number",
+      "default": "+1-555-123-4567",
+      "info": "Include country code for best compatibility (e.g., +1-312-555-1234)"
     },
     {
       "type": "color",
