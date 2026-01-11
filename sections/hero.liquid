@@ -708,15 +708,6 @@
   }
 
   /* Anime.js letter animation styles */
-  .hero h1.tricks,
-  .hero h2.tricks,
-  .hero h3.tricks,
-  .hero h4.tricks,
-  .hero h5.tricks,
-  .hero h6.tricks {
-    opacity: 1 !important;
-  }
-
   .letter {
     display: inline-block;
     opacity: 0;
@@ -729,16 +720,35 @@
     font-family: inherit !important;
   }
 
-  .hero rte-formatter.animdiv,
-  .hero .rte.animdiv,
-  .hero p.animdiv {
+  .animdiv {
     opacity: 0;
   }
 
-  .hero .button.animdiv,
-  .hero .button-secondary.animdiv,
-  .hero a[href].animdiv {
+  .hero-button {
     opacity: 0;
+  }
+
+  .tricks {
+    opacity: 1;
+  }
+
+  /* Ensure proper text wrapping for animated headings */
+  .hero h1,
+  .hero .h1,
+  .hero .text-block.h1,
+  .hero .text-block.h2,
+  .hero .jumbo-text__text {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    -webkit-hyphens: none !important;
+    -moz-hyphens: none !important;
+    hyphens: none !important;
+  }
+  
+  /* Prevent breaking inside word spans */
+  .hero .tricksword {
+    white-space: nowrap !important;
   }
 
   /* Media slider styles */
@@ -838,159 +848,116 @@
 {% if section.settings.enable_hero_animations %}
 <script>
   (function() {
-    console.log('Hero animation script loading for section: #Hero-{{ section.id }}');
-    
     // Animation Settings from schema
     var direction    = "{{ section.settings.animation_direction }}";
     var mainDuration = {{ section.settings.animation_duration }};
     var letterDelay  = {{ section.settings.animation_delay }};
     var divStagger   = {{ section.settings.div_stagger }};
 
-    console.log('Animation settings:', { direction, mainDuration, letterDelay, divStagger });
-
     // Determine starting translation values based on chosen direction
-    var fromX = 0;
-    var fromY = 0;
+    var fromValX = 0;
+    var fromValY = 0;
     if (direction === 'fade-up') {
-      fromY = 20;
+      fromValY = 20;
     } else if (direction === 'fade-down') {
-      fromY = -20;
+      fromValY = -20;
     } else if (direction === 'fade-left') {
-      fromX = 20;
+      fromValX = 20;
     } else if (direction === 'fade-right') {
-      fromX = -20;
+      fromValX = -20;
     }
-
-    console.log('Translation values:', { fromX, fromY });
 
     function initAnimations() {
       if (typeof anime === 'undefined') {
-        console.log('Anime.js not loaded yet, retrying in 50ms...');
-        setTimeout(initAnimations, 50);
+        setTimeout(initAnimations, 100);
         return;
       }
-
-      console.log('Anime.js loaded, starting animations');
 
       var heroSection = document.querySelector('#Hero-{{ section.id }}');
-      if (!heroSection) {
-        console.error('Hero section not found');
-        return;
-      }
+      if (!heroSection) return;
 
-      // Find all title elements - look for actual h1-h6 tags inside the hero
-      var titles = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      console.log('Found', titles.length, 'titles');
-
-      // Add tricks class and wrap words
-      for (var i = 0; i < titles.length; i++) {
-        var title = titles[i];
-        title.classList.add('tricks');
-        
-        // Get plain text content
-        var textContent = title.textContent || title.innerText;
-        var words = textContent.split(/\s+/);
-        
-        // Wrap each word
-        var wrappedHTML = words.map(function(word) {
-          return '<span class="tricksword">' + word + '</span>';
-        }).join(' ');
-        
-        title.innerHTML = wrappedHTML;
+      // Find all h1-h6 elements in the hero section
+      var headings = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      
+      // Add 'tricks' class to headings and wrap words
+      for (var i = 0; i < headings.length; i++) {
+        headings[i].classList.add('tricks');
+        var wordWrap = headings[i];
+        wordWrap.innerHTML = wordWrap.innerHTML.replace(
+          /(^|<\/?[^>]+>|\s+)([^\s<]+)/g,
+          '$1<span class="tricksword">$2</span>'
+        );
       }
 
       // Wrap each letter with <span class="letter">
-      var tricksWords = heroSection.querySelectorAll('.tricksword');
-      console.log('Found', tricksWords.length, 'words to wrap');
-      
+      var tricksWords = heroSection.getElementsByClassName('tricksword');
       for (var j = 0; j < tricksWords.length; j++) {
-        var letterWrap = tricksWords[j];
+        var letterWrap = tricksWords.item(j);
         letterWrap.innerHTML = letterWrap.textContent.replace(
           /\S/g,
           "<span class='letter'>$&</span>"
         );
       }
 
-      // Animate letters
+      // Animate each letter in headings using stagger
       anime.timeline({ loop: false, autoplay: true })
         .add({
-          targets: '#Hero-{{ section.id }} .tricks .letter',
-          translateX: [fromX, 0],
-          translateY: [fromY, 0],
+          targets: '.tricks .letter',
+          translateX: [fromValX, 0],
+          translateY: [fromValY, 0],
           opacity: [0, 1],
           easing: "easeOutExpo",
           duration: mainDuration,
-          delay: anime.stagger(letterDelay, { start: 300 })
+          delay: anime.stagger(letterDelay, { start: 100 })
         });
 
-      // Find and animate text blocks - look for rte-formatter and paragraphs
-      var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte p, p');
-      var textBlocksArray = [];
+      // Find and animate text blocks
+      var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte, .text-block:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6)');
       
       for (var k = 0; k < textBlocks.length; k++) {
-        var block = textBlocks[k];
-        // Skip if it's inside a title
-        var isInTitle = false;
-        var parent = block.parentElement;
-        while (parent && parent !== heroSection) {
-          if (parent.tagName.match(/^H[1-6]$/)) {
-            isInTitle = true;
-            break;
-          }
-          parent = parent.parentElement;
-        }
-        
-        if (!isInTitle) {
-          block.classList.add('animdiv');
-          textBlocksArray.push(block);
-        }
-      }
-      
-      console.log('Found', textBlocksArray.length, 'text blocks');
-
-      if (textBlocksArray.length > 0) {
-        anime.timeline({ loop: false, autoplay: true })
-          .add({
-            targets: textBlocksArray,
-            translateX: [fromX, 0],
-            translateY: [fromY, 0],
-            opacity: [0, 1],
-            easing: "easeOutExpo",
-            duration: mainDuration,
-            delay: anime.stagger(divStagger, { start: 600 })
-          });
+        textBlocks[k].classList.add('animdiv');
       }
 
-      // Find and animate buttons - look for button, button-secondary, and links
-      var buttons = heroSection.querySelectorAll('.button, .button-secondary, a.button-secondary, a[href].button');
-      var validButtons = [];
+      anime.timeline({ loop: false, autoplay: true })
+        .add({
+          targets: '.animdiv',
+          translateX: [fromValX, 0],
+          translateY: [fromValY, 0],
+          opacity: [0, 1],
+          easing: "easeOutExpo",
+          duration: mainDuration,
+          delay: anime.stagger(divStagger, { start: 400 })
+        });
+
+      // Find and animate buttons
+      var buttons = heroSection.querySelectorAll('.button, .button-secondary, a[href].size-style');
       
       for (var m = 0; m < buttons.length; m++) {
-        var btn = buttons[m];
-        btn.classList.add('animdiv');
-        validButtons.push(btn);
-      }
-      
-      console.log('Found', validButtons.length, 'buttons to animate');
-
-      if (validButtons.length > 0) {
-        anime.timeline({ loop: false, autoplay: true })
-          .add({
-            targets: validButtons,
-            translateX: [fromX, 0],
-            translateY: [fromY, 0],
-            opacity: [0, 1],
-            easing: "easeOutExpo",
-            duration: mainDuration,
-            delay: anime.stagger(divStagger, { start: 800 })
-          });
+        buttons[m].classList.add('hero-button');
       }
 
-      console.log('All animations queued');
+      anime.timeline({ loop: false, autoplay: true })
+        .add({
+          targets: '.hero-button',
+          translateX: [fromValX, 0],
+          translateY: [fromValY, 0],
+          opacity: [0, 1],
+          easing: "easeOutExpo",
+          duration: mainDuration,
+          delay: anime.stagger(divStagger, { start: 600 })
+        });
     }
 
-    // Start immediately
-    initAnimations();
+    // Start animations
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+      initAnimations();
+    }
+  })();
+</script>
+
+<script>
   // Force font loading for iOS
   (function() {
     console.log('=== FONT LOADING DEBUG START ===');
