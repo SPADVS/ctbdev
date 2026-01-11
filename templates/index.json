@@ -688,7 +688,7 @@
         "image_KwhPHa": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/special_events.jpg"
+            "image": "shopify://shop_images/ctbgarage_1703693906_3267143746792016571_1412402950.jpg"
           }
         },
         "image_8DBKV3": {
@@ -1151,6 +1151,11 @@
         "button_type": "call",
         "button_text": "Call Now",
         "phone_number": "+1-555-123-4567",
+        "mobile_only": false,
+        "scroll_threshold": 100,
+        "hide_in_hero": true,
+        "hide_in_footer": false,
+        "hide_in_sections": "",
         "button_bg_color": "#ffffff",
         "button_text_color": "#000000",
         "modal_title": "Car Event Tickets",
@@ -1187,6 +1192,7 @@
       ],
       "name": "Simple Contact",
       "settings": {
+        "section_id": "contact",
         "section_title": "Get In Touch",
         "section_intro": "Have questions about our auto body services, apparel, or upcoming events? Reach out to us!",
         "business_name": "CTB Garage",
