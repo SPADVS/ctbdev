@@ -709,11 +709,12 @@
 
   /* Anime.js letter animation styles */
   .hero h1.tricks,
-  .hero .h1.tricks,
-  .hero .text-block.h1.tricks,
-  .hero .text-block.h2.tricks,
-  .hero .jumbo-text__text.tricks {
-    opacity: 1;
+  .hero h2.tricks,
+  .hero h3.tricks,
+  .hero h4.tricks,
+  .hero h5.tricks,
+  .hero h6.tricks {
+    opacity: 1 !important;
   }
 
   .letter {
@@ -728,12 +729,14 @@
     font-family: inherit !important;
   }
 
-  .hero .text-block:not(.h1):not(.h2):not(.h3) p.animdiv,
-  .hero .text-block:not(.h1):not(.h2):not(.h3).animdiv {
+  .hero rte-formatter.animdiv,
+  .hero .rte.animdiv,
+  .hero p.animdiv {
     opacity: 0;
   }
 
   .hero .button.animdiv,
+  .hero .button-secondary.animdiv,
   .hero a[href].animdiv {
     opacity: 0;
   }
@@ -875,8 +878,8 @@
         return;
       }
 
-      // Find all title elements and add 'tricks' class
-      var titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
+      // Find all title elements - look for actual h1-h6 tags inside the hero
+      var titles = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
       console.log('Found', titles.length, 'titles');
 
       // Add tricks class and wrap words
@@ -884,11 +887,16 @@
         var title = titles[i];
         title.classList.add('tricks');
         
-        // Wrap each word with <span class="tricksword">
-        title.innerHTML = title.innerHTML.replace(
-          /(^|<\/?[^>]+>|\s+)([^\s<]+)/g,
-          '$1<span class="tricksword">$2</span>'
-        );
+        // Get plain text content
+        var textContent = title.textContent || title.innerText;
+        var words = textContent.split(/\s+/);
+        
+        // Wrap each word
+        var wrappedHTML = words.map(function(word) {
+          return '<span class="tricksword">' + word + '</span>';
+        }).join(' ');
+        
+        title.innerHTML = wrappedHTML;
       }
 
       // Wrap each letter with <span class="letter">
@@ -915,34 +923,52 @@
           delay: anime.stagger(letterDelay, { start: 300 })
         });
 
-      // Find and animate text blocks
-      var textBlocks = heroSection.querySelectorAll('.text-block:not(.h1):not(.h2):not(.h3) p, .text-block:not(.h1):not(.h2):not(.h3)');
-      console.log('Found', textBlocks.length, 'text blocks');
+      // Find and animate text blocks - look for rte-formatter and paragraphs
+      var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte p, p');
+      var textBlocksArray = [];
       
       for (var k = 0; k < textBlocks.length; k++) {
-        textBlocks[k].classList.add('animdiv');
+        var block = textBlocks[k];
+        // Skip if it's inside a title
+        var isInTitle = false;
+        var parent = block.parentElement;
+        while (parent && parent !== heroSection) {
+          if (parent.tagName.match(/^H[1-6]$/)) {
+            isInTitle = true;
+            break;
+          }
+          parent = parent.parentElement;
+        }
+        
+        if (!isInTitle) {
+          block.classList.add('animdiv');
+          textBlocksArray.push(block);
+        }
+      }
+      
+      console.log('Found', textBlocksArray.length, 'text blocks');
+
+      if (textBlocksArray.length > 0) {
+        anime.timeline({ loop: false, autoplay: true })
+          .add({
+            targets: textBlocksArray,
+            translateX: [fromX, 0],
+            translateY: [fromY, 0],
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: mainDuration,
+            delay: anime.stagger(divStagger, { start: 600 })
+          });
       }
 
-      anime.timeline({ loop: false, autoplay: true })
-        .add({
-          targets: '#Hero-{{ section.id }} .animdiv',
-          translateX: [fromX, 0],
-          translateY: [fromY, 0],
-          opacity: [0, 1],
-          easing: "easeOutExpo",
-          duration: mainDuration,
-          delay: anime.stagger(divStagger, { start: 600 })
-        });
-
-      // Find and animate buttons
-      var buttons = heroSection.querySelectorAll('.button, a[href]');
+      // Find and animate buttons - look for button, button-secondary, and links
+      var buttons = heroSection.querySelectorAll('.button, .button-secondary, a.button-secondary, a[href].button');
       var validButtons = [];
+      
       for (var m = 0; m < buttons.length; m++) {
         var btn = buttons[m];
-        if (btn.classList.contains('button') || btn.textContent.trim().length > 0) {
-          btn.classList.add('animdiv');
-          validButtons.push(btn);
-        }
+        btn.classList.add('animdiv');
+        validButtons.push(btn);
       }
       
       console.log('Found', validButtons.length, 'buttons to animate');
