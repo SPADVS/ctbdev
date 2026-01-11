@@ -81,11 +81,11 @@
   /* Fade-in stagger animation with scale and blur */
   .product-grid__item.fade-in-stagger {
     opacity: 0;
-    transform: translateY(20px) scale(0.96);
-    filter: blur(3px);
-    transition: opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                filter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(15px) scale(0.97);
+    filter: blur(2px);
+    transition: opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .product-grid__item.fade-in-stagger.visible {
@@ -97,6 +97,7 @@
   /* Smooth hover effect */
   .product-grid__item.fade-in-stagger.visible:hover {
     transform: translateY(-4px) scale(1);
+    transition: transform 0.2s ease-out;
   }
 
   .main-collection-grid {
@@ -185,7 +186,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const staggerIndex = parseInt(entry.target.getAttribute('data-stagger-index') || 0);
-          const delay = staggerIndex * 60; // 60ms per item (resets every 3)
+          const delay = staggerIndex * 80; // 80ms per item for smoother flow
           
           setTimeout(() => {
             entry.target.classList.add('visible');
