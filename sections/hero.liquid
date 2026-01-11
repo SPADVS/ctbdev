@@ -835,49 +835,51 @@
 
 {% if section.settings.enable_hero_animations %}
 <script>
-  console.log('Hero animation script loading for section: #Hero-{{ section.id }}');
-  console.log('Animation settings:', {
-    enabled: {{ section.settings.enable_hero_animations }},
-    direction: '{{ section.settings.animation_direction }}',
-    duration: {{ section.settings.animation_duration }},
-    letterDelay: {{ section.settings.animation_delay }},
-    divStagger: {{ section.settings.div_stagger }}
-  });
+  (function() {
+    console.log('Hero animation script loading for section: #Hero-{{ section.id }}');
+    console.log('Animation settings:', {
+      enabled: {{ section.settings.enable_hero_animations }},
+      direction: '{{ section.settings.animation_direction }}',
+      duration: {{ section.settings.animation_duration }},
+      letterDelay: {{ section.settings.animation_delay }},
+      divStagger: {{ section.settings.div_stagger }}
+    });
 
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded fired');
-    
-    const heroSection = document.querySelector('#Hero-{{ section.id }}');
-    console.log('Hero section found:', heroSection);
-    
-    if (!heroSection) {
-      console.error('Hero section not found with ID: #Hero-{{ section.id }}');
-      return;
-    }
-    
-    if (typeof anime === 'undefined') {
-      console.error('Anime.js not loaded');
-      return;
-    }
-    
-    console.log('Anime.js loaded successfully');
+    function initAnimations() {
+      console.log('initAnimations called');
+      
+      const heroSection = document.querySelector('#Hero-{{ section.id }}');
+      console.log('Hero section found:', heroSection);
+      
+      if (!heroSection) {
+        console.error('Hero section not found with ID: #Hero-{{ section.id }}');
+        return;
+      }
+      
+      if (typeof anime === 'undefined') {
+        console.error('Anime.js not loaded, retrying in 100ms...');
+        setTimeout(initAnimations, 100);
+        return;
+      }
+      
+      console.log('Anime.js loaded successfully');
 
-    // Animation settings from schema
-    const direction = '{{ section.settings.animation_direction }}';
-    const duration = {{ section.settings.animation_duration }};
-    const letterDelay = {{ section.settings.animation_delay }};
-    const divStagger = {{ section.settings.div_stagger }};
+      // Animation settings from schema
+      const direction = '{{ section.settings.animation_direction }}';
+      const duration = {{ section.settings.animation_duration }};
+      const letterDelay = {{ section.settings.animation_delay }};
+      const divStagger = {{ section.settings.div_stagger }};
 
-    console.log('Starting animations with settings:', { direction, duration, letterDelay, divStagger });
+      console.log('Starting animations with settings:', { direction, duration, letterDelay, divStagger });
 
-    // Determine starting values based on direction
-    let fromX = 0, fromY = 0;
-    if (direction === 'fade-up') fromY = 20;
-    else if (direction === 'fade-down') fromY = -20;
-    else if (direction === 'fade-left') fromX = 20;
-    else if (direction === 'fade-right') fromX = -20;
+      // Determine starting values based on direction
+      let fromX = 0, fromY = 0;
+      if (direction === 'fade-up') fromY = 20;
+      else if (direction === 'fade-down') fromY = -20;
+      else if (direction === 'fade-left') fromX = 20;
+      else if (direction === 'fade-right') fromX = -20;
 
-    console.log('Animation translation values:', { fromX, fromY });
+      console.log('Animation translation values:', { fromX, fromY });
 
     // Animate all h1-h3 headings with letter stagger
     const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
@@ -987,9 +989,18 @@
         }
       });
     }
-    
-    console.log('All animations queued');
-  });
+      
+      console.log('All animations queued');
+    }
+
+    // Try to init immediately if DOM is ready, otherwise wait
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+      // DOM already loaded
+      initAnimations();
+    }
+  })();
 </script>
 
 <script>
