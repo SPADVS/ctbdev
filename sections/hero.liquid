@@ -883,11 +883,12 @@
     const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
     console.log('Titles found:', titles.length, titles);
     
+    // Process all titles first (split into letters)
     titles.forEach((title, titleIndex) => {
       console.log(`Processing title ${titleIndex}:`, title.textContent);
       
-      // Set initial opacity
-      title.style.opacity = '1';
+      // Keep title hidden until animation starts
+      title.style.opacity = '0';
       
       // Split words using textContent to avoid capturing HTML
       const titleText = title.textContent;
@@ -907,22 +908,32 @@
 
       const letterEls = title.querySelectorAll('.letter');
       console.log(`Title ${titleIndex} has ${letterEls.length} letter spans`);
+    });
 
-      // Animate letters
-      anime({
-        targets: title.querySelectorAll('.letter'),
-        translateX: [fromX, 0],
-        translateY: [fromY, 0],
-        opacity: [0, 1],
-        easing: 'easeOutExpo',
-        duration: duration,
-        delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) }),
-        begin: function() {
-          console.log(`Title ${titleIndex} animation started`);
-        },
-        complete: function() {
-          console.log(`Title ${titleIndex} animation completed`);
-        }
+    // Wait for DOM to process, then animate
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        titles.forEach((title, titleIndex) => {
+          // Show title container now that animation is starting
+          title.style.opacity = '1';
+          
+          // Animate letters
+          anime({
+            targets: title.querySelectorAll('.letter'),
+            translateX: [fromX, 0],
+            translateY: [fromY, 0],
+            opacity: [0, 1],
+            easing: 'easeOutExpo',
+            duration: duration,
+            delay: anime.stagger(letterDelay, { start: 200 + (titleIndex * 400) }),
+            begin: function() {
+              console.log(`Title ${titleIndex} animation started`);
+            },
+            complete: function() {
+              console.log(`Title ${titleIndex} animation completed`);
+            }
+          });
+        });
       });
     });
 
