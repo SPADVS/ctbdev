@@ -700,14 +700,21 @@
         "image_ETLPYq": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/paint_job.jpg"
+            "image": "shopify://shop_images/ctbgarage_1758983047_3730942677136304649_1412402950.jpg"
+          }
+        },
+        "image_jrhmLd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ctbgarage_1767885582_3805622548944503747_1412402950.jpg"
           }
         }
       },
       "block_order": [
         "image_KwhPHa",
         "image_8DBKV3",
-        "image_ETLPYq"
+        "image_ETLPYq",
+        "image_jrhmLd"
       ],
       "name": "Simple About",
       "settings": {
