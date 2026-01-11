@@ -1145,6 +1145,7 @@
         "ticket_tenAfz",
         "ticket_bMzCdb"
       ],
+      "disabled": true,
       "name": "Simple Floating Tickets",
       "settings": {
         "button_text": "Get Tickets",
