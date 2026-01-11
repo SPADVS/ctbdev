@@ -899,10 +899,6 @@
     }
 
     function startAnimations() {
-      if (heroSection.dataset.animated === 'true') {
-        console.log('Hero animations already initialized; skipping rerun');
-        return;
-      }
       const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       // Animate all h1-h3 headings with letter stagger
       const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
@@ -910,6 +906,8 @@
       titles.forEach((title, titleIndex) => {
         prepareTitleForAnimation(title);
         const letterTargets = title.querySelectorAll('.letter');
+        // Reset letter states before animating
+        letterTargets.forEach(el => { el.style.opacity = '0'; el.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`; });
         if (prefersReducedMotion) {
           letterTargets.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
           return;
@@ -931,9 +929,9 @@
       const textBlocks = heroSection.querySelectorAll('.text-block:not(.h1):not(.h2):not(.h3) p, .text-block:not(.h1):not(.h2):not(.h3)');
       console.log('Text blocks found:', textBlocks.length, textBlocks);
       textBlocks.forEach((text, index) => {
-        if (prefersReducedMotion) { text.style.opacity = '1'; text.style.transform = 'none'; return; }
         text.style.opacity = '0';
         text.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
+        if (prefersReducedMotion) { text.style.opacity = '1'; text.style.transform = 'none'; return; }
         anime({
           targets: text,
           translateX: [fromX, 0],
@@ -953,9 +951,9 @@
       const validButtons = Array.from(buttons).filter(btn => btn.classList.contains('button') || btn.textContent.trim().length > 0);
       console.log('Valid buttons found:', validButtons.length, validButtons);
       if (validButtons.length > 0) {
+        validButtons.forEach(btn => { btn.style.opacity = '0'; btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`; });
         if (prefersReducedMotion) { validButtons.forEach(b => { b.style.opacity = '1'; b.style.transform = 'none'; }); }
         else {
-          validButtons.forEach(btn => { btn.style.opacity = '0'; btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`; });
           anime({
             targets: validButtons,
             translateX: [fromX, 0],
@@ -970,29 +968,42 @@
         }
       }
 
-      heroSection.dataset.animated = 'true';
       console.log('All animations queued');
     }
 
     // Defer animations until fonts are ready, hero is visible, and document is visible
     const fontsReadyPromise = ('fonts' in document && document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => Promise.resolve()) : Promise.resolve();
-    const documentVisiblePromise = new Promise(resolve => {
-      if (document.visibilityState === 'visible') return resolve();
-      const onVis = () => { if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', onVis); resolve(); } };
-      document.addEventListener('visibilitychange', onVis);
-    });
-    const heroVisiblePromise = new Promise(resolve => {
-      try {
-        const io = new IntersectionObserver((entries) => {
-          if (entries.some(e => e.isIntersecting)) { io.disconnect(); resolve(); }
-        }, { threshold: 0.15 });
-        io.observe(heroSection);
-      } catch (e) { resolve(); }
-    });
+    
+    function checkAndAnimate() {
+      const documentVisiblePromise = new Promise(resolve => {
+        if (document.visibilityState === 'visible') return resolve();
+        const onVis = () => { if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', onVis); resolve(); } };
+        document.addEventListener('visibilitychange', onVis);
+      });
+      const heroVisiblePromise = new Promise(resolve => {
+        try {
+          const io = new IntersectionObserver((entries) => {
+            if (entries.some(e => e.isIntersecting)) { io.disconnect(); resolve(); }
+          }, { threshold: 0.15 });
+          io.observe(heroSection);
+        } catch (e) { resolve(); }
+      });
 
-    Promise.all([fontsReadyPromise, documentVisiblePromise, heroVisiblePromise]).then(() => {
-      // Double RAF to ensure DOM mutations and styles are fully applied before animating
-      requestAnimationFrame(() => requestAnimationFrame(() => startAnimations()));
+      Promise.all([fontsReadyPromise, documentVisiblePromise, heroVisiblePromise]).then(() => {
+        // Double RAF to ensure DOM mutations and styles are fully applied before animating
+        requestAnimationFrame(() => requestAnimationFrame(() => startAnimations()));
+      });
+    }
+    
+    // Run on initial load
+    checkAndAnimate();
+    
+    // Re-run when navigating back to the page (e.g., browser back button or SPA navigation)
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+        console.log('Page restored from cache, re-triggering hero animations');
+        checkAndAnimate();
+      }
     });
   });
 </script>
