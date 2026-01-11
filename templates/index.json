@@ -1215,6 +1215,13 @@
       "name": "Default",
       "settings": {
         "hide_in_theme_editor": true,
+        "popup_delay": 6,
+        "show_on_exit_intent": false,
+        "show_on_scroll": false,
+        "scroll_percentage": 50,
+        "frequency": "once_per_session",
+        "pause_on_hover": true,
+        "auto_close_delay": 0,
         "show_email_popup": true,
         "email_popup_title": "Get 5% Off The Whole Shop!",
         "email_popup_text": "Sign up for our newsletter and get 5% off your entire order. Stay updated with our latest promotions and offers.",
