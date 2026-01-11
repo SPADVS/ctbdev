@@ -6,9 +6,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
 .contact-section {
     padding: 80px 0;
     background: #000;
+    scroll-margin-top: 80px; /* Account for fixed headers */
 }
 
 .contact-intro {
@@ -203,7 +209,7 @@
 }
 </style>
 
-<section class="contact-section" id="contact">
+<section class="contact-section" id="{{ section.settings.section_id | default: 'contact' }}">
     <div class="page-width">
         <h2 class="section-title">{{ section.settings.section_title }}</h2>
         <p class="contact-intro">{{ section.settings.section_intro }}</p>
@@ -308,6 +314,13 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section anchor ID",
+      "default": "contact",
+      "info": "Use this ID in links to scroll to this section (e.g., #contact). No spaces or special characters."
+    },
     {
       "type": "text",
       "id": "section_title",
