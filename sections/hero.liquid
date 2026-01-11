@@ -713,7 +713,6 @@
     opacity: 0;
     font-family: inherit !important;
     will-change: transform, opacity;
-    backface-visibility: hidden;
     transform: translateZ(0);
   }
 
@@ -721,18 +720,7 @@
     white-space: nowrap;
     display: inline-block;
     font-family: inherit !important;
-  }
-
-  .animdiv {
-    opacity: 0;
-  }
-
-  .hero-button {
-    opacity: 0;
-  }
-
-  .tricks {
-    opacity: 1;
+    will-change: transform, opacity;
   }
 
   /* Ensure proper text wrapping for animated headings */
@@ -850,181 +838,163 @@
 
 {% if section.settings.enable_hero_animations %}
 <script>
-  (function() {
-    // Animation Settings from schema
-    var direction    = "{{ section.settings.animation_direction }}";
-    var mainDuration = {{ section.settings.animation_duration }};
-    var letterDelay  = {{ section.settings.animation_delay }};
-    var divStagger   = {{ section.settings.div_stagger }};
+  console.log('Hero animation script loading for section: #Hero-{{ section.id }}');
+  console.log('Animation settings:', {
+    enabled: {{ section.settings.enable_hero_animations }},
+    direction: '{{ section.settings.animation_direction }}',
+    duration: {{ section.settings.animation_duration }},
+    letterDelay: {{ section.settings.animation_delay }},
+    divStagger: {{ section.settings.div_stagger }}
+  });
 
-    // Determine starting translation values based on chosen direction
-    var fromValX = 0;
-    var fromValY = 0;
-    if (direction === 'fade-up') {
-      fromValY = 20;
-    } else if (direction === 'fade-down') {
-      fromValY = -20;
-    } else if (direction === 'fade-left') {
-      fromValX = 20;
-    } else if (direction === 'fade-right') {
-      fromValX = -20;
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded fired');
+    
+    const heroSection = document.querySelector('#Hero-{{ section.id }}');
+    console.log('Hero section found:', heroSection);
+    
+    if (!heroSection) {
+      console.error('Hero section not found with ID: #Hero-{{ section.id }}');
+      return;
+    }
+    
+    if (typeof anime === 'undefined') {
+      console.error('Anime.js not loaded');
+      return;
+    }
+    // Ensure anime doesn't fast-forward when document is hidden (e.g., during editor save reloads)
+    try { anime.suspendWhenDocumentHidden = true; } catch(e) {}
+    
+    console.log('Anime.js loaded successfully');
+
+    // Animation settings from schema
+    const direction = '{{ section.settings.animation_direction }}';
+    const duration = {{ section.settings.animation_duration }};
+    const letterDelay = {{ section.settings.animation_delay }};
+    const divStagger = {{ section.settings.div_stagger }};
+
+    console.log('Starting animations with settings:', { direction, duration, letterDelay, divStagger });
+
+    // Determine starting values based on direction
+    let fromX = 0, fromY = 0;
+    if (direction === 'fade-up') fromY = 20;
+    else if (direction === 'fade-down') fromY = -20;
+    else if (direction === 'fade-left') fromX = 20;
+    else if (direction === 'fade-right') fromX = -20;
+
+    console.log('Animation translation values:', { fromX, fromY });
+    // Helper: split titles once
+    function prepareTitleForAnimation(title) {
+      // Avoid double-preparing if editor re-renders
+      if (title.querySelector('.tricksword')) return;
+      title.style.opacity = '1';
+      const titleText = title.textContent;
+      const titleWords = titleText.split(/\s+/);
+      title.innerHTML = titleWords.map(word => `<span class="tricksword">${word}</span>`).join(' ');
+      const wordEls = title.querySelectorAll('.tricksword');
+      wordEls.forEach(wordEl => {
+        const letters = wordEl.textContent.split('');
+        wordEl.innerHTML = letters.map(letter => letter === ' ' ? ' ' : `<span class="letter">${letter}</span>`).join('');
+      });
     }
 
-    function initAnimations() {
-      console.log('[Hero Animation] initAnimations called');
-      
-      if (typeof anime === 'undefined') {
-        console.log('[Hero Animation] Anime.js not loaded, retrying in 100ms...');
-        setTimeout(initAnimations, 100);
+    function startAnimations() {
+      if (heroSection.dataset.animated === 'true') {
+        console.log('Hero animations already initialized; skipping rerun');
         return;
       }
-
-      console.log('[Hero Animation] Anime.js loaded successfully');
-
-      var heroSection = document.querySelector('#Hero-{{ section.id }}');
-      if (!heroSection) {
-        console.error('[Hero Animation] Hero section not found');
-        return;
-      }
-      
-      console.log('[Hero Animation] Hero section found');
-
-      // Find all h1-h6 elements in the hero section
-      var headings = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      console.log('[Hero Animation] Found ' + headings.length + ' headings');
-
-      // Add 'tricks' class to headings and wrap words using textContent
-      for (var i = 0; i < headings.length; i++) {
-        var h = headings[i];
-        console.log('[Hero Animation] Processing heading ' + i + ': "' + h.textContent + '"');
-        h.classList.add('tricks');
-        var text = h.textContent || '';
-        var words = text.split(/[\s\u00A0]+/).filter(Boolean);
-        h.innerHTML = words.map(function(word) {
-          return '<span class="tricksword">' + word + '</span>';
-        }).join(' ');
-      }
-
-      console.log('[Hero Animation] Words wrapped');
-
-      // Wrap each letter with <span class="letter"> using textContent
-      var tricksWords = heroSection.getElementsByClassName('tricksword');
-      console.log('[Hero Animation] Found ' + tricksWords.length + ' words to split into letters');
-      
-      for (var j = 0; j < tricksWords.length; j++) {
-        var letterWrap = tricksWords.item(j);
-        var wordText = letterWrap.textContent || '';
-        letterWrap.innerHTML = wordText.replace(/\S/g, "<span class='letter'>$&</span>");
-      }
-
-      var totalLetters = heroSection.querySelectorAll('.letter').length;
-      console.log('[Hero Animation] Split into ' + totalLetters + ' letters total');
-
-      // Start after fonts are ready to avoid reflow jank
-      var startLetters = function() {
-        requestAnimationFrame(function() {
-          requestAnimationFrame(function() {
-            console.log('[Hero Animation] Starting letter animation');
-            var headingNodes = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
-            headingNodes.forEach(function(h, idx) {
-              var letters = h.querySelectorAll('.letter');
-              console.log('[Hero Animation] Heading ' + idx + ' has ' + letters.length + ' letters');
-              // Pre-set initial state to avoid first-frame jump
-              anime.set(letters, {
-                opacity: 0,
-                translateX: fromValX,
-                translateY: fromValY
-              });
-              anime.timeline({ loop: false, autoplay: true })
-                .add({
-                  targets: letters,
-                  translateX: [fromValX, 0],
-                  translateY: [fromValY, 0],
-                  opacity: [0, 1],
-                  easing: 'easeOutExpo',
-                  duration: mainDuration,
-                  delay: anime.stagger(letterDelay, { start: 120 + (idx * 180) }),
-                  begin: function() { console.log('[Hero Animation] Letter animation started for heading ' + idx); },
-                  complete: function() { console.log('[Hero Animation] Letter animation completed for heading ' + idx); }
-                });
-            });
-          });
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Animate all h1-h3 headings with letter stagger
+      const titles = heroSection.querySelectorAll('h1, h2, h3, .jumbo-text__text, .text-block.h1, .text-block.h2, .text-block.h3');
+      console.log('Titles found:', titles.length, titles);
+      titles.forEach((title, titleIndex) => {
+        prepareTitleForAnimation(title);
+        const letterTargets = title.querySelectorAll('.letter');
+        if (prefersReducedMotion) {
+          letterTargets.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+          return;
+        }
+        anime({
+          targets: letterTargets,
+          translateX: [fromX, 0],
+          translateY: [fromY, 0],
+          opacity: [0, 1],
+          easing: 'easeOutExpo',
+          duration: duration,
+          delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) }),
+          begin: function() { console.log(`Title ${titleIndex} animation started`); },
+          complete: function() { console.log(`Title ${titleIndex} animation completed`); }
         });
-      };
+      });
 
-      if (document.fonts && document.fonts.ready) {
-        console.log('[Hero Animation] Waiting for document.fonts.ready');
-        document.fonts.ready.then(startLetters);
-      } else {
-        startLetters();
-      }
+      // Animate paragraph text blocks
+      const textBlocks = heroSection.querySelectorAll('.text-block:not(.h1):not(.h2):not(.h3) p, .text-block:not(.h1):not(.h2):not(.h3)');
+      console.log('Text blocks found:', textBlocks.length, textBlocks);
+      textBlocks.forEach((text, index) => {
+        if (prefersReducedMotion) { text.style.opacity = '1'; text.style.transform = 'none'; return; }
+        text.style.opacity = '0';
+        text.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`;
+        anime({
+          targets: text,
+          translateX: [fromX, 0],
+          translateY: [fromY, 0],
+          opacity: [0, 1],
+          easing: 'easeOutExpo',
+          duration: duration,
+          delay: 600 + (index * divStagger),
+          begin: function() { console.log(`Text block ${index} animation started`); },
+          complete: function() { console.log(`Text block ${index} animation completed`); }
+        });
+      });
 
-      // Find and animate text blocks
-      var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte, .text-block:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6)');
-      console.log('[Hero Animation] Found ' + textBlocks.length + ' text blocks');
-      
-      for (var k = 0; k < textBlocks.length; k++) {
-        textBlocks[k].classList.add('animdiv');
-      }
-
-      if (textBlocks.length > 0) {
-        console.log('[Hero Animation] Starting text block animation');
-        anime.timeline({ loop: false, autoplay: true })
-          .add({
-            targets: '.animdiv',
-            translateX: [fromValX, 0],
-            translateY: [fromValY, 0],
+      // Animate buttons
+      const buttons = heroSection.querySelectorAll('.button, a[href]');
+      console.log('All buttons found:', buttons.length);
+      const validButtons = Array.from(buttons).filter(btn => btn.classList.contains('button') || btn.textContent.trim().length > 0);
+      console.log('Valid buttons found:', validButtons.length, validButtons);
+      if (validButtons.length > 0) {
+        if (prefersReducedMotion) { validButtons.forEach(b => { b.style.opacity = '1'; b.style.transform = 'none'; }); }
+        else {
+          validButtons.forEach(btn => { btn.style.opacity = '0'; btn.style.transform = `translateX(${fromX}px) translateY(${fromY}px)`; });
+          anime({
+            targets: validButtons,
+            translateX: [fromX, 0],
+            translateY: [fromY, 0],
             opacity: [0, 1],
-            easing: "easeOutExpo",
-            duration: mainDuration,
-            delay: anime.stagger(divStagger, { start: 400 }),
-            begin: function() {
-              console.log('[Hero Animation] Text block animation started');
-            },
-            complete: function() {
-              console.log('[Hero Animation] Text block animation completed');
-            }
+            easing: 'easeOutExpo',
+            duration: duration,
+            delay: anime.stagger(divStagger, { start: 800 }),
+            begin: function() { console.log('Button animations started'); },
+            complete: function() { console.log('Button animations completed'); }
           });
+        }
       }
 
-      // Find and animate buttons
-      var buttons = heroSection.querySelectorAll('.button, .button-secondary, a[href].size-style');
-      console.log('[Hero Animation] Found ' + buttons.length + ' buttons');
-      
-      for (var m = 0; m < buttons.length; m++) {
-        buttons[m].classList.add('hero-button');
-      }
-
-      if (buttons.length > 0) {
-        console.log('[Hero Animation] Starting button animation');
-        anime.timeline({ loop: false, autoplay: true })
-          .add({
-            targets: '.hero-button',
-            translateX: [fromValX, 0],
-            translateY: [fromValY, 0],
-            opacity: [0, 1],
-            easing: "easeOutExpo",
-            duration: mainDuration,
-            delay: anime.stagger(divStagger, { start: 600 }),
-            begin: function() {
-              console.log('[Hero Animation] Button animation started');
-            },
-            complete: function() {
-              console.log('[Hero Animation] Button animation completed');
-            }
-          });
-      }
-
-      console.log('[Hero Animation] All animations initialized');
+      heroSection.dataset.animated = 'true';
+      console.log('All animations queued');
     }
 
-    // Start animations
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAnimations);
-    } else {
-      initAnimations();
-    }
-  })();
+    // Defer animations until fonts are ready, hero is visible, and document is visible
+    const fontsReadyPromise = ('fonts' in document && document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => Promise.resolve()) : Promise.resolve();
+    const documentVisiblePromise = new Promise(resolve => {
+      if (document.visibilityState === 'visible') return resolve();
+      const onVis = () => { if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', onVis); resolve(); } };
+      document.addEventListener('visibilitychange', onVis);
+    });
+    const heroVisiblePromise = new Promise(resolve => {
+      try {
+        const io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) { io.disconnect(); resolve(); }
+        }, { threshold: 0.15 });
+        io.observe(heroSection);
+      } catch (e) { resolve(); }
+    });
+
+    Promise.all([fontsReadyPromise, documentVisiblePromise, heroVisiblePromise]).then(() => {
+      // Double RAF to ensure DOM mutations and styles are fully applied before animating
+      requestAnimationFrame(() => requestAnimationFrame(() => startAnimations()));
+    });
+  });
 </script>
 
 <script>
