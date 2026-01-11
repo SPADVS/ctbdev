@@ -61,7 +61,9 @@
     pointer-events: auto;
 }
 
-.floating-call-btn i { font-size: 1rem; }
+.floating-call-btn i { 
+    font-size: {% if section.settings.button_text_size_desktop > 0 %}{{ section.settings.button_text_size_desktop }}px{% else %}1rem{% endif %};
+}
 
 .floating-call-btn.icon-after {
     flex-direction: row-reverse;
@@ -130,7 +132,9 @@
         transform: translateY(-2px);
         {% endif %}
     }
-    .floating-call-btn i { font-size: 1.1rem; }
+    .floating-call-btn i { 
+        font-size: {% if section.settings.button_text_size_mobile > 0 %}{{ section.settings.button_text_size_mobile }}px{% else %}1.1rem{% endif %};
+    }
     
     .floating-call-btn.mobile-only {
         display: flex;
