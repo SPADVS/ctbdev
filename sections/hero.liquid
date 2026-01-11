@@ -723,6 +723,14 @@
     will-change: transform, opacity;
   }
 
+  /* Hide elements before animation */
+  .hero .text-block:not(.h1):not(.h2):not(.h3) p,
+  .hero .text-block:not(.h1):not(.h2):not(.h3),
+  .hero .button,
+  .hero a[href].button {
+    opacity: 0;
+  }
+
   /* Ensure proper text wrapping for animated headings */
   .hero h1,
   .hero .h1,
