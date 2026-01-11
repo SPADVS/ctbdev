@@ -361,6 +361,10 @@
 <script>
 (function() {
     const buttonType = '{{ section.settings.button_type }}';
+    const scrollThreshold = {{ section.settings.scroll_threshold | default: 100 }};
+    const hideInHero = {{ section.settings.hide_in_hero | default: true }};
+    const hideInFooter = {{ section.settings.hide_in_footer | default: false }};
+    const hideInSections = '{{ section.settings.hide_in_sections }}'.split(',').map(s => s.trim()).filter(s => s);
     
     // Only run modal logic if in tickets mode
     if (buttonType !== 'tickets') {
@@ -368,23 +372,55 @@
         const callBtn = document.querySelector('.floating-call-btn');
         if (callBtn && !callBtn.classList.contains('show')) {
             function handleScroll() {
-                const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
-                if (heroSection) {
-                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-                    const scrollPosition = window.scrollY + window.innerHeight;
-                    
-                    // Show button only after scrolling past the hero section
-                    if (scrollPosition > heroBottom) {
-                        callBtn.classList.add('show');
-                    } else {
-                        callBtn.classList.remove('show');
+                let shouldShow = true;
+                
+                // Check scroll threshold
+                if (window.scrollY < scrollThreshold) {
+                    shouldShow = false;
+                }
+                
+                // Check if in hero section
+                if (hideInHero && shouldShow) {
+                    const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
+                    if (heroSection) {
+                        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+                        const scrollPosition = window.scrollY + window.innerHeight;
+                        if (scrollPosition <= heroBottom) {
+                            shouldShow = false;
+                        }
                     }
+                }
+                
+                // Check if in footer section
+                if (hideInFooter && shouldShow) {
+                    const footer = document.querySelector('footer, .footer, [class*="footer"]');
+                    if (footer) {
+                        const footerTop = footer.offsetTop;
+                        const scrollPosition = window.scrollY + window.innerHeight;
+                        if (scrollPosition >= footerTop) {
+                            shouldShow = false;
+                        }
+                    }
+                }
+                
+                // Check custom sections
+                if (hideInSections.length > 0 && shouldShow) {
+                    for (let sectionId of hideInSections) {
+                        const section = document.querySelector('#' + sectionId + ', .' + sectionId);
+                        if (section) {
+                            const rect = section.getBoundingClientRect();
+                            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                                shouldShow = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if (shouldShow) {
+                    callBtn.classList.add('show');
                 } else {
-                    if (window.scrollY > 100) {
-                        callBtn.classList.add('show');
-                    } else {
-                        callBtn.classList.remove('show');
-                    }
+                    callBtn.classList.remove('show');
                 }
             }
             handleScroll();
@@ -410,24 +446,55 @@
     if (ticketsBtn && ticketsModal) {
         // Show/hide button based on scroll position
         function handleScroll() {
-            const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
-            if (heroSection) {
-                const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-                const scrollPosition = window.scrollY + window.innerHeight;
-                
-                // Show button only after scrolling past the hero section
-                if (scrollPosition > heroBottom) {
-                    ticketsBtn.classList.add('show');
-                } else {
-                    ticketsBtn.classList.remove('show');
+            let shouldShow = true;
+            
+            // Check scroll threshold
+            if (window.scrollY < scrollThreshold) {
+                shouldShow = false;
+            }
+            
+            // Check if in hero section
+            if (hideInHero && shouldShow) {
+                const heroSection = document.querySelector('.hero-wrapper, [class*="hero"]');
+                if (heroSection) {
+                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+                    const scrollPosition = window.scrollY + window.innerHeight;
+                    if (scrollPosition <= heroBottom) {
+                        shouldShow = false;
+                    }
                 }
+            }
+            
+            // Check if in footer section
+            if (hideInFooter && shouldShow) {
+                const footer = document.querySelector('footer, .footer, [class*="footer"]');
+                if (footer) {
+                    const footerTop = footer.offsetTop;
+                    const scrollPosition = window.scrollY + window.innerHeight;
+                    if (scrollPosition >= footerTop) {
+                        shouldShow = false;
+                    }
+                }
+            }
+            
+            // Check custom sections
+            if (hideInSections.length > 0 && shouldShow) {
+                for (let sectionId of hideInSections) {
+                    const section = document.querySelector('#' + sectionId + ', .' + sectionId);
+                    if (section) {
+                        const rect = section.getBoundingClientRect();
+                        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                            shouldShow = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (shouldShow) {
+                ticketsBtn.classList.add('show');
             } else {
-                // If no hero section found, show button after 100px scroll
-                if (window.scrollY > 100) {
-                    ticketsBtn.classList.add('show');
-                } else {
-                    ticketsBtn.classList.remove('show');
-                }
+                ticketsBtn.classList.remove('show');
             }
         }
 
@@ -525,6 +592,46 @@
       "label": "Show on mobile only",
       "default": false,
       "info": "Button will only appear on mobile devices (600px and below)"
+    },
+    {
+      "type": "header",
+      "content": "Button Visibility"
+    },
+    {
+      "type": "range",
+      "id": "scroll_threshold",
+      "label": "Scroll threshold (pixels)",
+      "min": 0,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 100,
+      "info": "Show button after scrolling this many pixels"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_in_hero",
+      "label": "Hide in hero section",
+      "default": true,
+      "info": "Hide button when user is in the hero section"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_in_footer",
+      "label": "Hide in footer section",
+      "default": false,
+      "info": "Hide button when user is in the footer section"
+    },
+    {
+      "type": "text",
+      "id": "hide_in_sections",
+      "label": "Hide in custom sections",
+      "placeholder": "section-id-1, section-id-2",
+      "info": "Comma-separated list of section IDs or classes to hide button in"
+    },
+    {
+      "type": "header",
+      "content": "Button Style"
     },
     {
       "type": "color",
