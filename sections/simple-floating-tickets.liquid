@@ -9,7 +9,17 @@
 /* Floating Call Button */
 .floating-call-btn {
     position: fixed;
+    {% if section.settings.position_desktop == 'left' %}
+    left: 22px;
+    right: auto;
+    {% elsif section.settings.position_desktop == 'center' %}
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(100px);
+    {% else %}
     right: 22px;
+    left: auto;
+    {% endif %}
     bottom: 40px;
     display: flex;
     align-items: center;
@@ -25,7 +35,9 @@
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     z-index: 1100;
     opacity: 0;
+    {% if section.settings.position_desktop != 'center' %}
     transform: translateY(100px);
+    {% endif %}
     pointer-events: none;
     transition: opacity .35s ease, transform .35s ease, background .3s ease, box-shadow .3s ease;
     border: 2px solid transparent;
@@ -38,16 +50,28 @@
 
 .floating-call-btn.show {
     opacity: 1;
+    {% if section.settings.position_desktop == 'center' %}
+    transform: translateX(-50%) translateY(0);
+    {% else %}
     transform: translateY(0);
+    {% endif %}
     pointer-events: auto;
 }
 
 .floating-call-btn i { font-size: 1rem; }
 
+.floating-call-btn.icon-after {
+    flex-direction: row-reverse;
+}
+
 .floating-call-btn:hover {
     background: #ffffff;
     box-shadow: 0 12px 35px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.4);
+    {% if section.settings.position_desktop == 'center' %}
+    transform: translateX(-50%) translateY(-2px);
+    {% else %}
     transform: translateY(-2px);
+    {% endif %}
 }
 
 .floating-call-btn:focus {
@@ -62,15 +86,22 @@
 
 @media (max-width: 600px) {
     .floating-call-btn {
+        {% if section.settings.position_mobile == 'left' %}
+        left: 12px;
+        right: auto;
+        transform: translateY(100px);
+        {% elsif section.settings.position_mobile == 'center' %}
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(100px);
+        {% else %}
+        right: 12px;
+        left: auto;
+        transform: translateY(100px);
+        {% endif %}
         {% if section.settings.button_width_mobile > 0 %}
         width: {{ section.settings.button_width_mobile }}%;
         max-width: calc({{ section.settings.button_width_mobile }}% - 24px);
-        left: auto;
-        right: auto;
-        margin: 0 auto;
-        {% else %}
-        right: 12px;
-        left: 12px;
         {% endif %}
         bottom: 30px;
         border-radius: 14px;
@@ -78,6 +109,20 @@
         font-size: 0.9rem;
         padding: 16px 20px;
         letter-spacing: 1.5px;
+    }
+    .floating-call-btn.show {
+        {% if section.settings.position_mobile == 'center' %}
+        transform: translateX(-50%) translateY(0);
+        {% else %}
+        transform: translateY(0);
+        {% endif %}
+    }
+    .floating-call-btn:hover {
+        {% if section.settings.position_mobile == 'center' %}
+        transform: translateX(-50%) translateY(-2px);
+        {% else %}
+        transform: translateY(-2px);
+        {% endif %}
     }
     .floating-call-btn i { font-size: 1.1rem; }
     
@@ -318,13 +363,13 @@
 
 <!-- Floating Button (Tickets or Call) -->
 {% if section.settings.button_type == 'call' %}
-  <a href="tel:{{ section.settings.phone_number }}" class="floating-call-btn{% if section.settings.mobile_only %} mobile-only{% endif %}" aria-label="Call Now">
-    <i class="fas fa-phone"></i>
+  <a href="tel:{{ section.settings.phone_number }}" class="floating-call-btn{% if section.settings.mobile_only %} mobile-only{% endif %}{% if section.settings.icon_position == 'after' %} icon-after{% endif %}" aria-label="Call Now">
+    <i class="fas fa-{{ section.settings.button_icon }}"></i>
     <span>{{ section.settings.button_text }}</span>
   </a>
 {% else %}
-  <button class="floating-call-btn{% if section.settings.mobile_only %} mobile-only{% endif %}" id="ticketsBtn" aria-label="Get Event Tickets">
-    <i class="fas fa-ticket-alt"></i>
+  <button class="floating-call-btn{% if section.settings.mobile_only %} mobile-only{% endif %}{% if section.settings.icon_position == 'after' %} icon-after{% endif %}" id="ticketsBtn" aria-label="Get Event Tickets">
+    <i class="fas fa-{{ section.settings.button_icon }}"></i>
     <span>{{ section.settings.button_text }}</span>
   </button>
 {% endif %}
@@ -604,6 +649,134 @@
       "label": "Show on mobile only",
       "default": false,
       "info": "Button will only appear on mobile devices (600px and below)"
+    },
+    {
+      "type": "header",
+      "content": "Button Position"
+    },
+    {
+      "type": "select",
+      "id": "position_desktop",
+      "label": "Desktop position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "position_mobile",
+      "label": "Mobile position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "header",
+      "content": "Button Icon"
+    },
+    {
+      "type": "select",
+      "id": "button_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "ticket-alt",
+          "label": "Ticket"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "envelope",
+          "label": "Email"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendar"
+        },
+        {
+          "value": "info-circle",
+          "label": "Info"
+        },
+        {
+          "value": "question-circle",
+          "label": "Question"
+        },
+        {
+          "value": "shopping-cart",
+          "label": "Shopping Cart"
+        },
+        {
+          "value": "tag",
+          "label": "Tag"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "car",
+          "label": "Car"
+        },
+        {
+          "value": "map-marker-alt",
+          "label": "Location"
+        },
+        {
+          "value": "comment",
+          "label": "Message"
+        },
+        {
+          "value": "bell",
+          "label": "Bell"
+        }
+      ],
+      "default": "ticket-alt"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "options": [
+        {
+          "value": "before",
+          "label": "Before text"
+        },
+        {
+          "value": "after",
+          "label": "After text"
+        }
+      ],
+      "default": "before"
     },
     {
       "type": "header",
