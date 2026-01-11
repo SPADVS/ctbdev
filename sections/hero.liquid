@@ -868,19 +868,31 @@
     }
 
     function initAnimations() {
+      console.log('[Hero Animation] initAnimations called');
+      
       if (typeof anime === 'undefined') {
+        console.log('[Hero Animation] Anime.js not loaded, retrying in 100ms...');
         setTimeout(initAnimations, 100);
         return;
       }
 
+      console.log('[Hero Animation] Anime.js loaded successfully');
+
       var heroSection = document.querySelector('#Hero-{{ section.id }}');
-      if (!heroSection) return;
+      if (!heroSection) {
+        console.error('[Hero Animation] Hero section not found');
+        return;
+      }
+      
+      console.log('[Hero Animation] Hero section found');
 
       // Find all h1-h6 elements in the hero section
       var headings = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      console.log('[Hero Animation] Found ' + headings.length + ' headings');
       
       // Add 'tricks' class to headings and wrap words
       for (var i = 0; i < headings.length; i++) {
+        console.log('[Hero Animation] Processing heading ' + i + ': "' + headings[i].textContent + '"');
         headings[i].classList.add('tricks');
         var wordWrap = headings[i];
         wordWrap.innerHTML = wordWrap.innerHTML.replace(
@@ -889,8 +901,12 @@
         );
       }
 
+      console.log('[Hero Animation] Words wrapped');
+
       // Wrap each letter with <span class="letter">
       var tricksWords = heroSection.getElementsByClassName('tricksword');
+      console.log('[Hero Animation] Found ' + tricksWords.length + ' words to split into letters');
+      
       for (var j = 0; j < tricksWords.length; j++) {
         var letterWrap = tricksWords.item(j);
         letterWrap.innerHTML = letterWrap.textContent.replace(
@@ -899,8 +915,14 @@
         );
       }
 
+      var totalLetters = heroSection.querySelectorAll('.letter').length;
+      console.log('[Hero Animation] Split into ' + totalLetters + ' letters total');
+
       // Wait for DOM to fully render before animating
+      console.log('[Hero Animation] Waiting 50ms for DOM to render...');
       setTimeout(function() {
+        console.log('[Hero Animation] Starting letter animation');
+        
         // Animate each letter in headings using stagger
         anime.timeline({ loop: false, autoplay: true })
           .add({
@@ -910,45 +932,73 @@
             opacity: [0, 1],
             easing: "easeOutExpo",
             duration: mainDuration,
-            delay: anime.stagger(letterDelay, { start: 100 })
+            delay: anime.stagger(letterDelay, { start: 100 }),
+            begin: function() {
+              console.log('[Hero Animation] Letter animation started');
+            },
+            complete: function() {
+              console.log('[Hero Animation] Letter animation completed');
+            }
           });
       }, 50);
 
       // Find and animate text blocks
       var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte, .text-block:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6)');
+      console.log('[Hero Animation] Found ' + textBlocks.length + ' text blocks');
       
       for (var k = 0; k < textBlocks.length; k++) {
         textBlocks[k].classList.add('animdiv');
       }
 
-      anime.timeline({ loop: false, autoplay: true })
-        .add({
-          targets: '.animdiv',
-          translateX: [fromValX, 0],
-          translateY: [fromValY, 0],
-          opacity: [0, 1],
-          easing: "easeOutExpo",
-          duration: mainDuration,
-          delay: anime.stagger(divStagger, { start: 400 })
-        });
+      if (textBlocks.length > 0) {
+        console.log('[Hero Animation] Starting text block animation');
+        anime.timeline({ loop: false, autoplay: true })
+          .add({
+            targets: '.animdiv',
+            translateX: [fromValX, 0],
+            translateY: [fromValY, 0],
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: mainDuration,
+            delay: anime.stagger(divStagger, { start: 400 }),
+            begin: function() {
+              console.log('[Hero Animation] Text block animation started');
+            },
+            complete: function() {
+              console.log('[Hero Animation] Text block animation completed');
+            }
+          });
+      }
 
       // Find and animate buttons
       var buttons = heroSection.querySelectorAll('.button, .button-secondary, a[href].size-style');
+      console.log('[Hero Animation] Found ' + buttons.length + ' buttons');
       
       for (var m = 0; m < buttons.length; m++) {
         buttons[m].classList.add('hero-button');
       }
 
-      anime.timeline({ loop: false, autoplay: true })
-        .add({
-          targets: '.hero-button',
-          translateX: [fromValX, 0],
-          translateY: [fromValY, 0],
-          opacity: [0, 1],
-          easing: "easeOutExpo",
-          duration: mainDuration,
-          delay: anime.stagger(divStagger, { start: 600 })
-        });
+      if (buttons.length > 0) {
+        console.log('[Hero Animation] Starting button animation');
+        anime.timeline({ loop: false, autoplay: true })
+          .add({
+            targets: '.hero-button',
+            translateX: [fromValX, 0],
+            translateY: [fromValY, 0],
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: mainDuration,
+            delay: anime.stagger(divStagger, { start: 600 }),
+            begin: function() {
+              console.log('[Hero Animation] Button animation started');
+            },
+            complete: function() {
+              console.log('[Hero Animation] Button animation completed');
+            }
+          });
+      }
+
+      console.log('[Hero Animation] All animations initialized');
     }
 
     // Start animations
