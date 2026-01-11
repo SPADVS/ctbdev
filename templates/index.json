@@ -176,7 +176,7 @@
         "animation_direction": "fade-left",
         "animation_duration": 700,
         "animation_delay": 55,
-        "div_stagger": 50,
+        "div_stagger": 60,
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
         "overlay_color": "#000000",
