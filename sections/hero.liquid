@@ -737,7 +737,12 @@
   .hero .text-block:not(.h1):not(.h2):not(.h3) p,
   .hero .text-block:not(.h1):not(.h2):not(.h3),
   .hero .button,
-  .hero a[href].button {
+  .hero .button-primary,
+  .hero .button-secondary,
+  .hero a[href].button,
+  .hero a[href].button-primary,
+  .hero a[href].button-secondary,
+  .hero a[href][class*="button"] {
     opacity: 0;
   }
   
@@ -753,7 +758,12 @@
   .hero .text-block.h3.hero-ready,
   .hero .jumbo-text__text.hero-ready,
   .hero .button.hero-ready,
-  .hero a[href].button.hero-ready {
+  .hero .button-primary.hero-ready,
+  .hero .button-secondary.hero-ready,
+  .hero a[href].button.hero-ready,
+  .hero a[href].button-primary.hero-ready,
+  .hero a[href].button-secondary.hero-ready,
+  .hero a[href][class*="button"].hero-ready {
     opacity: 1;
   }
 
