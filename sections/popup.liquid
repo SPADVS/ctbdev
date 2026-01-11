@@ -3,10 +3,99 @@
   "name": "Popups",
   "settings": [
     {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
       "type": "checkbox",
       "id": "hide_in_theme_editor",
       "label": "Hide popups in Shopify theme editor (Design Mode)",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Popup Timing & Behavior"
+    },
+    {
+      "type": "range",
+      "id": "popup_delay",
+      "label": "Popup delay (seconds)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 2,
+      "info": "How long to wait before showing the first popup"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_exit_intent",
+      "label": "Show on exit intent",
+      "default": false,
+      "info": "Display popup when user tries to leave the page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_scroll",
+      "label": "Show on scroll",
+      "default": false,
+      "info": "Display popup when user scrolls a certain amount"
+    },
+    {
+      "type": "range",
+      "id": "scroll_percentage",
+      "label": "Scroll percentage to trigger",
+      "min": 10,
+      "max": 90,
+      "step": 10,
+      "unit": "%",
+      "default": 50,
+      "info": "Show popup after scrolling this percentage of the page"
+    },
+    {
+      "type": "select",
+      "id": "frequency",
+      "label": "Show frequency",
+      "options": [
+        {
+          "value": "always",
+          "label": "Every visit"
+        },
+        {
+          "value": "once_per_session",
+          "label": "Once per browser session"
+        },
+        {
+          "value": "once_per_day",
+          "label": "Once per day"
+        },
+        {
+          "value": "once_per_week",
+          "label": "Once per week"
+        }
+      ],
+      "default": "once_per_session",
+      "info": "How often to show popups to returning visitors"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause auto-close on hover",
+      "default": true,
+      "info": "Pause auto-close timer when user hovers over popup"
+    },
+    {
+      "type": "range",
+      "id": "auto_close_delay",
+      "label": "Auto-close delay (seconds)",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 0,
+      "info": "Automatically close popup after this time (0 = never)"
+    },
+    {
+      "type": "header",
+      "content": "Email Signup Popup"
     },
     {
       "type": "checkbox",
@@ -689,7 +778,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('[Popup] Script initialized');
     
-    // Cookie helpers for Ashley booking flow
+    // Popup settings from Liquid
+    var popupSettings = {
+        delay: {{ section.settings.popup_delay | default: 2 }} * 1000,
+        showOnExitIntent: {{ section.settings.show_on_exit_intent }},
+        showOnScroll: {{ section.settings.show_on_scroll }},
+        scrollPercentage: {{ section.settings.scroll_percentage | default: 50 }},
+        frequency: '{{ section.settings.frequency | default: "once_per_session" }}',
+        pauseOnHover: {{ section.settings.pause_on_hover | default: true }},
+        autoCloseDelay: {{ section.settings.auto_close_delay | default: 0 }} * 1000
+    };
+    
+    // Cookie/localStorage helpers
     function getCookie(name) {
         var parts = document.cookie.split('; ');
         for (var i = 0; i < parts.length; i++) {
@@ -700,15 +800,52 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return null;
     }
+    
+    function setCookie(name, value, days) {
+        var expires = '';
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=/; SameSite=Lax';
+    }
 
     function deleteCookie(name) {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
+    }
+    
+    function shouldShowPopup() {
+        var lastShown = getCookie('popup_last_shown');
+        var sessionShown = sessionStorage.getItem('popup_shown');
+        
+        if (popupSettings.frequency === 'always') {
+            return true;
+        } else if (popupSettings.frequency === 'once_per_session') {
+            return !sessionShown;
+        } else if (popupSettings.frequency === 'once_per_day') {
+            if (!lastShown) return true;
+            var dayAgo = Date.now() - (24 * 60 * 60 * 1000);
+            return parseInt(lastShown) < dayAgo;
+        } else if (popupSettings.frequency === 'once_per_week') {
+            if (!lastShown) return true;
+            var weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            return parseInt(lastShown) < weekAgo;
+        }
+        return true;
+    }
+    
+    function markPopupShown() {
+        sessionStorage.setItem('popup_shown', 'true');
+        setCookie('popup_last_shown', Date.now().toString(), 365);
     }
 
     var originalScrollY = 0;
     var isBodyFixed = false;
     var activePopups = {{ section.blocks.size }};
     var popupsQueue = [{% for block in section.blocks %}'popup-{{ forloop.index }}'{% unless forloop.last %}, {% endunless %}{% endfor %}];
+    var autoCloseTimer = null;
+    var hasTriggered = false;
 
     console.log('[Popup] Initial activePopups:', activePopups);
     console.log('[Popup] Initial popupsQueue:', popupsQueue);
@@ -869,6 +1006,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closePopup(popupId) {
         console.log('[Popup] closePopup called with popupId:', popupId);
+        
+        // Clear auto-close timer if exists
+        if (autoCloseTimer) {
+            clearTimeout(autoCloseTimer);
+            autoCloseTimer = null;
+        }
+        
         var popup = document.getElementById(popupId);
         if (popup) {
             popup.classList.remove('visible');
@@ -931,21 +1075,65 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.announcement-counter').style.opacity = '0';
         showPopup('emailSignupPopup');
     } else {
-        // Show Ashley popup instantly, other popups with delay
-        if (shouldQueueAshley) {
-            console.log('[Popup] Showing Ashley popup immediately');
-            document.querySelector('.announcement-counter').style.opacity = '0';
-            if (popupsQueue.length > 0) {
-                showPopup(popupsQueue[0]);
-            }
-        } else {
-            console.log('[Popup] Showing popup after 2s delay');
-            document.querySelector('.announcement-counter').style.opacity = '1';
-            window.setTimeout(function() {
+        // Check if popup should be shown based on frequency settings
+        if (!shouldShowPopup()) {
+            console.log('[Popup] Popup blocked by frequency settings');
+            return;
+        }
+        
+        // Exit intent logic
+        if (popupSettings.showOnExitIntent && !hasTriggered) {
+            document.addEventListener('mouseout', function(e) {
+                if (!e.toElement && !e.relatedTarget && !hasTriggered) {
+                    console.log('[Popup] Exit intent detected');
+                    hasTriggered = true;
+                    document.querySelector('.announcement-counter').style.opacity = '0';
+                    if (popupsQueue.length > 0) {
+                        showPopup(popupsQueue[0]);
+                    }
+                }
+            });
+        }
+        
+        // Scroll trigger logic
+        if (popupSettings.showOnScroll && !hasTriggered) {
+            var scrollTriggered = false;
+            window.addEventListener('scroll', function() {
+                if (scrollTriggered || hasTriggered) return;
+                
+                var scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var scrolled = (window.scrollY / scrollHeight) * 100;
+                
+                if (scrolled >= popupSettings.scrollPercentage) {
+                    console.log('[Popup] Scroll threshold reached:', scrolled + '%');
+                    scrollTriggered = true;
+                    hasTriggered = true;
+                    document.querySelector('.announcement-counter').style.opacity = '0';
+                    if (popupsQueue.length > 0) {
+                        showPopup(popupsQueue[0]);
+                    }
+                }
+            });
+        }
+        
+        // Default: Show Ashley popup instantly, other popups with delay
+        if (!popupSettings.showOnExitIntent && !popupSettings.showOnScroll) {
+            if (shouldQueueAshley) {
+                console.log('[Popup] Showing Ashley popup immediately');
+                document.querySelector('.announcement-counter').style.opacity = '0';
                 if (popupsQueue.length > 0) {
                     showPopup(popupsQueue[0]);
                 }
-            }, 2000);
+            } else {
+                console.log('[Popup] Showing popup after delay:', popupSettings.delay + 'ms');
+                document.querySelector('.announcement-counter').style.opacity = '1';
+                window.setTimeout(function() {
+                    if (popupsQueue.length > 0 && !hasTriggered) {
+                        hasTriggered = true;
+                        showPopup(popupsQueue[0]);
+                    }
+                }, popupSettings.delay);
+            }
         }
     }
 });
