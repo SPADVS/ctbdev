@@ -1165,7 +1165,7 @@
           "type": "button",
           "settings": {
             "button_text": "Follow Us On Instagram",
-            "button_url": "",
+            "button_url": "https://www.instagram.com/ctbgarage/",
             "button_style": "solid",
             "open_new_tab": true
           }
@@ -1173,8 +1173,8 @@
         "button_AyWLe6": {
           "type": "button",
           "settings": {
-            "button_text": "Shop Apparel & Tickets",
-            "button_url": "",
+            "button_text": "Shop Apparel",
+            "button_url": "shopify://collections",
             "button_style": "outline",
             "open_new_tab": false
           }
