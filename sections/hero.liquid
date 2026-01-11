@@ -712,6 +712,7 @@
     display: inline-block;
     opacity: 0;
     font-family: inherit !important;
+    will-change: transform, opacity;
   }
 
   .tricksword {
@@ -889,58 +890,61 @@
       // Find all h1-h6 elements in the hero section
       var headings = heroSection.querySelectorAll('h1, h2, h3, h4, h5, h6');
       console.log('[Hero Animation] Found ' + headings.length + ' headings');
-      
-      // Add 'tricks' class to headings and wrap words
+
+      // Add 'tricks' class to headings and wrap words using textContent
       for (var i = 0; i < headings.length; i++) {
-        console.log('[Hero Animation] Processing heading ' + i + ': "' + headings[i].textContent + '"');
-        headings[i].classList.add('tricks');
-        var wordWrap = headings[i];
-        wordWrap.innerHTML = wordWrap.innerHTML.replace(
-          /(^|<\/?[^>]+>|\s+)([^\s<]+)/g,
-          '$1<span class="tricksword">$2</span>'
-        );
+        var h = headings[i];
+        console.log('[Hero Animation] Processing heading ' + i + ': "' + h.textContent + '"');
+        h.classList.add('tricks');
+        var text = h.textContent || '';
+        var words = text.split(/[\s\u00A0]+/).filter(Boolean);
+        h.innerHTML = words.map(function(word) {
+          return '<span class="tricksword">' + word + '</span>';
+        }).join(' ');
       }
 
       console.log('[Hero Animation] Words wrapped');
 
-      // Wrap each letter with <span class="letter">
+      // Wrap each letter with <span class="letter"> using textContent
       var tricksWords = heroSection.getElementsByClassName('tricksword');
       console.log('[Hero Animation] Found ' + tricksWords.length + ' words to split into letters');
       
       for (var j = 0; j < tricksWords.length; j++) {
         var letterWrap = tricksWords.item(j);
-        letterWrap.innerHTML = letterWrap.textContent.replace(
-          /\S/g,
-          "<span class='letter'>$&</span>"
-        );
+        var wordText = letterWrap.textContent || '';
+        letterWrap.innerHTML = wordText.replace(/\S/g, "<span class='letter'>$&</span>");
       }
 
       var totalLetters = heroSection.querySelectorAll('.letter').length;
       console.log('[Hero Animation] Split into ' + totalLetters + ' letters total');
 
-      // Wait for DOM to fully render before animating
-      console.log('[Hero Animation] Waiting 50ms for DOM to render...');
-      setTimeout(function() {
-        console.log('[Hero Animation] Starting letter animation');
-        
-        // Animate each letter in headings using stagger
-        anime.timeline({ loop: false, autoplay: true })
-          .add({
-            targets: '.tricks .letter',
-            translateX: [fromValX, 0],
-            translateY: [fromValY, 0],
-            opacity: [0, 1],
-            easing: "easeOutExpo",
-            duration: mainDuration,
-            delay: anime.stagger(letterDelay, { start: 100 }),
-            begin: function() {
-              console.log('[Hero Animation] Letter animation started');
-            },
-            complete: function() {
-              console.log('[Hero Animation] Letter animation completed');
-            }
+      // Start after fonts are ready to avoid reflow jank
+      var startLetters = function() {
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            console.log('[Hero Animation] Starting letter animation');
+            anime.timeline({ loop: false, autoplay: true })
+              .add({
+                targets: '.tricks .letter',
+                translateX: [fromValX, 0],
+                translateY: [fromValY, 0],
+                opacity: [0, 1],
+                easing: 'easeOutExpo',
+                duration: mainDuration,
+                delay: anime.stagger(letterDelay, { start: 120 }),
+                begin: function() { console.log('[Hero Animation] Letter animation started'); },
+                complete: function() { console.log('[Hero Animation] Letter animation completed'); }
+              });
           });
-      }, 50);
+        });
+      };
+
+      if (document.fonts && document.fonts.ready) {
+        console.log('[Hero Animation] Waiting for document.fonts.ready');
+        document.fonts.ready.then(startLetters);
+      } else {
+        startLetters();
+      }
 
       // Find and animate text blocks
       var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte, .text-block:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6)');
