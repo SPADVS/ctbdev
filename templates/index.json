@@ -669,6 +669,7 @@
         "testimonial_8HGiwg",
         "testimonial_mdigHQ"
       ],
+      "disabled": true,
       "name": "Simple Testimonials",
       "settings": {
         "section_title": "What Customers Are Saying",
