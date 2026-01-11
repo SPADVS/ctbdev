@@ -1216,7 +1216,7 @@
         "heading_color": "#ffffff",
         "text_color": "#ffffff",
         "icon_color": "#fafafa",
-        "border_style": "1px solid #0f9d58",
+        "border_style": "1px solid #white",
         "question_hover_bg": "#white",
         "padding_top": 60,
         "padding_bottom": 60
