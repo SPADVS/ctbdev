@@ -27,10 +27,13 @@
     background: {{ section.settings.button_bg_color }};
     color: {{ section.settings.button_text_color }};
     padding: 16px 32px;
+    {% if section.settings.button_height_desktop > 0 %}
+    min-height: {{ section.settings.button_height_desktop }}px;
+    {% endif %}
     border-radius: 50px;
     font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.9rem;
+    font-size: {% if section.settings.button_text_size_desktop > 0 %}{{ section.settings.button_text_size_desktop }}px{% else %}0.9rem{% endif %};
     letter-spacing: 1.5px;
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
     z-index: 1100;
@@ -104,9 +107,12 @@
         max-width: calc({{ section.settings.button_width_mobile }}% - 24px);
         {% endif %}
         bottom: 30px;
+        {% if section.settings.button_height_mobile > 0 %}
+        min-height: {{ section.settings.button_height_mobile }}px;
+        {% endif %}
         border-radius: 14px;
         justify-content: center;
-        font-size: 0.9rem;
+        font-size: {% if section.settings.button_text_size_mobile > 0 %}{{ section.settings.button_text_size_mobile }}px{% else %}0.9rem{% endif %};
         padding: 16px 20px;
         letter-spacing: 1.5px;
     }
@@ -839,6 +845,50 @@
       "unit": "%",
       "default": 0,
       "info": "Set to 0 for full width. Otherwise button will use this percentage of screen width."
+    },
+    {
+      "type": "range",
+      "id": "button_height_desktop",
+      "label": "Button height on desktop (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "Set to 0 for auto height based on padding and content."
+    },
+    {
+      "type": "range",
+      "id": "button_height_mobile",
+      "label": "Button height on mobile (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "Set to 0 for auto height based on padding and content."
+    },
+    {
+      "type": "range",
+      "id": "button_text_size_desktop",
+      "label": "Text size on desktop (px)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Set to 0 for default size (0.9rem)."
+    },
+    {
+      "type": "range",
+      "id": "button_text_size_mobile",
+      "label": "Text size on mobile (px)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Set to 0 for default size (0.9rem)."
     },
     {
       "type": "color",
