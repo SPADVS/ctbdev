@@ -708,13 +708,20 @@
           "settings": {
             "image": "shopify://shop_images/ctbgarage_1767885582_3805622548944503747_1412402950.jpg"
           }
+        },
+        "image_KCdRCJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ctbgarage_1760158718_3740804916173414767_1412402950.jpg"
+          }
         }
       },
       "block_order": [
         "image_KwhPHa",
         "image_8DBKV3",
         "image_ETLPYq",
-        "image_jrhmLd"
+        "image_jrhmLd",
+        "image_KCdRCJ"
       ],
       "name": "Simple About",
       "settings": {
