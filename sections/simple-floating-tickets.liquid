@@ -30,6 +30,10 @@
     transition: opacity .35s ease, transform .35s ease, background .3s ease, box-shadow .3s ease;
     border: 2px solid transparent;
     cursor: pointer;
+    {% if section.settings.button_width_desktop > 0 %}
+    width: {{ section.settings.button_width_desktop }}%;
+    max-width: calc({{ section.settings.button_width_desktop }}% - 44px);
+    {% endif %}
 }
 
 .floating-call-btn.show {
@@ -58,8 +62,16 @@
 
 @media (max-width: 600px) {
     .floating-call-btn {
+        {% if section.settings.button_width_mobile > 0 %}
+        width: {{ section.settings.button_width_mobile }}%;
+        max-width: calc({{ section.settings.button_width_mobile }}% - 24px);
+        left: auto;
+        right: auto;
+        margin: 0 auto;
+        {% else %}
         right: 12px;
         left: 12px;
+        {% endif %}
         bottom: 30px;
         border-radius: 14px;
         justify-content: center;
@@ -632,6 +644,28 @@
     {
       "type": "header",
       "content": "Button Style"
+    },
+    {
+      "type": "range",
+      "id": "button_width_desktop",
+      "label": "Button width on desktop (%)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 0,
+      "info": "Set to 0 for auto width. Otherwise button will use this percentage of screen width."
+    },
+    {
+      "type": "range",
+      "id": "button_width_mobile",
+      "label": "Button width on mobile (%)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 0,
+      "info": "Set to 0 for full width. Otherwise button will use this percentage of screen width."
     },
     {
       "type": "color",
