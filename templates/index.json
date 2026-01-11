@@ -109,7 +109,7 @@
               "name": "t:names.button",
               "settings": {
                 "label": "Tickets",
-                "link": "shopify://collections/all",
+                "link": "https://www.instagram.com/ctbgarage/",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "custom",
