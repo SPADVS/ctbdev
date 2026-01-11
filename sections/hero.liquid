@@ -899,17 +899,20 @@
         );
       }
 
-      // Animate each letter in headings using stagger
-      anime.timeline({ loop: false, autoplay: true })
-        .add({
-          targets: '.tricks .letter',
-          translateX: [fromValX, 0],
-          translateY: [fromValY, 0],
-          opacity: [0, 1],
-          easing: "easeOutExpo",
-          duration: mainDuration,
-          delay: anime.stagger(letterDelay, { start: 100 })
-        });
+      // Wait for DOM to fully render before animating
+      setTimeout(function() {
+        // Animate each letter in headings using stagger
+        anime.timeline({ loop: false, autoplay: true })
+          .add({
+            targets: '.tricks .letter',
+            translateX: [fromValX, 0],
+            translateY: [fromValY, 0],
+            opacity: [0, 1],
+            easing: "easeOutExpo",
+            duration: mainDuration,
+            delay: anime.stagger(letterDelay, { start: 100 })
+          });
+      }, 50);
 
       // Find and animate text blocks
       var textBlocks = heroSection.querySelectorAll('rte-formatter, .rte, .text-block:not(.h1):not(.h2):not(.h3):not(.h4):not(.h5):not(.h6)');
