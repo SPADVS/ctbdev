@@ -174,7 +174,7 @@
         "section_height_custom": 50,
         "enable_hero_animations": true,
         "animation_direction": "fade-left",
-        "animation_duration": 700,
+        "animation_duration": 2200,
         "animation_delay": 55,
         "div_stagger": 60,
         "color_scheme": "scheme-6",
