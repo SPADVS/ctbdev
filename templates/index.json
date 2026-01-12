@@ -725,7 +725,7 @@
       "name": "Simple About",
       "settings": {
         "heading": "About CTB Garage",
-        "description": "Welcome to CTB Garage — Chicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
+        "description": "Welcome to CTB Garage,\nChicago's premier destination for auto body repair, restorations, and automotive lifestyle.",
         "single_image": "shopify://shop_images/paint_job.jpg",
         "instagram_handle": "ctbgarage",
         "button_text": "Contact Us",
