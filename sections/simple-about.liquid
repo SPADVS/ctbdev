@@ -39,11 +39,11 @@
           </p>
         {% endif %}
 
-        <!-- Phone -->
+        <!-- Phone Number -->
         {% if section.settings.phone_number != blank %}
           <p class="simple-about__phone" style="margin: 20px 0; color: {{ section.settings.text_color }};">
             <i class="fas fa-phone" style="color: {{ section.settings.accent_color }}; margin-right: 10px;"></i>
-            <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}" style="color: {{ section.settings.text_color }}; text-decoration: none; font-weight: bold;">{{ section.settings.phone_number }}</a>
+            Call us: <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}" style="color: {{ section.settings.accent_color }}; text-decoration: none; font-weight: bold;">{{ section.settings.phone_number }}</a>
           </p>
         {% endif %}
 
@@ -187,8 +187,8 @@
       "type": "text",
       "id": "phone_number",
       "label": "Phone number",
-      "info": "Format: (123) 456-7890",
-      "default": ""
+      "info": "Format: (123) 456-7890 or any format you prefer",
+      "placeholder": "(123) 456-7890"
     },
     {
       "type": "text",
