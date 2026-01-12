@@ -1191,6 +1191,15 @@
     "simple_contact_mKdRcd": {
       "type": "simple-contact",
       "blocks": {
+        "button_HU7AdP": {
+          "type": "button",
+          "settings": {
+            "button_text": "Follow Us On Instagram",
+            "button_url": "",
+            "button_style": "solid",
+            "open_new_tab": true
+          }
+        },
         "button_EfHbiF": {
           "type": "button",
           "settings": {
@@ -1211,6 +1220,7 @@
         }
       },
       "block_order": [
+        "button_HU7AdP",
         "button_EfHbiF",
         "button_AyWLe6"
       ],
@@ -1228,12 +1238,12 @@
         "instagram_url": "https://www.instagram.com/ctbgarage/",
         "instagram_handle": "@ctbgarage",
         "custom_info": "Tickets: Available via Instagram",
-        "show_form": true,
+        "show_form": false,
         "form_title": "Contact Us",
         "submit_button_text": "Send Message",
         "form_note": "We'll get back to you as soon as possible!",
         "success_message": "Thanks for contacting us! We'll get back to you soon.",
-        "google_map_embed": "",
+        "google_map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.2507952144238!2d-87.73361678810356!3d41.887463171120864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e32d0a733356d%3A0xf13992d13c327774!2s4201%20W%20Kinzie%20St%2C%20Chicago%2C%20IL%2060624!5e0!3m2!1sen!2sus!4v1768203161886!5m2!1sen!2sus\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade",
         "icon_color": "#ffffff",
         "link_color": "#ffffff",
         "button_bg_color": "#ffffff",
