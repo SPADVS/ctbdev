@@ -1201,29 +1201,29 @@
             "open_new_tab": true
           }
         },
-        "button_EfHbiF": {
-          "type": "button",
-          "settings": {
-            "button_text": "Follow Us On Instagram",
-            "button_url": "https://www.instagram.com/ctbgarage/",
-            "button_style": "solid",
-            "open_new_tab": true
-          }
-        },
         "button_AyWLe6": {
           "type": "button",
           "settings": {
             "button_text": "Shop Apparel",
             "button_url": "shopify://collections",
-            "button_style": "outline",
+            "button_style": "solid",
             "open_new_tab": false
+          }
+        },
+        "button_EfHbiF": {
+          "type": "button",
+          "settings": {
+            "button_text": "Follow Us On Instagram",
+            "button_url": "https://www.instagram.com/ctbgarage/",
+            "button_style": "outline",
+            "open_new_tab": true
           }
         }
       },
       "block_order": [
         "button_HU7AdP",
-        "button_EfHbiF",
-        "button_AyWLe6"
+        "button_AyWLe6",
+        "button_EfHbiF"
       ],
       "name": "Simple Contact",
       "settings": {
