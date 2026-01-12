@@ -485,7 +485,7 @@
         "description": "Check out our exclusive automotive apparel collection",
         "auto_scroll_speed": 1,
         "heading_tag": "h2",
-        "enable_hover_effect": true,
+        "enable_hover_effect": false,
         "slider_type": "loop",
         "transition_speed": 800,
         "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
