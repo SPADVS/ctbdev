@@ -293,6 +293,7 @@
     z-index: 1;
   }
 
+  {% if section.settings.enable_hover_effect %}
   .product-slider-tabs .product-image-hover {
     opacity: 0;
     z-index: 2;
@@ -305,6 +306,7 @@
   .product-slider-tabs .prorduct-wrapper:hover .product-image-hover {
     opacity: 1;
   }
+  {% endif %}
 
   /* Product info */
   .product-slider-tabs .horizontal-between-center {
