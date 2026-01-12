@@ -698,6 +698,7 @@
         },
         "image_ETLPYq": {
           "type": "image",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/ctbgarage_1758983047_3730942677136304649_1412402950.jpg"
           }
