@@ -530,98 +530,6 @@
         "padding-block-end": 0
       }
     },
-    "simple_services_grid_kYRhb6": {
-      "type": "simple-services-grid",
-      "blocks": {
-        "service_card_dxfepx": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/ctbgarage_Testimonial--1_571897559_18538613335050951_494787064007416333_n_1.jpg",
-            "card_title": "Car Shows & Meets",
-            "card_description": "Access to exclusive car shows, meets, and automotive events in the Chicago area and beyond.",
-            "card_link": "https://www.instagram.com/ctbgarage/",
-            "button_text": "Get Tickets",
-            "open_new_tab": false
-          }
-        },
-        "service_card_97qqhz": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/special_events.jpg",
-            "card_title": "Special Events",
-            "card_description": "Be part of special automotive events, cruises, and gatherings. Limited tickets available.",
-            "card_link": "https://www.instagram.com/ctbgarage/",
-            "button_text": "Get Tickets",
-            "open_new_tab": false
-          }
-        },
-        "service_card_ak47xg": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/ctbgarage_Slider--6_564147123_18534955228050951_3540359366267055548_n.jpg",
-            "card_title": "VIP Experiences",
-            "card_description": "Premium VIP access to exclusive automotive events with behind-the-scenes experiences.",
-            "card_link": "https://www.instagram.com/ctbgarage/",
-            "button_text": "Get Tickets",
-            "open_new_tab": false
-          }
-        },
-        "service_card_NbapiB": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/collision_repair.jpg",
-            "card_title": "Collision Repair",
-            "card_description": "Expert collision repair services to restore your vehicle to its original condition. We work with all insurance companies.",
-            "card_link": "#contact",
-            "button_text": "Get Quote",
-            "open_new_tab": false
-          }
-        },
-        "service_card_AyqeRP": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/paint_job.jpg",
-            "card_title": "Paint & Body Work",
-            "card_description": "Professional paint jobs and body work with precision color matching. From touch-ups to full repaints.",
-            "card_link": "#contact",
-            "button_text": "Get Quote",
-            "open_new_tab": false
-          }
-        },
-        "service_card_CPCXfT": {
-          "type": "service_card",
-          "settings": {
-            "card_image": "shopify://shop_images/special_events.jpg",
-            "card_title": "Full Customization & Builds",
-            "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
-            "card_link": "#contact",
-            "button_text": "Get Started",
-            "open_new_tab": false
-          }
-        }
-      },
-      "block_order": [
-        "service_card_dxfepx",
-        "service_card_97qqhz",
-        "service_card_ak47xg",
-        "service_card_NbapiB",
-        "service_card_AyqeRP",
-        "service_card_CPCXfT"
-      ],
-      "name": "Simple Services Grid",
-      "settings": {
-        "section_title": "Our Services",
-        "section_intro": "Get tickets to exclusive automotive events in the Chicago area and beyond.",
-        "border_color": "#f8f8f8",
-        "button_bg_color": "#ffffff",
-        "button_text_color": "#000000",
-        "show_cta": true,
-        "cta_text": "Follow us on Instagram for event announcements!",
-        "cta_link": "https://www.instagram.com/ctbgarage/",
-        "cta_button_text": "Follow @ctbgarage",
-        "cta_new_tab": true
-      }
-    },
     "simple_testimonials_AaDgif": {
       "type": "simple-testimonials",
       "blocks": {
@@ -1275,6 +1183,98 @@
         "email_popup_button_url": "/",
         "email_popup_disclaimer": "Excludes already discounted items. Cannot be combined with other promotions."
       }
+    },
+    "simple_services_grid_kYRhb6": {
+      "type": "simple-services-grid",
+      "blocks": {
+        "service_card_dxfepx": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/ctbgarage_Testimonial--1_571897559_18538613335050951_494787064007416333_n_1.jpg",
+            "card_title": "Car Shows & Meets",
+            "card_description": "Access to exclusive car shows, meets, and automotive events in the Chicago area and beyond.",
+            "card_link": "https://www.instagram.com/ctbgarage/",
+            "button_text": "Get Tickets",
+            "open_new_tab": false
+          }
+        },
+        "service_card_97qqhz": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/special_events.jpg",
+            "card_title": "Special Events",
+            "card_description": "Be part of special automotive events, cruises, and gatherings. Limited tickets available.",
+            "card_link": "https://www.instagram.com/ctbgarage/",
+            "button_text": "Get Tickets",
+            "open_new_tab": false
+          }
+        },
+        "service_card_ak47xg": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/ctbgarage_Slider--6_564147123_18534955228050951_3540359366267055548_n.jpg",
+            "card_title": "VIP Experiences",
+            "card_description": "Premium VIP access to exclusive automotive events with behind-the-scenes experiences.",
+            "card_link": "https://www.instagram.com/ctbgarage/",
+            "button_text": "Get Tickets",
+            "open_new_tab": false
+          }
+        },
+        "service_card_NbapiB": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/collision_repair.jpg",
+            "card_title": "Collision Repair",
+            "card_description": "Expert collision repair services to restore your vehicle to its original condition. We work with all insurance companies.",
+            "card_link": "#contact",
+            "button_text": "Get Quote",
+            "open_new_tab": false
+          }
+        },
+        "service_card_AyqeRP": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/paint_job.jpg",
+            "card_title": "Paint & Body Work",
+            "card_description": "Professional paint jobs and body work with precision color matching. From touch-ups to full repaints.",
+            "card_link": "#contact",
+            "button_text": "Get Quote",
+            "open_new_tab": false
+          }
+        },
+        "service_card_CPCXfT": {
+          "type": "service_card",
+          "settings": {
+            "card_image": "shopify://shop_images/special_events.jpg",
+            "card_title": "Full Customization & Builds",
+            "card_description": "Complete vehicle restoration and custom builds. We bring your automotive vision to life with expert craftsmanship.",
+            "card_link": "#contact",
+            "button_text": "Get Started",
+            "open_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "service_card_dxfepx",
+        "service_card_97qqhz",
+        "service_card_ak47xg",
+        "service_card_NbapiB",
+        "service_card_AyqeRP",
+        "service_card_CPCXfT"
+      ],
+      "name": "Simple Services Grid",
+      "settings": {
+        "section_title": "Our Services",
+        "section_intro": "Get tickets to exclusive automotive events in the Chicago area and beyond.",
+        "border_color": "#f8f8f8",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#000000",
+        "show_cta": true,
+        "cta_text": "Follow us on Instagram for event announcements!",
+        "cta_link": "https://www.instagram.com/ctbgarage/",
+        "cta_button_text": "Follow @ctbgarage",
+        "cta_new_tab": true
+      }
     }
   },
   "order": [
@@ -1283,13 +1283,13 @@
     "section_XrX9gi",
     "simple_auto_slider_PcXb6Q",
     "17675636610d7f9620",
-    "simple_services_grid_kYRhb6",
     "simple_testimonials_AaDgif",
     "simple_about_bP4iTT",
     "ctb_faq_bYhWir",
     "section_AQBaJ6",
     "simple_floating_tickets_abxEHp",
     "simple_contact_mKdRcd",
-    "popup_BQFBz9"
+    "popup_BQFBz9",
+    "simple_services_grid_kYRhb6"
   ]
 }
