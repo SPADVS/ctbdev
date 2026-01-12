@@ -232,6 +232,13 @@ html {
                   </p>
                 {% endif %}
 
+                {% if section.settings.show_phone %}
+                  <p>
+                      <i class="fas fa-phone"></i> Phone: 
+                      <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}">{{ section.settings.phone_number }}</a>
+                  </p>
+                {% endif %}
+
                 {% if section.settings.show_instagram %}
                   <p>
                       <i class="fab fa-instagram"></i> Instagram: 
@@ -368,6 +375,19 @@ html {
       "id": "google_maps_link",
       "label": "Google Maps link",
       "info": "Link to your location on Google Maps"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number",
+      "info": "Format: (123) 456-7890",
+      "default": ""
     },
     {
       "type": "checkbox",
