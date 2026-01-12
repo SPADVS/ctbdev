@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Precision. Protection. Perfection—Your Ride, Our Pride.</p>",
+            "text": "<p>Precision. Protection. Perfection.<br/>Your Ride, Our Pride.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
