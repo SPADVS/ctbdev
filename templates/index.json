@@ -1194,6 +1194,7 @@
       "blocks": {
         "button_HU7AdP": {
           "type": "button",
+          "disabled": true,
           "settings": {
             "button_text": "Call us +1-708 612 2812",
             "button_url": "tel:+1-708 612 2812",
@@ -1236,7 +1237,7 @@
         "address": "4201 W Kinzie Street, Chicago, Illinois",
         "google_maps_link": "https://www.google.com/maps/place/4201+W+Kinzie+St,+Chicago,+IL+60624/@41.8874632,-87.7336168,17z/data=!3m1!4b1!4m6!3m5!1s0x880e32d0a733356d:0xf13992d13c327774!8m2!3d41.8874632!4d-87.7310365!16s%2Fg%2F11c2g5zj54?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoASAFQAw%3D%3D",
         "show_phone": true,
-        "phone_number": "",
+        "phone_number": "1-708 612 2812",
         "show_instagram": true,
         "instagram_url": "https://www.instagram.com/ctbgarage/",
         "instagram_handle": "@ctbgarage",
