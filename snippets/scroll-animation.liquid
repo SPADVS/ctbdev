@@ -31,6 +31,16 @@
   .scroll-fade-in[data-scroll-delay="4"].visible { transition-delay: 320ms; }
   .scroll-fade-in[data-scroll-delay="5"].visible { transition-delay: 400ms; }
   .scroll-fade-in[data-scroll-delay="6"].visible { transition-delay: 480ms; }
+
+  /* Faster stagger on mobile */
+  @media (max-width: 749px) {
+    .scroll-fade-in[data-scroll-delay="1"].visible { transition-delay: 40ms; }
+    .scroll-fade-in[data-scroll-delay="2"].visible { transition-delay: 80ms; }
+    .scroll-fade-in[data-scroll-delay="3"].visible { transition-delay: 120ms; }
+    .scroll-fade-in[data-scroll-delay="4"].visible { transition-delay: 160ms; }
+    .scroll-fade-in[data-scroll-delay="5"].visible { transition-delay: 200ms; }
+    .scroll-fade-in[data-scroll-delay="6"].visible { transition-delay: 240ms; }
+  }
 </style>
 
 <script>
