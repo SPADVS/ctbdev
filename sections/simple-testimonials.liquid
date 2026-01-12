@@ -91,11 +91,13 @@
 }
 </style>
 
+{% render 'scroll-animation' %}
+
 <section class="testimonials-section">
     <div class="page-width">
-        <h2 class="section-title">{{ section.settings.section_title }}</h2>
+        <h2 class="section-title scroll-fade-in">{{ section.settings.section_title }}</h2>
 
-        <div class="splide" aria-label="Customer Testimonials">
+        <div class="splide scroll-fade-in" data-scroll-delay="1" aria-label="Customer Testimonials">
             <div class="splide__track">
                 <ul class="splide__list">
                     {% for block in section.blocks %}

@@ -1,0 +1,69 @@
+{% comment %}
+  Scroll Animation Snippet
+  Add scroll-triggered animations to sections
+  
+  Usage: {% render 'scroll-animation' %}
+  
+  Then add 'scroll-fade-in' class to elements you want to animate
+{% endcomment %}
+
+<style>
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    filter: blur(2px);
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .scroll-fade-in.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  /* Stagger delays */
+  .scroll-fade-in[data-scroll-delay="1"].visible { transition-delay: 100ms; }
+  .scroll-fade-in[data-scroll-delay="2"].visible { transition-delay: 200ms; }
+  .scroll-fade-in[data-scroll-delay="3"].visible { transition-delay: 300ms; }
+  .scroll-fade-in[data-scroll-delay="4"].visible { transition-delay: 400ms; }
+  .scroll-fade-in[data-scroll-delay="5"].visible { transition-delay: 500ms; }
+  .scroll-fade-in[data-scroll-delay="6"].visible { transition-delay: 600ms; }
+</style>
+
+<script>
+  (function() {
+    if (window.scrollAnimationInitialized) return;
+    window.scrollAnimationInitialized = true;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    function observeElements() {
+      const elements = document.querySelectorAll('.scroll-fade-in:not(.visible)');
+      elements.forEach(el => observer.observe(el));
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', observeElements);
+    } else {
+      observeElements();
+    }
+
+    // Re-observe when Shopify sections are loaded/reloaded
+    document.addEventListener('shopify:section:load', observeElements);
+  })();
+</script>

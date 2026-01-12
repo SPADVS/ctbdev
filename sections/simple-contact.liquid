@@ -209,12 +209,14 @@ html {
 }
 </style>
 
+{% render 'scroll-animation' %}
+
 <section class="contact-section" id="{{ section.settings.section_id | default: 'contact' }}">
     <div class="page-width">
-        <h2 class="section-title">{{ section.settings.section_title }}</h2>
-        <p class="contact-intro">{{ section.settings.section_intro }}</p>
+        <h2 class="section-title scroll-fade-in">{{ section.settings.section_title }}</h2>
+        <p class="contact-intro scroll-fade-in" data-scroll-delay="1">{{ section.settings.section_intro }}</p>
         
-        <div class="contact-wrapper">
+        <div class="contact-wrapper scroll-fade-in" data-scroll-delay="2">
             <div class="contact-info">
                 <h3>{{ section.settings.business_name }}</h3>
                 <p class="tagline">{{ section.settings.business_tagline }}</p>

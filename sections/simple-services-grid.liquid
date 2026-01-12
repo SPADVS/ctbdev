@@ -41,23 +41,6 @@
     border: 2px solid {{ section.settings.border_color }};
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.ticket-card:nth-child(1) { animation-delay: 0.1s; }
-.ticket-card:nth-child(2) { animation-delay: 0.2s; }
-.ticket-card:nth-child(3) { animation-delay: 0.3s; }
-.ticket-card:nth-child(4) { animation-delay: 0.4s; }
-.ticket-card:nth-child(5) { animation-delay: 0.5s; }
-.ticket-card:nth-child(6) { animation-delay: 0.6s; }
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .ticket-card:hover {
@@ -128,9 +111,6 @@
 .view-all-container {
     text-align: center;
     padding: 40px 20px;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: fadeInUp 0.6s ease 0.7s forwards;
 }
 
 .cta-text {
@@ -173,16 +153,18 @@
 }
 </style>
 
+{% render 'scroll-animation' %}
+
 <section class="services-section">
     <div class="page-width">
-        <h2 class="section-title gsap-fade-up">{{ section.settings.section_title }}</h2>
-        <p class="services-intro gsap-fade-up">{{ section.settings.section_intro }}</p>
+        <h2 class="section-title scroll-fade-in">{{ section.settings.section_title }}</h2>
+        <p class="services-intro scroll-fade-in" data-scroll-delay="1">{{ section.settings.section_intro }}</p>
 
         <div class="ticket-grid">
             {% for block in section.blocks %}
               {% case block.type %}
                 {% when 'service_card' %}
-                  <div class="ticket-card" {{ block.shopify_attributes }}>
+                  <div class="ticket-card scroll-fade-in" data-scroll-delay="{{ forloop.index | modulo: 6 }}" {{ block.shopify_attributes }}>
                       <div class="ticket-image">
                           {% if block.settings.card_image %}
                             <img src="{{ block.settings.card_image | image_url: width: 800 }}" alt="{{ block.settings.card_title }}">
@@ -201,7 +183,7 @@
         </div>
 
         {% if section.settings.show_cta %}
-          <div class="view-all-container">
+          <div class="view-all-container scroll-fade-in">
               <p class="cta-text">{{ section.settings.cta_text }}</p>
               <a href="{{ section.settings.cta_link }}" {% if section.settings.cta_new_tab %}target="_blank"{% endif %} class="btn">{{ section.settings.cta_button_text }}</a>
           </div>
