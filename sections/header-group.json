@@ -48,6 +48,10 @@
           "type": "_header-logo",
           "static": true,
           "settings": {
+            "enable_scale_effect": true,
+            "logo_scale": 105,
+            "enable_rotation_effect": false,
+            "logo_rotation": 0,
             "hide_logo_on_home_page": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
