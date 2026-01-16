@@ -53,6 +53,7 @@
     class="header-logo__image-container header-logo__image-container--original"
     data-testid="header-logo"
     style="
+      --logo-scale-base: {{ block_settings.logo_base_scale | divided_by: 100.0 }};
       {% if block_settings.enable_scale_effect %}
         --logo-scale-hover: {{ block_settings.logo_scale | divided_by: 100.0 }};
       {% endif %}
@@ -75,6 +76,7 @@
       class="header-logo__image-container header-logo__image-container--inverse"
       data-testid="header-logo-inverse"
       style="
+        --logo-scale-base: {{ block_settings.logo_base_scale | divided_by: 100.0 }};
         {% if block_settings.enable_scale_effect %}
           --logo-scale-hover: {{ block_settings.logo_scale | divided_by: 100.0 }};
         {% endif %}
@@ -152,11 +154,12 @@
   .header-logo__image-container {
     display: inline-block;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(var(--logo-scale-base, 1));
   }
 
   /* Hover effects */
   .header-logo:hover .header-logo__image-container {
-    transform: scale(var(--logo-scale-hover, 1)) rotate(var(--logo-rotate-hover, 0deg));
+    transform: scale(calc(var(--logo-scale-base, 1) * var(--logo-scale-hover, 1))) rotate(var(--logo-rotate-hover, 0deg));
   }
 
   .header-logo:hover .header-logo__image {
@@ -187,6 +190,17 @@
       "content": "Logo Effects"
     },
     {
+      "type": "range",
+      "id": "logo_base_scale",
+      "label": "Base logo scale",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "info": "Scale the logo permanently (100% = original size, doesn't affect navbar)"
+    },
+    {
       "type": "checkbox",
       "id": "enable_scale_effect",
       "label": "Enable scale effect on hover",
@@ -195,13 +209,13 @@
     {
       "type": "range",
       "id": "logo_scale",
-      "label": "Scale percentage",
+      "label": "Hover scale percentage",
       "min": 100,
       "max": 150,
       "step": 5,
       "unit": "%",
       "default": 110,
-      "info": "Scale the logo on hover (100% = no change)"
+      "info": "Additional scale on hover (100% = no change)"
     },
     {
       "type": "checkbox",
