@@ -52,6 +52,14 @@
   <span
     class="header-logo__image-container header-logo__image-container--original"
     data-testid="header-logo"
+    style="
+      {% if block_settings.enable_scale_effect %}
+        --logo-scale-hover: {{ block_settings.logo_scale | divided_by: 100.0 }};
+      {% endif %}
+      {% if block_settings.enable_rotation_effect %}
+        --logo-rotate-hover: {{ block_settings.logo_rotation }}deg;
+      {% endif %}
+    "
   >
     {% render 'image',
       image: settings.logo,
@@ -66,6 +74,14 @@
     <span
       class="header-logo__image-container header-logo__image-container--inverse"
       data-testid="header-logo-inverse"
+      style="
+        {% if block_settings.enable_scale_effect %}
+          --logo-scale-hover: {{ block_settings.logo_scale | divided_by: 100.0 }};
+        {% endif %}
+        {% if block_settings.enable_rotation_effect %}
+          --logo-rotate-hover: {{ block_settings.logo_rotation }}deg;
+        {% endif %}
+      "
     >
       {% render 'image',
         image: inverse_logo,
@@ -123,11 +139,28 @@
     object-fit: contain;
     height: var(--header-logo-image-height-mobile);
     width: var(--header-logo-image-width-mobile);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                filter 0.3s ease,
+                opacity 0.3s ease;
 
     @media screen and (min-width: 750px) {
       height: var(--header-logo-image-height);
       width: var(--header-logo-image-width);
     }
+  }
+
+  .header-logo__image-container {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Hover effects */
+  .header-logo:hover .header-logo__image-container {
+    transform: scale(var(--logo-scale-hover, 1)) rotate(var(--logo-rotate-hover, 0deg));
+  }
+
+  .header-logo:hover .header-logo__image {
+    filter: brightness(var(--logo-brightness-hover, 1)) contrast(var(--logo-contrast-hover, 1));
   }
 
   .header-logo:has(.header-logo__image-container--inverse) .header-logo__image-container--original {
@@ -148,6 +181,44 @@
     {
       "type": "paragraph",
       "content": "t:content.edit_logo_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "Logo Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scale_effect",
+      "label": "Enable scale effect on hover",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "logo_scale",
+      "label": "Scale percentage",
+      "min": 100,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 110,
+      "info": "Scale the logo on hover (100% = no change)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_rotation_effect",
+      "label": "Enable rotation effect on hover",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "logo_rotation",
+      "label": "Rotation angle",
+      "min": -15,
+      "max": 15,
+      "step": 1,
+      "unit": "deg",
+      "default": 0,
+      "info": "Rotate the logo on hover"
     },
     {
       "type": "header",
