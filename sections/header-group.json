@@ -48,6 +48,7 @@
           "type": "_header-logo",
           "static": true,
           "settings": {
+            "logo_base_scale": 135,
             "enable_scale_effect": true,
             "logo_scale": 105,
             "enable_rotation_effect": false,
