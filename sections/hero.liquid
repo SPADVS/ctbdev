@@ -966,7 +966,7 @@
           opacity: [0, 1],
           easing: 'easeOutExpo',
           duration: duration,
-          delay: anime.stagger(letterDelay, { start: 100 + (titleIndex * 300) }),
+          delay: anime.stagger(letterDelay, { start: 0 + (titleIndex * 150) }),
           begin: function() { console.log(`Title ${titleIndex} animation started`); },
           complete: function() { console.log(`Title ${titleIndex} animation completed`); }
         });
@@ -986,7 +986,7 @@
           opacity: [0, 1],
           easing: 'easeOutExpo',
           duration: duration,
-          delay: 600 + (index * divStagger),
+          delay: 300 + (index * divStagger),
           begin: function() { console.log(`Text block ${index} animation started`); },
           complete: function() { console.log(`Text block ${index} animation completed`); }
         });
@@ -1013,7 +1013,7 @@
             opacity: [0, 1],
             easing: 'easeOutExpo',
             duration: duration,
-            delay: anime.stagger(divStagger, { start: 800 }),
+            delay: anime.stagger(divStagger, { start: 400 }),
             begin: function() { console.log('Button animations started'); },
             complete: function() { console.log('Button animations completed'); }
           });
@@ -1057,7 +1057,7 @@
             isAnimating = false;
             animationCompleted = true;
           }));
-        }, 50);
+        }, 0);
       });
     }
     
